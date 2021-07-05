@@ -7,6 +7,8 @@
     text-align: center;
     right: 0;
     width: 300px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 #portfolio-navbar-container {
@@ -39,7 +41,6 @@
 #portfolio-sidebar-toggle {
     display: none;
 }
-
 
 @media(max-width:835px) {
     #portfolio-navbar-pills {
@@ -353,7 +354,6 @@ a:focus {
 
 .nav-link:focus {
     color: #fff !important;
-    border-bottom: none;
 }
 
 /* .nav-link.active {
@@ -553,8 +553,7 @@ canvas {
     .portfolio-sidebar-toggle-button {
         padding: 4px 10px !important;
     }
-
-    #portfolio-sidebar{
+    #portfolio-sidebar {
         width: 80%;
     }
 }
@@ -574,12 +573,9 @@ canvas {
         font-size: small !important;
         padding: 8px !important;
     }
-
     .portfolio-skill-badge {
         font-size: 1em !important;
     }
-
-    
 }
 
 html:not([data-scroll="0"]) #portfolio-navbar {
@@ -616,8 +612,6 @@ html:not([data-scroll="0"]) #portfolio-float.float {
     background-color: transparent;
 }
 
-
-
 #portfolio-highlights {
     text-align: center;
     background-color: #f2f2f5;
@@ -629,12 +623,15 @@ html:not([data-scroll="0"]) #portfolio-float.float {
 }
 
 /* Footer */
-#portfolio-footer{
+
+#portfolio-footer {
     text-align: center;
 }
-.portfolio-footer-social{
+
+.portfolio-footer-social {
     text-align: center;
 }
+
 footer {
     padding: 50px 0;
 }
@@ -692,16 +689,15 @@ footer {
     color: #e50914 !important;
 }
 
-
 .fa-chevron-up:hover {
     transform: scale(1.2) !important;
 }
 
-#playlist-container{
+#playlist-container {
     display: flex;
     overflow: auto;
 }
 
-.playlist-iframe{
+.playlist-iframe {
     margin: 5px;
 }
