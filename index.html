@@ -34,8 +34,9 @@
                 <!-- <span class="fs-4">Simple header</span> -->
             </a>
 
+            
             <ul id="portfolio-navbar-pills" class="nav nav-pills">
-                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" aria-current="page">Home</a></li>
                 <li class="nav-item"><a href="#portfolio-about" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="#portfolio-experience" class="nav-link">Experience</a></li>
                 <li class="nav-item"><a href="#portfolio-education" class="nav-link">Education</a></li>
@@ -44,65 +45,38 @@
                 <li class="nav-item"><a href="#portfolio-highlights" class="nav-link">Highlights</a></li>
                 <li class="nav-item"><a href="#portfolio-contact" class="nav-link">Contact</a></li>
             </ul>
+            
             <ul id="portfolio-sidebar-toggle" class="nav nav-pills">
-                <button type="button" class="portfolio-sidebar-toggle-button btn btn-outline-primary"><i
+                <button type="button" onclick="openSidebar()" class="portfolio-sidebar-toggle-button btn btn-outline-primary"><i
                         class="fas fa-bars"></i></button>
             </ul>
+
+            
         </header>
     </div>
 
     <!-- Sidebar -->
     <div id="portfolio-sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <!-- <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi me-2" width="40" height="32">
                 <use xlink:href="#bootstrap"></use>
             </svg>
             <span class="fs-4">Sidebar</span>
-        </a>
+        </a> -->
+        <div style="display: flex; "><button type="button" onclick="closeSidebar()" class="btn-close btn-close-white" aria-label="Close"></button></div>
+        
         <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
-                    <svg class="bi me-2" width="16" height="16">
-                        <use xlink:href="#home"></use>
-                    </svg>
-                    Home
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-white">
-                    <svg class="bi me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2"></use>
-                    </svg>
-                    Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-white">
-                    <svg class="bi me-2" width="16" height="16">
-                        <use xlink:href="#table"></use>
-                    </svg>
-                    Orders
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-white">
-                    <svg class="bi me-2" width="16" height="16">
-                        <use xlink:href="#grid"></use>
-                    </svg>
-                    Products
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-white">
-                    <svg class="bi me-2" width="16" height="16">
-                        <use xlink:href="#people-circle"></use>
-                    </svg>
-                    Customers
-                </a>
-            </li>
+        <ul style="flex-direction: column;" id="portfolio-sidebar-pills" class="nav nav-pills">
+            <li class="nav-item"><a href="#" class="nav-link" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="#portfolio-about" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="#portfolio-experience" class="nav-link">Experience</a></li>
+            <li class="nav-item"><a href="#portfolio-education" class="nav-link">Education</a></li>
+            <li class="nav-item"><a href="#portfolio-projects" class="nav-link">Projects</a></li>
+            <li class="nav-item"><a href="#portfolio-skills" class="nav-link">Skills</a></li>
+            <li class="nav-item"><a href="#portfolio-highlights" class="nav-link">Highlights</a></li>
+            <li class="nav-item"><a href="#portfolio-contact" class="nav-link">Contact</a></li>
         </ul>
-        <hr>
+        <!-- <hr>
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                 id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -118,7 +92,7 @@
                 </li>
                 <li><a class="dropdown-item" href="#">Sign out</a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
 
     <!-- Hero -->
@@ -487,7 +461,7 @@
             <span class="portfolio-skill-badge badge bg-light text-dark">Cyber Security</span>
             <span class="portfolio-skill-badge badge bg-light text-dark">Product Management</span>
             <span class="portfolio-skill-badge badge bg-light text-dark">UI/UX Designing</span>
-            <span class="portfolio-skill-badge badge bg-light text-dark">Social Media Management</span>
+            <!-- <span class="portfolio-skill-badge badge bg-light text-dark">Social Media Management</span> -->
         </div>
         <br>
         <br>
@@ -590,6 +564,8 @@
             2. +1K subscribers on my youtube channel(in 10 months).<br>
             3. Speaker at Hands on Robotics Workshop on "Introduction to Arduino", a premier event of Gravitas Tech. Fest 2k19 VIT Vellore. Attended by more than 150 students.<br></b>
         </div>
+        <br>
+        <br>
         <br>
         <br>
     </div>
