@@ -368,6 +368,7 @@ a:focus {
     background-color: transparent !important;
     /* color: #e50914 !important;
     font-weight: 600 !important; */
+    color: #fff !important;
     border-bottom: 3px solid #e50914 !important;
     border-radius: 0% !important;
 }
