@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <script src="https://kit.fontawesome.com/5135d630a7.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Particle.js CSS -->
+    <!-- <link rel="stylesheet" media="screen" href="js/particles.js-master/demo/css/style.css"> -->
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins&display=swap" rel="stylesheet">
+
+    <title>Priyanshu Gupta</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div id="portfolio-navbar-container" class="container-fluid">
+        <header id="portfolio-navbar" class="d-flex flex-wrap py-3">
+            <a href="#">
+                <img id="navbar-logo" src="assets/images/logo.png" width="42" height="42" />
+                <!-- <span class="fs-4">Simple header</span> -->
+            </a>
+
+            <ul id="portfolio-navbar-pills" class="nav nav-pills">
+                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Experience</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Education</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Skills</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Highlights</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+            <ul id="portfolio-sidebar-toggle" class="nav nav-pills">
+                <button type="button" class="portfolio-sidebar-toggle-button btn btn-outline-primary"><i
+                        class="fas fa-bars"></i></button>
+            </ul>
+        </header>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="portfolio-sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <svg class="bi me-2" width="40" height="32">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+            <span class="fs-4">Sidebar</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" aria-current="page">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link text-white">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#speedometer2"></use>
+                    </svg>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link text-white">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#table"></use>
+                    </svg>
+                    Orders
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link text-white">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                    </svg>
+                    Products
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link text-white">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Customers
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>mdo</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <!-- count particles -->
+    <!-- <div class="count-particles">
+        <span class="js-count-particles">--</span> particles
+    </div> -->
+
+    <!-- particles.js container -->
+    <div id="particles-js">
+        <div id="portfolio-hero" class="px-4 text-center">
+            <div id="portfolio-container">
+                <h1 class="portfolio-hero-highlight portfolio-hero-heading display-1 fw-bold">PRIYANSHU GUPTA</h1>
+                <div class="">
+                    <p class="portfolio-hero-highlight portfolio-hero-subheading lead mb-4">Developer | Creator |
+                        Programmer</p>
+                    <div id="portfolio-hero-links">
+                        <a class="portfolio-hero-social-link" target="_blank" href="https://github.com/priyanshu2015"
+                            target="_blank"><i class="portfolio-hero-highlight fab fa-github"
+                                aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank"
+                            href="https://www.instagram.com/priyanshu._gupta/" target="_blank"><i
+                                class="portfolio-hero-highlight fab fa-instagram" aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank" href="https://discord.gg/aqDGTQ9dFW"
+                            target="_blank"><i class="portfolio-hero-highlight fab fa-discord"
+                                aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank"
+                            href="https://www.linkedin.com/in/priyanshuguptaofficial/" target="_blank"><i
+                                class="portfolio-hero-highlight fab fa-linkedin" aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank"
+                            href="https://www.youtube.com/channel/UCd6H8kyKg0L9GSLuIC155pw" target="_blank"><i
+                                class="portfolio-hero-highlight fab fa-youtube" aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank"
+                            href="https://priyanshuguptaofficial.medium.com/" target="_blank"><i
+                                class="portfolio-hero-highlight fab fa-medium" aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank" href="https://t.me/priyanshuguptaofficial"
+                            target="_blank"><i class="portfolio-hero-highlight fab fa-telegram"
+                                aria-hidden="true"></i></a>&nbsp;
+                        <a class="portfolio-hero-social-link" target="_blank"
+                            href="mailto:priyanshuguptacontact@gmail.com" target="_blank"><i
+                                class="portfolio-hero-highlight fas fa-envelope" aria-hidden="true"></i></a>&nbsp;
+                    </div>
+                    <div class=" gap-2 d-sm-flex justify-content-sm-center">
+                        <button type="button"
+                            class="portfolio-hero-highlight portfolio-hero-button btn btn-primary btn-lg">Contact
+                            Me</button>
+                        <button type="button"
+                            class="portfolio-hero-highlight portfolio-hero-button btn btn-outline-secondary btn-lg">See
+                            My Resume</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="portfolio-hero-down">
+                <span>
+                    <a href="#portfolio-about"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+                </span>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <!-- scripts -->
+    <script src="js/particles.js-master/particles.js"></script>
+    <script src="js/particles.js-master/demo/js/app.js"></script>
+
+    <!-- stats.js -->
+    <!-- <script src="js/particles.js-master/demo/js/lib/stats.js"></script> -->
+
+    <!-- particles.js lib (JavaScript CodePen settings): https://github.com/VincentGarreau/particles.js -->
+
+    <script>
+        var count_particles, stats, update;
+        stats = new Stats;
+        stats.setMode(0);
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+        document.body.appendChild(stats.domElement);
+        count_particles = document.querySelector('.js-count-particles');
+        update = function () {
+            stats.begin();
+            stats.end();
+            if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+                count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+            }
+            requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+    </script>
+
+
+
+
+
+
+
+
+    <!-- About -->
+    <div id="portfolio-about">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">About Me</h2>
+        <div class="container">
+            <div>
+                <div>
+                    <img style="height:auto;" alt="" width="180" height="180" id="portfolio-avatar"
+                        class="avatar avatar-user width-full border color-bg-primary"
+                        src="https://avatars.githubusercontent.com/u/46575019?v=4">
+                </div>
+                <div>
+                    <br>
+                    <h4>Hello Everyone! &#128075;</h4>
+
+                    <p>
+                        I am <b>Priyanshu Gupta.</b><br>
+                        Currently an undergraduate at
+                        <a target="_blank" href="http://www.vit.ac.in/"><b>VIT, Vellore.</b></a><br>
+                        Love to explore how things actually work behind the <s>scenes</s> softwares & applications.<br>
+                        I love helping people to level up their skills.<br>
+                        Always up for a conversation about new technologies and exciting projects.<br>
+                        Give me any Tech. Stack, I will get the work done.<br>
+                        Keep scrolling, we might end up having a mutual interest :)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+
+    <!-- Experience -->
+    <div id="portfolio-experience">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Work Experience</h2>
+        <div class="portfolio-timeline">
+            <div class="portfolio-experience-card right">
+                <div class="portfolio-experience-card-content" data-date="May 2019 – August 2019">
+                    <img class="company-img" src="assets/images/youtube.png" width="50px" />
+                    <h3><a target="_blank" href="http://www.youtube.com/priyanshuguptaofficial">Youtube</a></h3>
+                    <h4>Technical Content Creator</h4>
+                    <p>
+                        <b>1. Create Content regarding AWS, Django Web Development, Microservice Architecture,
+                            Deployment & Scaling, & Web Security.</b><br>
+                        <b>2. Try to relate how core CSE Concepts are actually used and work internally in technologies
+                            and applications.</b><br>
+                        <b>3. Cover how to make Real-Time Projects from Development to Deployment to Scaling.</b><br>
+                    </p>
+                </div>
+            </div>
+            <div class="portfolio-experience-card left">
+                <div class="portfolio-experience-card-content" data-date="March 2020 – December 2020">
+                    <img class="company-img" src="https://www.selectdine.com/images/Logo.jpg" width="50px" />
+                    <h3><a target="_blank" href="https://www.selectdine.com/">SelectDine</a></h3>
+                    <h4>Back-end Web Developer, Intern</h4>
+                    <p>
+                        <b>1. Designed Basic Architecture for Development, Testing, Deployment and Git & Github
+                            Workflow.</b><br>
+                        <b>2. Designed Database Models and Managed Databases(SQlite, <a target="_blank"
+                                href="https://www.mongodb.com/cloud">MongoDB</a>).</b><br>
+                        <b>3. Worked on <a target="_blank" href="https://www.django-rest-framework.org/">Rest</a>
+                            Framework - Designed, Created & Documented RESTful APIs(+ Full Authentication
+                            Mechanism).</b><br>
+                        <b>4. Integration of Different Sub-Product Applications through APIs.</b><br>
+                        <b>5. Worked on <a target="_blank" href="https://aws.amazon.com/">AWS</a> for web-app
+                            deployment.</b><br>
+                        <b>6. Designed PRDs, User Stories & Use Cases, Wireframes.</b><br>
+                        <b>7. Worked in managing a new product feature with the Product Management team.</b><br>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Organizations</h2>
+        <div class="portfolio-organizations container">
+            <div class="portfolio-education-card card mb-3" style="max-width: 100%;">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="assets/images/robovitics.jpg" class="portfolio-education-img img-fluid rounded-start"
+                            alt="...">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h4 class="card-title"><a target="_blank" href="https://robovitics.in/">Robovitics</a> - Official Robotocs Club of VIT</h4>
+                            <h5 class="card-subtitle">Core-Committee Member</h5>
+                            <h5 class="card-subtitle">2018 - 2020</h5>
+                            <p class="card-text">
+                            <ul>
+                                <li>Manager at Robowars(One of the biggest Combat Robotics Event of India), Gravitas ,
+                                    VIT Vellore 2k19.</li>
+                                <li>Co-ordinator & Speaker at Hands On Robotics Workshop, Gravitas, VIT Vellore 2k19.
+                                </li>
+                                <li>Built Various Technical Projects using Arduino, ML, AI etc.</li>
+                            </ul>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+
+    <!-- Education -->
+    <div id="portfolio-education">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Education 👨‍🎓</h2>
+        <div class="container">
+            <div class="portfolio-education-card card mb-3" style="max-width: 100%;">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="assets/images/vit.png" class="portfolio-education-img img-fluid rounded-start"
+                            alt="...">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h4 class="card-title">VIT Vellore</h4>
+                            <h5 class="card-subtitle">B.Tech(Information Technology)</h5>
+                            <h5 class="card-subtitle">2018 - 2022</h5>
+                            <p class="card-text">
+                            <ul>
+                                <li>8.81 CGPA</li>
+                            </ul>
+                            </p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-education-card card mb-3" style="max-width: 100%;">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="assets/images/dps.png" class="portfolio-education-img img-fluid rounded-start"
+                            alt="...">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h4 class="card-title">DPS Ranipur Haridwar</h4>
+                            <h5 class="card-subtitle">2004-2018</h5>
+
+                            <p class="card-text">
+                            <ul>
+                                <li>
+                                    <b>Class XII (C.B.S.E) Board Exams: </b> 93.8%
+                                </li>
+                                <li>
+                                    <b>Class X (C.B.S.E) Board Exams: </b> 10 CGPA
+                                </li>
+                            </ul>
+                            </p>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <!-- Projects -->
+
+    <div id="portfolio-projects">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Projects 👨‍💻</h2>
+        <div class="container">
+            <div class="portfolio-project-card card mb-3" style="max-width: 100%;">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="assets/images/vit.png" class="portfolio-project-img img-fluid rounded-start"
+                            alt="...">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h4 class="card-title">VIT Vellore</h4>
+                            <h5 class="card-subtitle">B.Tech(Information Technology)</h5>
+                            <h5 class="card-subtitle">2018 - 2022</h5>
+                            <p class="card-text">
+                            <ul>
+                                <li>8.81 CGPA</li>
+                            </ul>
+                            </p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-project-card card mb-3" style="max-width: 100%;">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="assets/images/dps.png" class="portfolio-project-img img-fluid rounded-start"
+                            alt="...">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h4 class="card-title">DPS Ranipur Haridwar</h4>
+                            <h5 class="card-subtitle">2004-2018</h5>
+
+                            <p class="card-text">
+                            <ul>
+                                <li>
+                                    <b>Class XII (C.B.S.E) Board Exams: </b> 93.8%
+                                </li>
+                                <li>
+                                    <b>Class X (C.B.S.E) Board Exams: </b> 10 CGPA
+                                </li>
+                            </ul>
+                            </p>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <!-- Skills -->
+
+    <div id="portfolio-skills">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Skills</h2>
+        <div class="container">
+            <span class="portfolio-skill-badge badge bg-light text-dark">Web Development</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Database Management</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Cloud Computing</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Artificial Intelligence</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">API Development</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Computer Networks</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Operating Systems</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Cyber Security</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Product Management</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">UI/UX Designing</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Social Media Management</span>
+        </div>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Languages</h2>
+        <div class="container">
+            <span class="portfolio-skill-badge badge bg-light text-dark">Python <i class="fab fa-python"></i></span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Java <i class="fab fa-java"></i></span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Javascript <i class="fab fa-js"></i></span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">PHP <i class="fab fa-php"></i></span>
+        </div>
+
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Tools & Technologies</h2>
+        <div class="container">
+            <span class="portfolio-skill-badge badge bg-light text-dark">Django</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Flask</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">ReactJS</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">NodeJS</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">AWS</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">MySQL</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Adobe XD</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Tensorflow</span>
+            <span class="portfolio-skill-badge badge bg-light text-dark">Keras</span>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <div id="portfolio-highlights">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading">Highlights</h2>
+        <div class="container">
+            <script src="https://apis.google.com/js/platform.js"></script>
+
+            <div class="g-ytsubscribe" data-channelid="UCd6H8kyKg0L9GSLuIC155pw" data-layout="full"
+                data-count="default"></div>
+
+        </div>
+        <br>
+        <br>
+        <div class="container">
+            <div id="playlist-container">
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhEE3NEaLz3xNn7JHBHNb34I"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhHgE96XX5p-SC7SxENCJ_71"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhHExURT_U9m5eg1UahPLqg_"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhHKA1Szy2aj9Jbs6nw9fhNY"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhEXEnfAgUJXB0vLjHkyee6q"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhG7SJHsZjI42aKOLkLysjeZ"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+                <iframe class="playlist-iframe" width="360" height="210"
+                    src="https://www.youtube.com/embed/videoseries?list=PLLz6Bi1mIXhHa2O7igdkmZhSxjTLP0ALZ"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+            <!-- <iframe src="https://discord.com/widget?id=791054556339503131&theme=dark" width="350" height="500"
+                allowtransparency="true" frameborder="0"
+                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe> -->
+        </div>
+        <br>
+        <br>
+
+        <h2 class="portfolio-heading">Achievements</h2>
+        <div id="portfolio-achievements" class="container">
+            <b>
+            1. Mentored and guided 100+ people personally.<br>
+            2. +1K subscribers on my youtube channel(in 10 months).<br>
+            3. Speaker at Hands on Robotics Workshop on "Introduction to Arduino", a premier event of Gravitas Tech. Fest 2k19 VIT Vellore. Attended by more than 150 students.<br></b>
+        </div>
+        <br>
+        <br>
+    </div>
+
+    <!-- contact -->
+
+    <div id="portfolio-contact">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="portfolio-heading" style="text-align: center;">Get In Touch</h2>
+        <div class="container">
+            <form action="https://formspree.io/f/xbjqkwvj" method="POST">
+                <div class="mb-3">
+                    <label for="portfolio-lead-email" class="form-label">
+                        Your email:</label>
+                    <input required type="email" class="form-control" id="portfolio-lead-email"
+                        aria-describedby="emailHelp" name="_replyto" placeholder="Your Email">
+
+                </div>
+                <div class="mb-3">
+                    <label for="portfolio-lead-message" class="form-label">
+                        Your message:</label>
+                    <textarea required rows="3" class="form-control" id="portfolio-lead-message" name="message"
+                        placeholder="Your Message"></textarea>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+
+            </form>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div id="portfolio-footer" class="container">
+            <div class="row">
+                <div class="col-sm-5 copyright">
+                    <p>
+                        Copyright &copy; 2021 Priyanshu Gupta
+                    </p>
+                </div>
+                <div class="col-sm-2 top">
+                    <div id="portfolio-hero-up">
+                        <span>
+                            <a href="#"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-5 portfolio-footer-social">
+                    <ul>
+                        <li>
+                            <a target="_blank" href="https://github.com/priyanshu2015" target="_blank"><i
+                                    class="fa fa-github" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://www.linkedin.com/in/priyanshuguptaofficial/"
+                                target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://instagram.com/priyanshu._gupta" target="_blank"><i
+                                    class="fa fa-instagram" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://t.me/priyanshuguptaofficial/" target="_blank"><i
+                                    class="fa fa-telegram" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="mailto:priyanshuguptacontact@gmail.com" target="_blank"><i
+                                    class="fa fa-envelope" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer -->
+
+
+    <!-- Float Button -->
+    <!-- <a href="#" id="portfolio-float" class="float">
+        <i id="portfolio-my-float" class="fas fa-arrow-up my-float"></i>
+    </a> -->
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+    <script src="js/index.js"></script>
+</body>
+
+</html>
