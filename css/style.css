@@ -214,6 +214,15 @@
     max-width: 150px !important;
 }
 
+.portfolio-project-card {
+    padding: 20px;
+    text-align: left;
+}
+
+.portfolio-project-img {
+    max-width: 100% !important;
+}
+
 @media(max-width:835px) {
     .portfolio-education-img {
         height: 100px;
@@ -221,6 +230,15 @@
     }
     .portfolio-education-card {
         text-align: center;
+    }
+
+    .portfolio-project-card {
+        text-align: left !important;
+    }
+    
+    .portfolio-project-img {
+        /* height: 100px; */
+        width: 100%;
     }
 }
 
