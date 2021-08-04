@@ -1,0 +1,140 @@
+#services-hero{
+    width: 100% !important;
+}
+
+#services-section{
+    text-align: center;
+    background-color: #f2f2f5;
+}
+
+#services-highlights{
+    text-align: center;
+    background-color: white;
+}
+
+#services-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+}
+
+.services-card{
+    margin: 10px;
+    padding: 10px;
+    width: 30% !important;
+}
+
+#services-section .fas{
+    font-size: 60px;
+}
+
+.services-primary-button{
+    color: #fff !important;
+}
+
+@media(max-width:991px){
+    .services-card{
+        width: 50% !important;
+        padding: 10px;
+    }
+}
+
+@media(max-width:835px){
+    #services-cards{
+        flex-direction: column;
+    }
+    .services-card{
+        width: 100% !important;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+
+.blockquote{
+    background-color: #f2f2f5;
+}
+
+.blockquote-footer{
+    margin-bottom: 0px !important;
+}
+
+.services-hero-social-link {
+    color: #000 !important;
+}
+
+.services-hero-social-link:visited {
+    color: #000 !important;
+}
+
+.services-hero-social-link:hover {
+    color: #e50914 !important;
+}
+
+.services-hero-social-link .fas:hover, .fab:hover {
+    transform: scale(1.2) !important;
+}
+
+.portfolio-hero-social-link:focus {
+    color: #e50914 !important;
+}
+
+#services-hero-links {
+    font-size: 40px;
+}
+
+#instagram-posts{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+}
+
+.instagram-media{
+    min-width: 22% !important;
+    width: 22% !important;
+    margin-right: 20px !important;
+}
+
+.medium-blog{
+    width:35%;
+}
+
+@media(max-width:991px){
+    .instagram-media{
+        min-width: 30% !important;
+        margin-right: 20px !important;
+    }
+    .medium-blog{
+        width:40%;
+    }
+}
+
+@media(max-width:768px){
+    .instagram-media{
+        min-width: 40% !important;
+        margin-right: 10px !important;
+    }
+    .medium-blog{
+        width:60%;
+    }
+}
+
+@media(max-width:420px) {
+    .instagram-media{
+        min-width: 44% !important;
+        margin-right: 10px !important;
+    }
+    .medium-blog{
+        width:68%;
+    }
+}
+
+@media(max-width:400px) {
+    .instagram-media{
+        min-width: 64% !important;
+        margin-right: 10px !important;
+    }
+    .medium-blog{
+        width:75%;
+    }
+}

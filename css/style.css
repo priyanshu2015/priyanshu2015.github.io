@@ -651,7 +651,7 @@ html:not([data-scroll="0"]) #portfolio-float.float {
     text-align: center;
 }
 
-footer {
+.footer-section {
     padding: 50px 0;
 }
 
