@@ -147,6 +147,12 @@ infrastructure; teaches. Ends with one short personal line (travel — 5+ countr
 badminton, gym, yoga). No resume-speak; specifically not the resume's "seeking to apply this
 depth to industrial challenges in the European ecosystem."
 
+**Germany / Göttingen — present but never leading.** Per the author, this is not to be
+highlighted "for now". `location: "Göttingen, Germany"` stays in `resume.ts` and the MSc
+stays in Education, but **nothing in the hero or About mentions Germany, Göttingen, the
+move, or student status**, and no flags or country imagery appear anywhere. It is a quiet
+row in Education, not part of the site's headline identity.
+
 **Stats.** Four, as plain text — no links, no logos:
 
 - 10K+ YouTube subscribers
@@ -193,6 +199,12 @@ into every page load for a video most visitors won't play.
 Cloud, Cyber Bully Detection, LetsStockify, OWASP Attacks, EduTracker are all dropped as
 they undersell current work):
 
+- **Portfolio X-Ray** (2026) — <https://github.com/priyanshu2015/portfolio-xray>. Open-source
+  (MIT) look-through tool that rebuilds an Indian mutual fund/ETF portfolio from its
+  underlying stocks to expose true sector, market-cap, and geographic exposure. Zerodha
+  (Kite) supported, broker-agnostic by design. HTML + Python, no build step. Leads the
+  section: it is the newest, is public code anyone can read, and ties to the investing
+  thread that runs through Prysm.
 - LoRA and Efficient LLM Serving for Financial Expert Agents (research seminar, 2025)
 - AI Trust & Citizen Participation in Digital Public Services (IS seminar, N=143, 2025)
 - LetsProgressify (2024)
