@@ -129,7 +129,7 @@ export const DATA = {
       company: "Prysm Finance",
       href: "https://www.prysm.fi",
       logoUrl: "/images/work/prysm.png",
-      title: "Founder & Lead Engineer",
+      title: "Founder & Chief Architect",
       start: "Dec 2024",
       end: "Present",
       // Capabilities and outcomes only. Prysm is a live product, so how it is built stays
