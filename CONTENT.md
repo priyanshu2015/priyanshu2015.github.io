@@ -102,6 +102,15 @@ Add an object to the top of the `work` array (newest first):
 `end: "Present"` isn't only a label. It also drives the `worksFor` field in the
 structured data that search engines and LLMs read.
 
+**Don't describe how a live product is built.** For anything still running (Prysm), write
+what it does for the person using it, not the internals: no framework names, no pipeline
+architecture, no latency or performance tricks. "A voice assistant that answers in 11
+languages" is a capability. "Streaming speech to text to LLM to speech, buffered ten words
+at a time" is a recipe, and this page is indexed by everyone, competitors included.
+
+A resume is handed to one company. This page is public and permanent, so the bar is
+different. Capabilities, scale, and outcomes are fair game; implementation is not.
+
 **Add press coverage to a job** with `links`. Someone else vouching for you beats another
 adjective, so this is worth doing whenever it exists:
 

@@ -132,8 +132,11 @@ export const DATA = {
       title: "Founder & Lead Engineer",
       start: "Dec 2024",
       end: "Present",
+      // Capabilities and outcomes only. Prysm is a live product, so how it is built stays
+      // off a public page: no frameworks, no pipeline architecture, no latency tricks.
+      // Describe what an investor gets, never how it was made. See CONTENT.md.
       description:
-        "An AI-first financial research and portfolio intelligence platform. In its first year: 30,000+ monthly visits, $22M of connected portfolios, 5,000+ users, and 50,000+ AI queries answered. Prysm covers the whole investor journey, from pre-trade research and screening, through in-trade monitoring, to post-trade portfolio analysis, in a single conversational interface. It automates the fundamental, technical, and qualitative work so conviction gets built early, when it still matters, and cuts research time by more than half. I built it from idea to production: natural language stock screening, AI-generated company research, real-time news with sentiment analysis, and quantitative portfolio metrics, on a LangGraph agent system with memory that adapts across sessions, and a RAG pipeline over 100,000+ multi-format documents that attributes every claim to a source. Also a real-time voice assistant in 11 languages, streaming speech to text to LLM to speech, buffered ten words at a time to keep the latency conversational. I instrumented the funnel with Mixpanel, PostHog, and Metabase, defined the KPIs before launch rather than after, and took conversion from 18% to 43%.",
+        "An AI-first financial research and portfolio intelligence platform. In its first year: 30,000+ monthly visits, $22M of connected portfolios, 5,000+ users, and 50,000+ AI queries answered. Prysm covers the whole investor journey, from pre-trade research and screening, through in-trade monitoring, to post-trade portfolio analysis, in a single conversational interface. It automates the fundamental, technical, and qualitative work so conviction gets built early, when it still matters, and cuts research time by more than half. We built it from idea to production: natural language stock screening, AI-generated company research that shows its sources, real-time news with sentiment analysis, quantitative portfolio metrics, and a voice assistant that answers in 11 languages.",
       video: "https://www.youtube.com/watch?v=51rkzlrJjfA",
     },
     {
@@ -211,7 +214,7 @@ export const DATA = {
       title: "AI Trust & Citizen Participation in Digital Public Services",
       dates: "2025",
       description:
-        "Does an AI that sounds human earn more trust than one that works? I ran a 2x2 experiment on 143 people to find out. Both helped, but sounding authentic stopped counting for much once the thing performed badly. The odd result: trust predicted whether people would participate, and predicted nothing at all about whether they would hand over their data. People weigh how sensitive the information is over how much they like you.",
+        "Does an AI that sounds human earn more trust than one that works? We ran a 2x2 experiment on 143 people to find out. Both helped, but sounding authentic stopped counting for much once the thing performed badly. The odd result: trust predicted whether people would participate, and predicted nothing at all about whether they would hand over their data. People weigh how sensitive the information is over how much they like you.",
       technologies: ["Qualtrics", "Prolific", "Statistics"],
       links: [],
     },
