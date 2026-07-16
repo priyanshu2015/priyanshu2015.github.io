@@ -8,7 +8,7 @@ import { ProjectList } from "@/components/project-list";
 import { PostList } from "@/components/post-list";
 import { ContactForm } from "@/components/contact-form";
 import { SocialLinks } from "@/components/social-links";
-import { personJsonLd } from "@/lib/json-ld";
+import { personJsonLd, serializeJsonLd } from "@/lib/json-ld";
 
 export default function Home() {
   const posts = getRecentPosts(4);
@@ -17,8 +17,7 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
-        // Static, build-time JSON from our own data — no user input reaches this.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd()) }}
       />
 
       <section id="hero" className="flex flex-col gap-4">

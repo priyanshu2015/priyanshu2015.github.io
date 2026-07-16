@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
-import { blogJsonLd } from "@/lib/json-ld";
+import { blogJsonLd, serializeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -24,7 +24,7 @@ export default function BlogPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd(posts)) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogJsonLd(posts)) }}
       />
 
       <header className="mb-10">

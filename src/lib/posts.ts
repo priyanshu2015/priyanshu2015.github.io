@@ -54,20 +54,32 @@ function parseFile(filename: string): Post {
   };
 }
 
+// Parsed once per build, then reused. Without this, every getPostBySlug call re-reads
+// and re-parses the whole directory — and each post page calls it twice (generateMetadata,
+// then the page) on top of generateStaticParams, the sitemap, the feed, and llms.txt.
+//
+// Production only, deliberately: in `next dev` the server process is long-lived, so a
+// cache here would mean a newly added post doesn't show up until you restart — which is
+// exactly the workflow CONTENT.md tells you to use. During a build the files can't
+// change underneath us, so caching is safe there.
+let cache: Post[] | undefined;
+const shouldCache = process.env.NODE_ENV === "production";
+
 /** All published posts, newest first. Drafts are excluded from every consumer. */
 export function getAllPosts(): Post[] {
+  if (shouldCache && cache) return cache;
   if (!fs.existsSync(POSTS_DIR)) return [];
 
-  return fs
+  const posts = fs
     .readdirSync(POSTS_DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map(parseFile)
     .filter((p) => !p.draft)
     .sort((a, b) => b.date.localeCompare(a.date));
-}
 
-export function getPostSlugs(): string[] {
-  return getAllPosts().map((p) => p.slug);
+  if (shouldCache) cache = posts;
+
+  return posts;
 }
 
 export function getPostBySlug(slug: string): Post | undefined {

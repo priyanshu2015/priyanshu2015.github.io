@@ -8,7 +8,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { getAllPosts, getPostBySlug, formatDate, readingTime } from "@/lib/posts";
 import { mdxComponents } from "@/components/mdx/mdx-components";
-import { blogPostingJsonLd } from "@/lib/json-ld";
+import { blogPostingJsonLd, serializeJsonLd } from "@/lib/json-ld";
 import { DATA } from "@/data/resume";
 
 type Params = { slug: string };
@@ -78,7 +78,7 @@ export default async function PostPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(blogPostingJsonLd(post)),
+          __html: serializeJsonLd(blogPostingJsonLd(post)),
         }}
       />
 

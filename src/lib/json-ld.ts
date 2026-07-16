@@ -9,6 +9,22 @@ import type { PostMeta } from "@/lib/posts";
  * LinkedIn profiles, so the three are understood as one person.
  */
 
+/**
+ * Serialise structured data for embedding in a <script> tag.
+ *
+ * JSON.stringify does NOT escape "<", so a post titled `Hello </script><img
+ * onerror=alert(1)>` would close the script element early and inject markup into every
+ * page that renders it. The content is self-authored, which makes this unlikely rather
+ * than impossible — and "unlikely" is not a security boundary. Escaping the three
+ * characters that can break out of a script context costs nothing.
+ */
+export function serializeJsonLd(data: unknown): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
+
 export function personJsonLd() {
   return {
     "@context": "https://schema.org",
