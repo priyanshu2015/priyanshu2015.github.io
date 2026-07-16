@@ -172,10 +172,10 @@ its start date isn't sourced and a dateless row in a dated timeline reads as a g
 Where `personal-website` and the resume disagree on dates (TanX Oct vs. Nov 2022; Krypto
 Sep vs. Oct 2022), the resume wins — it is newer.
 
-Two entries in `personal-website` are deliberately not carried over: **Tech Advisor**
+Two entries in `personal-website` are **cut, confirmed by the author**: **Tech Advisor**
 (Feb 2024 – Present), which is advisory work and reads as selling, and **Co-Founder,
-Health-Food Tech Startup** (Oct 2022 – Jan 2024), which the current resume omits. Raise
-either with the author if they should return.
+Health-Food Tech Startup** (Oct 2022 – Jan 2024), which the current resume omits. Do not
+reintroduce either.
 
 Prysm is **Present**, not the resume's "March 2026" — per the author, it continues partially
 on the backend. Prysm's entry carries the founder video
