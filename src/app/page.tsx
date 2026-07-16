@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DATA } from "@/data/resume";
 import { getRecentPosts } from "@/lib/posts";
 import { Section } from "@/components/section";
+import { Stats } from "@/components/stats";
 import { Timeline } from "@/components/timeline";
 import { EducationList } from "@/components/education-list";
 import { ProjectList } from "@/components/project-list";
@@ -51,29 +52,11 @@ export default function Home() {
       </Section>
 
       <Section id="numbers" title="Numbers">
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
-          {DATA.stats.map((stat) => (
-            // column-reverse puts the value on top visually while keeping the DOM in
-            // dt-then-dd order, so a screen reader reads "YouTube subscribers, 10K+"
-            // once rather than announcing the label twice.
-            <div key={stat.label} className="flex flex-col-reverse">
-              <dt className="mt-1 text-xs text-muted-foreground">{stat.label}</dt>
-              <dd className="font-mono text-xl tabular-nums">{stat.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <Stats />
       </Section>
 
       <Section id="work" title="Work">
         <Timeline />
-      </Section>
-
-      <Section id="projects" title="Projects">
-        <ProjectList />
-      </Section>
-
-      <Section id="education" title="Education">
-        <EducationList />
       </Section>
 
       <Section id="writing" title="Writing">
@@ -86,6 +69,14 @@ export default function Home() {
             All writing →
           </Link>
         ) : null}
+      </Section>
+
+      <Section id="projects" title="Projects">
+        <ProjectList />
+      </Section>
+
+      <Section id="education" title="Education">
+        <EducationList />
       </Section>
 
       <Section id="contact" title="Contact">

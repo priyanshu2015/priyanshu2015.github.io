@@ -44,11 +44,56 @@ export function Timeline() {
             {job.description}
           </p>
 
+          {job.links && job.links.length > 0 ? <PressLinks links={job.links} /> : null}
+
           {job.video ? (
-            <VideoFacade url={job.video} title={`${job.company} — founder demo`} />
+            <VideoFacade url={job.video} title={`${job.company} founder demo`} />
           ) : null}
         </li>
       ))}
     </ol>
+  );
+}
+
+/**
+ * Third-party coverage.
+ *
+ * The publication's name is the credential here, so it leads. Deliberately no scraped
+ * article thumbnails: the Forbes piece's preview image is a photo of Brine's founders,
+ * and putting a picture of three other people on this page would imply it's him or his
+ * team. A masthead someone recognises does more for trust than a stock photo, and it
+ * doesn't rot when the publication reshuffles its CDN.
+ */
+function PressLinks({
+  links,
+}: {
+  links: readonly { label: string; href: string; source: string }[];
+}) {
+  return (
+    <ul className="mt-4 flex flex-col gap-px overflow-hidden rounded-md border">
+      {links.map((link) => (
+        <li key={link.href} className="border-b last:border-b-0">
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center justify-between gap-3 px-3 py-2.5 transition-colors hover:bg-muted"
+          >
+            <span className="flex min-w-0 flex-col gap-0.5">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                {link.source}
+              </span>
+              <span className="truncate text-xs transition-colors group-hover:text-link">
+                {link.label}
+              </span>
+            </span>
+            <ArrowUpRight
+              className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-link"
+              aria-hidden
+            />
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }

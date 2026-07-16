@@ -65,7 +65,7 @@ export function ContactForm() {
       );
       setStatus("error");
     } catch {
-      setError("That didn't send — check your connection, or email me directly.");
+      setError("That didn't send. Check your connection, or email me directly.");
       setStatus("error");
     }
   }

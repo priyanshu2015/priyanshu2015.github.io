@@ -1,7 +1,9 @@
 ---
 title: Django Design Patterns
 description: |
-  Implementing SSO with Django and Django REST Framework using SimpleJWT
+  Design patterns for structuring a Django project, from a single app on one
+  server through multi-domain routing, independent deploys of the same codebase,
+  separate user tables, and microservices, with the trade-offs of each.
 date: 2024-06-04T00:00:45.510Z
 image: /images/blogs/django_design_patterns/thumbnail.png
 tags: ["Django", "Architecture"]
@@ -10,7 +12,7 @@ draft: false
 
 ![Django design patterns](/images/blogs/django_design_patterns/thumbnail.png)
 
-> There are countless design patterns possible with any tech stack. Your creativity and specific use case will determine which pattern is best suited for your needs. Below, I outline various design patterns to inspire you. These patterns can be combined and modified in numerous ways—how you implement them is up to you. It's also common to start with one pattern and later transition to another as your project evolves.
+> There are countless design patterns possible with any tech stack. Your creativity and specific use case will determine which pattern is best suited for your needs. Below, I outline various design patterns to inspire you. These patterns can be combined and modified in numerous ways, and how you implement them is up to you. It's also common to start with one pattern and later transition to another as your project evolves.
 
 ## 1. Starting with a very basic design pattern
 
@@ -24,7 +26,7 @@ In the above diagram,
 - Now in order to make the above system available to public, first thing you will have to do is to point your domain to the server’s IP address using DNS Server(if you want to access your system through the domain name).
 - For deploying there can be multiple ways
     1. Directly running Django using Gunicorn(WSGI Server) on port 80. 2 strategies to do this(for comparison https://stackoverflow.com/questions/19916016/gunicorn-nginx-server-via-socket-or-proxy) -
-        - By binding gunicorn to 80 port using this command: `gunicorn —bind 0.0.0.0:80 project.wsgi`
+        - By binding gunicorn to 80 port using this command: `gunicorn --bind 0.0.0.0:80 project.wsgi`
         - **Better approach with less overhead:** Using gunicorn.sock file and using Supervisor(https://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/) or gunicorn.service file(https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
         [In these resources, they do have used nginx as well, but you can skip that and directly run the django application on port 80 using gunicorn]
     2. Running the project using Gunicorn(WSGI Server) on port 8000(or any other port using the above methods), then placing a web server(for ex. Nginx) in front of it.
@@ -33,7 +35,7 @@ In the above diagram,
             - Handling static and media files - instead of putting a load on Django, you can serve static files by this web server
             - SSL certificate - If this is configured, traffic will come on 443 port(HTTPS)
     3. Packaging your django app using docker
-        - in the docker-compose file, run django app using gunicorn as a service, and then running `docker-compose up —-build -d`
+        - in the docker-compose file, run django app using gunicorn as a service, and then running `docker-compose up --build -d`
         - You can run nginx also by specifying in docker-compose and making configurations for SSL, static & media files, and traffic routing or you can also run nginx normally on the machine and routing traffic to the exposed port of the docker container
         - You can also use traefik(a light weight reverse proxy) in order to route traffic to docker container, but traefik do not serve static files. With traefik, there is no need to expose the port of django service in the container. You just have to make sure that traefik and django docker containers share a common network.
 

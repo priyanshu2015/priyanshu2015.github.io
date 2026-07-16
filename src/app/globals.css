@@ -181,8 +181,20 @@
   padding: 0 0.25rem;
 }
 
-html.dark [data-rehype-pretty-code-figure] code[data-theme*=" "] span,
-html.dark [data-rehype-pretty-code-figure] code[data-theme*=" "] {
+/*
+  Shiki is configured with two themes, so every token span carries both
+  --shiki-light and --shiki-dark as inline custom properties. They do nothing on their
+  own: these rules are what actually paint them. Miss the light rule and light mode
+  silently renders every code block as undifferentiated body text.
+*/
+[data-rehype-pretty-code-figure] code[data-theme*=" "],
+[data-rehype-pretty-code-figure] code[data-theme*=" "] span {
+  color: var(--shiki-light);
+  background-color: transparent;
+}
+
+html.dark [data-rehype-pretty-code-figure] code[data-theme*=" "],
+html.dark [data-rehype-pretty-code-figure] code[data-theme*=" "] span {
   color: var(--shiki-dark);
   background-color: transparent;
 }

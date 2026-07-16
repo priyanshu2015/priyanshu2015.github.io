@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 const links = [
   { href: "/", label: "Home" },
   { href: "/blog", label: "Writing" },
+  // Absolute, not a bare "#contact": from a blog post there is no contact section on
+  // the page, so the link has to take you home first and then to the anchor.
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Nav() {
@@ -20,8 +23,12 @@ export function Nav() {
     >
       <ul className="flex items-center gap-5">
         {links.map((link) => {
-          const active =
-            link.href === "/"
+          // Anchor links never claim the current-page state: you're still on whatever
+          // page you were on, and marking Contact as current would be a lie.
+          const isAnchor = link.href.includes("#");
+          const active = isAnchor
+            ? false
+            : link.href === "/"
               ? pathname === "/"
               : pathname.startsWith(link.href);
 

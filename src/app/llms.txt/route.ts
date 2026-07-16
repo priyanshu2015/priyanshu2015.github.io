@@ -33,14 +33,14 @@ ${DATA.contact.social.map((s) => `- ${s.name}: ${s.url}`).join("\n")}
 ${DATA.work
   .map(
     (job) =>
-      `### ${job.company} — ${job.title} (${job.start} – ${job.end})\n\n${job.description}`
+      `### ${job.company} (${job.title}, ${job.start} to ${job.end})\n\n${job.description}`
   )
   .join("\n\n")}
 
 ## Education
 
 ${DATA.education
-  .map((edu) => `- ${edu.school} — ${edu.degree} (${edu.start} – ${edu.end})`)
+  .map((edu) => `- ${edu.school}: ${edu.degree} (${edu.start} to ${edu.end})`)
   .join("\n")}
 
 ## Projects
@@ -59,9 +59,9 @@ ${
     ? posts
         .map(
           (post) =>
-            `- [${post.title}](${DATA.url}/blog/${post.slug}/) — ${formatDate(
+            `- [${post.title}](${DATA.url}/blog/${post.slug}/) (${formatDate(
               post.date
-            )}. ${post.description}`
+            )}). ${post.description}`
         )
         .join("\n")
     : "No posts published yet."

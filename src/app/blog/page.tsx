@@ -30,7 +30,7 @@ export default function BlogPage() {
       <header className="mb-10">
         <h1 className="text-3xl font-semibold tracking-tight">Writing</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Mostly about backend systems and how they behave under load — message
+          Mostly about backend systems and how they behave under load: message
           brokers, task queues, WebSockets, and the edge cases that only show up in
           production.
         </p>

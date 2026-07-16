@@ -20,6 +20,7 @@ const PUBLIC_DIR = path.join(ROOT, "public");
 const errors = [];
 const warnings = [];
 const seenSlugs = new Map();
+const seenDescriptions = new Map();
 
 function frontmatterOf(raw, file) {
   const m = raw.match(/^---\n([\s\S]*?)\n---\n/);
@@ -70,7 +71,21 @@ for (const file of files) {
   if (!fm) continue;
 
   if (!fm.title) errors.push(`${file}: frontmatter missing "title"`);
-  if (!fm.description) warnings.push(`${file}: no "description" — used by SEO and cards`);
+  if (!fm.description) {
+    warnings.push(`${file}: no "description". It is used by SEO, RSS, and cards`);
+  } else {
+    // Three of the eight migrated posts shipped with django-sso's description,
+    // copy-pasted in the original source. The description feeds the meta tag, the
+    // social card, RSS, JSON-LD, and llms.txt, so a wrong one misdescribes the post
+    // everywhere at once, and nothing about the page looks broken. Catch the repeat.
+    const key = fm.description.trim().toLowerCase();
+    if (seenDescriptions.has(key)) {
+      errors.push(
+        `${file}: description is identical to ${seenDescriptions.get(key)} — likely a copy-paste`
+      );
+    }
+    seenDescriptions.set(key, file);
+  }
 
   if (!fm.date) {
     errors.push(`${file}: frontmatter missing "date"`);

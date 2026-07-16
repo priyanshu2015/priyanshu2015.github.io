@@ -92,7 +92,7 @@ export function blogJsonLd(posts: PostMeta[]) {
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: `Writing — ${DATA.name}`,
+    name: `Writing | ${DATA.name}`,
     url: `${DATA.url}/blog/`,
     author: { "@type": "Person", name: DATA.name, url: DATA.url },
     blogPost: posts.map((post) => ({
