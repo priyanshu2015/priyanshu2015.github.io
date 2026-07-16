@@ -1,0 +1,117 @@
+---
+title: Scaling Websocket Server Horizontally
+description: |
+  Implementing SSO with Django and Django REST Framework using SimpleJWT
+date: 2024-06-14T00:00:45.510Z
+image: /images/blogs/scaling_websocket_server/thumbnail.png
+tags: ["WebSockets", "Scaling", "Django"]
+draft: false
+---
+
+This blog focuses on scaling a WebSocket service horizontally. I will use the example of a Notification Service, but the same strategy can be applied to any other use case.
+
+## Prerequisites
+
+- A basic understanding of how RabbitMQ or any other message broker works. [In this article, I have used RabbitMQ, but you can implement a similar strategy with other message brokers as well.]
+- A basic understanding of the WebSocket protocol.
+
+## Setup
+
+![Setup for scaling a WebSocket server horizontally](/images/blogs/scaling_websocket_server/thumbnail.png)
+
+Each WebSocket service instance will create two RabbitMQ queues to connect with the RabbitMQ exchange:
+
+1. **Public Queue (Intended for general messages)**:
+    - This queue is bound to the exchange with the routing key `public.#`.
+    - It listens to all messages forwarded to the exchange by the producer and forwards them to the WebSocket service instance listening to this queue.
+
+2. **Private Queue (Intended for user-specific messages)**:
+    - This queue is bound to the exchange with the routing key `private.#`.
+    - It only listens to messages having a routing key prefixed with `private.` and forwards them to the instance listening to this queue.
+
+
+## Scenario to Understand Edge Cases
+
+Let's take a scenario to understand the edge cases efficiently:
+- Let's say user 1(U1) makes two connections with the websocket service instance 1(WS1) and one connection with websocket service instance 2(WS2). Now if he has subscribed to “promotional” public stream, once any promotional message(with routing key public.promotional) is pushed to the exchange, it will be picked up by the public queue of WS1 and WS2. Since U1 has two connections with the WS1, he will get the alert on both connections and since he also has 1 more connection with WS2, he will get the alert from there as well.
+- Suppose user 2(U2) has made a connection with WS2 and has subscribed to the “order” private stream. If U2 places an order, all the order update messages(with routing key private.user_2_uuid.order) will be pushed by the order service(producer) to the exchange, which will be picked up by the private queues of both WS1 and WS2.
+Since U2 has only one connection with WS2, U2 will receive only one alert from WS2.
+
+
+## Sending Alerts to Users
+
+To send alerts to users, the producer can push messages to the exchange as follows:
+
+- **For Private Messages**: Send messages with a routing key starting with `private.<user_uid>.`.
+- **For Public Messages**: Send messages with a routing key starting with `public.`.
+
+
+You can have dedicated streams for specific types of messages to allow users to subscribe to specific types of messages and for better organization.
+
+For example:
+
+| Stream Type | Stream       | Routing Key                       |
+|-------------|--------------|-----------------------------------|
+| Private     | order        | `private.<user_uid>.order`         |
+| Private     | reward       | `private.<user_uid>.reward`       |
+| Public      | promotional  | `public.promotional`               |
+
+
+
+## Making a Connection with the WebSocket Service
+
+- **For Private WebSocket**:
+    - `wss://<domain>/private?auth_header=<JWT Access Token>`
+- **For Public WebSocket**:
+    - `wss://<domain>/public`
+
+
+> Many of you might wonder if it is safe to pass a JWT token as a query string parameter when making a WebSocket connection. Browsers do not cache WebSocket URLs, so it is safe. In the case of HTTP requests, browsers do cache the request, so it is not safe to pass a JWT as a query string parameter. For HTTP, such sensitive information should be passed in headers or the body of the POST request. It is important to use TLS/SSL in both cases to prevent any Man-in-the-Middle attack.
+
+
+Websocket service can authenticate the user by verifying the JWT token using public key shared by the auth service with it, if user wants to make a private connection.
+The WebSocket service can authenticate the user by verifying the JWT token using the public key shared by the auth service if the user wants to make a private connection.
+
+
+To subscribe to any stream, the user will have to send a message to the WebSocket service via the connection in the following format:
+
+`{ "event": "subscribe", "streams": ["<stream>"] }`
+
+
+Now in order to push the messages to exchange, you can have a dedicated notification service which will first receive the notification via http or grpc or any other protocol from other microservices and then store it in a dedicated notifications database and then push it to the exchange or send it via an email or as a push notification depending the type of notification. Or you can push the message directly to the exchange by specifying the correct routing key while publishing the message from different microservices.
+
+
+## Pushing Messages to the Exchange
+
+You can have a dedicated notification service that receives notifications via HTTP, gRPC, or any other protocol from other microservices. This service can then store the notifications in a dedicated database and push them to the exchange, send them via email, or as push notifications, depending on the type of notification. Alternatively, you can push messages directly to the exchange by specifying the correct routing key while publishing the message from different microservices.
+
+
+## Load Balancing
+
+When scaling WebSocket services horizontally, using a load balancer is crucial to distribute incoming WebSocket connections evenly across available instances. This helps to ensure no single instance is overwhelmed and improves the overall performance and reliability of the service.
+
+
+### There are two ways to use a load balancer with a WebSocket service:
+
+1. Load Balancer as an Intermediary:
+
+    - The load balancer manages the initial handshake and maintains the WebSocket connection, forwarding messages between the client and the backend server.
+    - This approach requires maintaining two WebSocket connections: one between the client and the load balancer, and another between the load balancer and the backend server.
+
+2. Load Balancer for Initial Routing Only (Preferred Approach):
+
+    - The client sends an HTTP request to the load balancer.
+    - The load balancer determines which backend server should handle the WebSocket connection based on its routing logic (e.g., round-robin, IP hash).
+    - Once the load balancer selects a backend server, it establishes a TCP connection (not HTTP) directly between the client and that backend server.
+    - The WebSocket handshake and subsequent WebSocket frames (data) flow directly between the client and the selected backend server.
+
+
+    **Advantages of This Approach**
+      - Since the load balancer only handles the initial request and not the persistent WebSocket connections, it reduces the load on the load balancer.
+      - Backend servers directly handle WebSocket connections, which can scale independently.
+      - The load balancer configuration is simplified as it only needs to handle the initial routing logic.
+
+
+## Conclusion
+
+By understanding the fundamentals of the WebSocket protocol, message broker integration, and load balancing strategies, you can effectively scale your WebSocket service horizontally to handle real-time communication efficiently and reliably.

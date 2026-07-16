@@ -1,0 +1,315 @@
+---
+title: Dockerizing Django with Traefik, Let's Encrypt, Celery, Celery Beat, Redis, and RabbitMQ
+description: |
+  Implementing SSO with Django and Django REST Framework using SimpleJWT
+date: 2024-07-25T00:00:45.510Z
+image: /images/blogs/dockerizing_django/thumbnail.png
+tags: ["Django", "Docker", "DevOps"]
+draft: false
+---
+
+![Dockerizing Django with Traefik, Celery, Redis, and RabbitMQ](/images/blogs/dockerizing_django/thumbnail.png)
+
+Containerization has become a standard practice in modern software development, providing consistency across various stages of development and deployment. In this guide, we will dockerize a Django application with Traefik for reverse proxying and automatic SSL with Let's Encrypt, Celery for asynchronous task processing, Redis for caching, RabbitMQ for message brokering, and Celery Beat for periodic tasks.
+
+## Prerequisites
+Ensure you have Docker and Docker Compose installed on your machine. Here is the official link for installation instructions: https://docs.docker.com/engine/install/
+
+## Project Setup
+If you don't have a Django project yet, you can create one with the following commands:
+
+```shell
+mkdir dummy_project
+cd dummy_project
+django-admin startproject config
+```
+
+> dummy_project is the `root project directory`.
+
+> I generally rename the base `config` directory to `src`, once the project is created for better naming conventions and consistency across projects.
+
+Next, create a Django app:
+```shell
+python manage.py startapp myapp
+```
+
+> Update your Django settings to use the Postgres database, configure Celery, Redis and RabbitMQ.
+> Add your business logic as needed.
+
+> It’s recommended to create different environments[dev, staging, prod] for your project by setting up separate settings, .env, requirements.txt, and docker-compose files. For reference, you can use this: https://github.com/priyanshu2015/best-django-boilerplate.
+
+
+## Docker Setup
+
+### Dockerfile
+
+Create a Dockerfile in the root directory of your project:
+
+```dockerfile
+# Use the official Python image from the Docker Hub
+FROM python:3.9-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
+RUN mkdir /code
+WORKDIR /code
+
+# Install dependencies
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+
+# Copy project
+COPY . /code/
+```
+
+### docker-compose.yml
+
+Create a docker-compose.yml file to define the services:
+
+```yaml
+version: '3.9'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - static_volume:/code/static
+      - media_volume:/code/media
+    environment:
+      - DJANGO_SETTINGS_MODULE=myproject.settings
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dummy-project-api.rule=Host(`yourdomain.com`)"
+      - "traefik.http.routers.dummy-project-api.entrypoints=websecure"
+      - "traefik.http.routers.dummy-project-api.tls.certresolver=myresolver"
+      - "traefik.http.services.dummy-project-api.loadbalancer.server.port=8000"
+    depends_on:
+      - migrate
+      - redis
+      - rabbitmq
+    # to keep the log file within a certain limit
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=dummy_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py migrate"
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "170m"
+        max-file: "5"
+    depends_on:
+      - db
+
+  redis:
+    image: redis:6
+    volumes:
+      - redis-data:/var/lib/redis/data/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "170m"
+        max-file: "5"
+
+  celery:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: sh -c "celery -A config worker -l info  worker -E --pool=threads --concurrency=10 -l info --without-gossip --without-mingle"
+    env_file: .env
+    depends_on:
+      - migrate
+      - redis
+      - rabbitmq
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "170m"
+        max-file: "5"
+
+  celery-beat:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: sh -c "celery -A config beat -l info"
+    env_file: .env
+    depends_on:
+      - migrate
+      - redis
+      - rabbitmq
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "170m"
+        max-file: "5"
+
+  traefik:
+    image: "traefik:v2.9"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik-public"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=your-email@example.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik_letsencrypt:/letsencrypt
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+volumes:
+  postgres_data:
+  traefik_letsencrypt:
+  static_volume:
+  media_volume:
+  redis-data:
+
+networks:
+  traefik-public:
+    external: true
+```
+
+> Replace `your-email@example.com` with the email with which you purchased your domain. You may need to adjust configurations according to your project requirements.
+
+## RabbitMQ configurations
+I use a custom RabbitMQ image to fine-tune its configurations.
+
+### Create Dockerfile.rabbitmq
+```dockerfile
+FROM rabbitmq:3-management
+COPY ./rabbitmq/rabbitmq.config /etc/rabbitmq
+ADD --chown=rabbitmq ./rabbitmq/definitions.json /etc/rabbitmq/
+RUN chown rabbitmq:rabbitmq /etc/rabbitmq/rabbitmq.config /etc/rabbitmq/definitions.json
+CMD ["rabbitmq-server"]
+```
+
+### Create rabbitmq directory in the root project directory
+
+Create definitions.json file
+
+```json
+{
+    "users": [
+      {
+        "name": "guest",
+        "password_hash": "Hf5vYMsz5ANOelI10vIHeVnGBlBZOhWIOWM2pwBtkWgAEKRv",
+        "hashing_algorithm": "rabbit_password_hashing_sha256",
+        "tags": "administrator"
+      }
+    ],
+    "vhosts": [
+      {
+        "name": "/"
+      }
+    ],
+    "permissions": [
+      {
+        "user": "guest",
+        "vhost": "/",
+        "configure": ".*",
+        "write": ".*",
+        "read": ".*"
+      }
+    ],
+    "parameters": [],
+    "policies": [],
+    "queues": [],
+    "exchanges": [],
+    "bindings": []
+  }
+```
+
+Create rabbitmq.config file
+```txt
+[
+  {rabbit, [
+    {loopback_users, []}
+  ]},
+  {rabbitmq_management, [
+    {load_definitions, "/etc/rabbitmq/definitions.json"}
+  ]}
+].
+```
+
+
+## Running the Application
+Build and run the Docker containers using Docker Compose:
+
+```shell
+docker-compose up --build -d
+```
+
+## Check if everything is working fine
+```shell
+docker ps
+docker logs <container_id>
+```
+
+### To Enter the Django Container and Interact via Shell
+```shell
+docker exec -ti <djanggo_container_id> bash
+python manage.py shell
+```
+
+> Test your application to ensure everything is functioning correctly. You may need to use additional Docker commands to manage your containers. Check all Docker commands: https://docs.docker.com/get-started/docker_cheatsheet.pdf
+
+## Conclusion
+In this blog, we've walked through the process of Dockerizing a Django application with Traefik for reverse proxying and Let's Encrypt for automatic SSL, Celery for asynchronous task processing, Redis for caching, RabbitMQ for message brokering, and Celery Beat for periodic tasks. This setup ensures a robust environment for developing and deploying Django applications with asynchronous task processing capabilities. Docker and Docker Compose simplify the management of these services, allowing you to focus on writing code rather than managing infrastructure.
+
+___

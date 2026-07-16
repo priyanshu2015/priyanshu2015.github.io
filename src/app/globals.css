@@ -1,0 +1,204 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Design tokens.
+
+  The direction is: white, minimal, crisp, "code/tech" feel earned through typography
+  rather than costume. Neutral greys carry the whole page; a single blue is the only
+  chromatic colour and it means exactly one thing — this is a link.
+
+  Deliberately absent: shadows, gradients, and any second accent. If you find yourself
+  adding a colour here, check the spec first.
+*/
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-link: var(--link);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/*
+  There is deliberately no scroll-reveal or page-load animation here.
+
+  Two were built and both failed the same way: content starts at opacity 0 and only
+  becomes visible if something else happens first (an IntersectionObserver firing, or a
+  CSS animation actually starting). In a tab that isn't painting, neither runs, and the
+  page stays blank permanently. A decorative effect that can hide the entire site is a
+  bad trade at any price.
+
+  It also isn't missed. This is a text page; the reference sites it's modelled on
+  (manassaloi.com, rnikhil.com) animate nothing at all. Content is visible in the HTML,
+  full stop. If you add an entrance animation later, make the visible state the default
+  and animate away from it, never toward it.
+*/
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --muted: #f5f5f5;
+  --muted-foreground: #666666;
+  --border: #e5e5e5;
+  --link: #1a56db;
+  --ring: #1a56db;
+}
+
+.dark {
+  /* Not pure black: #0a0a0a on a dark screen is easier on the eyes for long reads,
+     and the technical posts are long reads. Contrast ratios still clear AA. */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1a1;
+  --border: #262626;
+  --link: #6ea8fe;
+  --ring: #6ea8fe;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Dates, counts, and anything tabular line up as columns rather than drifting. */
+  time,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+  Prose for MDX posts. Tailwind Typography's defaults are tuned for marketing pages;
+  these overrides pull it back toward a technical document — mono inline code, hairline
+  rules, no quote decoration.
+*/
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-links: var(--link);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--border);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--muted-foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+.prose :where(code):not(:where(pre code)) {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  font-weight: 400;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1em 0.3em;
+}
+
+/* Typography adds these to inline code; the border already does the work. */
+.prose :where(code):not(:where(pre code))::before,
+.prose :where(code):not(:where(pre code))::after {
+  content: none;
+}
+
+.prose :where(blockquote) {
+  font-style: normal;
+  font-weight: 400;
+}
+
+.prose :where(blockquote p):first-of-type::before,
+.prose :where(blockquote p):last-of-type::after {
+  content: none;
+}
+
+/*
+  rehype-pretty-code. Shiki runs at build time, so code blocks ship zero client JS.
+  Both themes are emitted and swapped by CSS variable, which is why the html.dark
+  selector below exists rather than a second highlight pass.
+*/
+.prose pre {
+  background: var(--muted) !important;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.prose pre code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: grid; /* lets line highlighting span the full width */
+}
+
+[data-rehype-pretty-code-figure] pre [data-line] {
+  padding: 0 0.25rem;
+}
+
+html.dark [data-rehype-pretty-code-figure] code[data-theme*=" "] span,
+html.dark [data-rehype-pretty-code-figure] code[data-theme*=" "] {
+  color: var(--shiki-dark);
+  background-color: transparent;
+}
+
+[data-rehype-pretty-code-title] {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: 0.5rem 0.75rem;
+}
+
+[data-rehype-pretty-code-title] + pre {
+  border-radius: 0 0 6px 6px;
+  margin-top: 0;
+}

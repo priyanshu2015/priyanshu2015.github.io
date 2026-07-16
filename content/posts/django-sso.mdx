@@ -1,0 +1,458 @@
+---
+title: Django SSO
+description: |
+  Implementing SSO with Django and Django REST Framework using SimpleJWT
+date: 2024-06-04T00:00:45.510Z
+image: /images/blogs/django_sso/thumbnail.png
+tags: ["Django", "Authentication"]
+draft: false
+---
+
+![Single sign-on in Django](/images/blogs/django_sso/thumbnail.png)
+
+
+Single Sign-On (SSO) is an authentication process that allows a user to access multiple applications with one set of login credentials. Implementing SSO in a Django application using Django REST Framework (DRF) can streamline user management across various services and improve the user experience. In this blog, we'll walk through setting up SSO in a Django project using SimpleJWT.
+
+
+## Step 1: Setting Up Django Project [Auth Service]
+
+- Create a directory on your machine [auth-service]
+
+```shell
+cd auth-service
+```
+
+- Create and activate the virtualenvironemt
+- Install dependencies (django, djangorestframework, djangorestframework-simplejwt, cryptography==3.4.8)
+
+```shell
+django-admin startproject config
+cd config
+django-admin startapp authapp
+```
+
+- Add the new app and required packages to your INSTALLED_APPS in settings.py.
+
+```python
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'authapp',
+]
+```
+
+## Step 2: Configuring SimpleJWT
+
+- import necessary modules in settings.py
+
+```python
+import os
+from datetime import timedelta
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.asymmetric import rsa
+from decouple import config
+```
+
+- Add the following settings to your settings.py to configure SimpleJWT:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+AUTHORIZATION_DIR = os.path.join(Path(BASE_DIR).parent, "authorization")
+JWT_PRIVATE_KEY_PATH = os.path.join(AUTHORIZATION_DIR, "jwt_key")
+JWT_PUBLIC_KEY_PATH = os.path.join(AUTHORIZATION_DIR, "jwt_key.pub")
+
+
+# Script for creating the Private/Public Key Pair
+if (not os.path.exists(JWT_PRIVATE_KEY_PATH)) or (
+    not os.path.exists(JWT_PUBLIC_KEY_PATH)
+):
+
+    if not os.path.exists(AUTHORIZATION_DIR):
+        os.makedirs(AUTHORIZATION_DIR)
+
+    private_key = rsa.generate_private_key(
+        public_exponent=65537, key_size=4096, backend=default_backend()
+    )
+    pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+    with open(JWT_PRIVATE_KEY_PATH, "w") as pk:
+        pk.write(pem.decode())
+
+    public_key = private_key.public_key()
+    pem_public = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
+    )
+    with open(JWT_PUBLIC_KEY_PATH, "w") as pk:
+        pk.write(pem_public.decode())
+    print("PUBLIC/PRIVATE keys Generated!")
+
+
+# JWT Access validity duration in days
+ACCESS_TOKEN_VALID_DURATION = 5
+# JWT Refresh token validity duration in weeks
+REFRESH_TOKEN_VALID_DURATION = 2
+
+# Visit this page to see all the registered JWT claims:
+# https://tools.ietf.org/html/rfc7519#section-4.1
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        days=ACCESS_TOKEN_VALID_DURATION
+    ),  # "exp" (Expiration Time) Claim
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        weeks=REFRESH_TOKEN_VALID_DURATION
+    ),  # "exp" (Expiration Time) Claim
+    "ROTATE_REFRESH_TOKENS": True,  # When set to True, if a refresh token is submitted to the TokenRefreshView, a new refresh token will be returned along with the new access token.
+    "BLACKLIST_AFTER_ROTATION": False,  # If the blacklist app is in use and the BLACKLIST_AFTER_ROTATION setting is set to True, refresh token submitted to the refresh endpoint will be added to the blacklist in DB and will not be valid.
+    "UPDATE_LAST_LOGIN": False,  # When set to True, last_login field in the auth_user table is updated upon login (TokenObtainPairView).
+    # Warning: throttle the endpoint with DRF at the very least otherwise it will slow down the server if someone is abusing with the view.
+    "ALGORITHM": "RS256",  # 'alg' (Algorithm Used) specified in header [alternative => HS256]
+    "SIGNING_KEY": open(JWT_PRIVATE_KEY_PATH).read(),
+    "VERIFYING_KEY": open(JWT_PUBLIC_KEY_PATH).read(),
+    "AUDIENCE": None,  # "aud" (Audience) Claim
+    "ISSUER": None,  # "iss" (Issuer) Claim
+    "USER_ID_CLAIM": "user_id",  # The field name used for identifying the user
+    "USER_ID_FIELD": "id",  # The field in the DB which will be filled in USER_ID_CLAIM and will be used for comparison
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",  # This rule is applied after a valid token is processed. The user object is passed to the callable as an argument. The default rule is to check that the is_active flag is still True. The callable must return a boolean, True if authorized, False otherwise resulting in a 401 status code.
+    "JTI_CLAIM": "jti",  # Token’s unique identifier
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+```
+
+> For this, I am using the default User Model, you could simply use your custom User model if needed.
+
+
+## Step 3: Creating Views for Token Management
+
+Create views for obtaining and refreshing tokens. In `authapp/views.py`:
+
+```python
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from rest_framework import permissions
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    permission_classes = (permissions.AllowAny,)
+
+class MyTokenRefreshView(TokenRefreshView):
+    permission_classes = (permissions.AllowAny,)
+```
+
+
+## Step 4: Configuring URLs
+
+In authapp/urls.py, define the URL patterns for token management:
+
+```python
+from django.urls import path
+from .views import MyTokenObtainPairView, MyTokenRefreshView
+
+urlpatterns = [
+    path('api/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
+]
+```
+
+Include these URLs in your project's main URL configuration. In myproject/urls.py:
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('authapp.urls')),
+]
+```
+
+## Step 5: Create a user and generate the tokens
+
+- Create a user using terminal
+
+Hit the api using Postman or using curl
+
+```shell
+curl -X POST http://127.0.0.1:8000/api/token/ -d "username=user&password=pass"
+```
+
+- Response
+
+```json
+{
+    "access": "eyJhbGxxx.eyJzdWIxxx.SflKxwRJSMeKKF2QT4fwpMeJf36Pxxx",
+    "refresh": "eyJ0exxx.eyJ0b2txxx.SqeI5XOlpcKHr0lSpt-DhCe93t3Zxxx"
+}
+```
+
+**Parts of a JWT Token**
+
+A JWT (JSON Web Token) is composed of three parts separated by dots ('.'):
+
+1. Header
+2. Payload
+3. Signature
+
+Let's break down each part using the access token from the sample response:
+
+1. Header
+The header typically consists of two parts: the type of token (which is JWT) and the signing algorithm being used, such as HMAC SHA256 or RSA.
+
+Example (Base64 decoded):
+```json
+{
+  "typ": "JWT",
+  "alg": "RS256"
+}
+```
+
+Base64 encoded:
+```shell
+eyJhbGxxx
+```
+
+2. Payload
+The payload contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims.
+
+Example (Base64 decoded):
+```json
+{
+  "token_type": "access",
+  "exp": 1649963793,
+  "jti": "f8a3f529efc94d97ada05c0287273cc4",
+  "user_id": 1
+}
+```
+
+- `exp` (Expiration Time): The time after which the JWT expires.
+
+Base64 encoded:
+```shell
+eyJzdWIxxx
+```
+
+3. Signature
+To create the signature part, you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+
+For example, if you want to use the RSA256 algorithm, the signature will be created in this way:
+
+```shell
+RSASHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  <public_key>,
+  <private_key>
+)
+```
+
+Base64 encoded:
+```shell
+SflKxwRJSMeKKF2QT4fwpMeJf36Pxxx
+```
+
+Putting it All Together
+The JWT token is formed by concatenating the base64url encoded header, payload, and signature with dots ('.'):
+```shell
+eyJhbGxxx.eyJzdWIxxx.SflKxwRJSMeKKF2QT4fwpMeJf36Pxxx
+```
+
+**Sample Response Breakdown**
+- refresh: The refresh token, used to obtain a new access token without re-authenticating.
+access: The access token, used to authenticate and access protected resources.
+- The access token contains encoded information about the user and the token’s validity, allowing the client service to verify the user's identity and permissions without querying the database.
+
+
+## Step 6: Setting Up the Client Service
+
+Now, set up another Django project that will use the tokens issued by the authentication service to authenticate users.
+
+Create a new directory (client_service)
+
+```shell
+cd client_service
+```
+
+- Create and activate the virtualenvironemt
+- Install dependencies (django, djangorestframework, djangorestframework-simplejwt, cryptography==3.4.8)
+
+Create a Django Project
+
+```shell
+django-admin startproject config
+cd config
+django-admin startapp clientapp
+```
+
+Add the required packages to your INSTALLED_APPS in settings.py.
+
+```python
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'clientapp',
+]
+```
+
+## Step 7: Setup a Custom Authentication Class in Client Service
+
+- Copy the jwt_key.pub file from auth_service and place similarly in this project as well.
+
+> If we use The default "rest_framework_simplejwt.authentication.JWTAuthentication", for private endpoints, it will verify the access token using the public key and then check if the user exists in database But since this service is using a separate db, we don't have the user record in our database. We just have to check whether the token is valid or not.
+
+- Create a Custom Authentication Class
+
+In clientapp/authentication.py:
+
+```python
+from rest_framework_simplejwt.authentication import JWTAuthentication as BaseJWTAuthentication
+from rest_framework.exceptions import AuthenticationFailed
+from django.conf import settings
+
+class JWTAuthentication(BaseJWTAuthentication):
+    def get_user(self, validated_token):
+        """
+        Extract user information from the validated token. Since we do not have access
+        to the user database, we will return a dummy user or extract the user information
+        from the token payload.
+        """
+        user_id = validated_token.get('user_id')
+        if not user_id:
+            raise AuthenticationFailed('Invalid token payload')
+
+        # Return a dummy user object or any representation suitable for your use case.
+        # For example, you could return the user_id as part of a dictionary or any other
+        # custom user representation.
+        return {
+            'user_id': user_id,
+            'username': validated_token.get('username', 'Anonymous'),
+        }
+
+    def authenticate(self, request):
+        """
+        Custom authenticate method to extract and validate the token from the Authorization header.
+        """
+        auth_header = self.get_header(request)
+        if auth_header is None:
+            return None
+
+        raw_token = self.get_raw_token(auth_header)
+        if raw_token is None:
+            return None
+
+        validated_token = self.get_validated_token(raw_token)
+        return self.get_user(validated_token), validated_token
+```
+
+- Instead of making your own `JWTAuthentication` class, you could have directly used the inbuilt `rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication`, which implements the same functionality.
+
+- Configure REST Framework to Use the Custom Authentication Class
+
+In client_service/settings.py:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'clientapp.authentication.JWTAuthentication',
+    ),
+}
+
+AUTHORIZATION_DIR = os.path.join(Path(BASE_DIR).parent, "authorization")
+JWT_PUBLIC_KEY_PATH = os.path.join(AUTHORIZATION_DIR, "jwt_key.pub")
+
+SIMPLE_JWT = {
+    "ALGORITHM": "RS256",
+    "VERIFYING_KEY": open(JWT_PUBLIC_KEY_PATH).read(),
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "USER_ID_CLAIM": "user_id",
+    "JTI_CLAIM": "jti",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+```
+
+## Step 8: Create Protected Views
+
+In clientapp/views.py:
+
+```python
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+class ProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = {'message': 'This is a protected endpoint in the client service.'}
+        return Response(content)
+```
+
+- Configure URLs
+
+In clientapp/urls.py:
+
+```python
+from django.urls import path
+from .views import ProtectedView
+
+urlpatterns = [
+    path('api/protected/', ProtectedView.as_view(), name='protected'),
+]
+```
+
+- Include these URLs in your project's main URL configuration. In config/urls.py:
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('clientapp.urls')),
+]
+```
+
+## Step 9: Testing the SSO Setup
+
+- Start the client_service django server using `python manage.py runserver 127.0.0.1:8001`
+
+- Hit the private endpoint using the postman or curl
+
+```shell
+curl -H "Authorization: Bearer your_access_token" http://127.0.0.1:8001/api/protected/
+```
+
+- This should give a valid response, which thus verifies everything is working fine.
+
+
+How Client Service Verifies the JWT Token
+When the client service receives a request with a JWT token in the Authorization header, it can decode and verify the token using the secret key shared with the authentication service. Here’s a brief overview of the steps involved:
+
+- Extract the Token: Extract the token from the Authorization header.
+- Decode the Token: Decode the token using the secret key and the algorithm specified in the header.
+- Validate Claims: Validate the claims (e.g., expiration time, issuer, audience).
+- Grant Access: If the token is valid, grant access to the protected resource.
+
+By following this approach, you can ensure secure and seamless SSO across multiple services using JWT tokens.
+
+
+## Conclusion
+This approach simplifies the implementation while maintaining the security benefits of using RSA keys for token signing and verification. This setup ensures secure token verification across multiple services using a public/private key pair, enhancing security and providing a seamless user experience across different services.
+
+---
