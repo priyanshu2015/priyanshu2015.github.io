@@ -62,6 +62,14 @@ export type Project = {
   description: string;
   technologies: string[];
   links: { type: string; href: string }[];
+  /**
+   * Optional screenshot of the thing actually running.
+   *
+   * Only set this where a real artifact exists. The research write-ups have nothing to
+   * show, and generating a picture to fill the gap would be decoration pretending to be
+   * evidence, which is the opposite of what this section is for.
+   */
+  image?: { src: string; alt: string };
 };
 
 export const DATA = {
@@ -70,16 +78,22 @@ export const DATA = {
   url: "https://priyanshu2015.github.io",
   location: "Göttingen, Germany",
 
-  /** The one line under the name. No current-role claim, by design. */
-  description:
-    "I build backend systems and AI agents, and write about how they work underneath.",
+  /**
+   * The one line under the name. Lifted from his own LinkedIn headline, which says the
+   * thing better than anything written for him. No current-role claim, by design.
+   */
+  description: "Engineering systems for decision-making. Product, AI, and finance.",
 
   /**
    * The About paragraph. Markdown is not parsed here, so keep it plain prose.
+   *
    * Deliberately says nothing about Germany, the move, or student status.
+   *
+   * Ends on the present rather than the CV: the previous draft listed three past roles
+   * and read as though nothing was happening now.
    */
   summary:
-    "I like taking things apart to see how they actually work, then explaining what I found. Most of my work has been deep in the backend: exchange infrastructure that settles real money, AI agent systems that have to be right rather than merely plausible, and the unglamorous edge cases that decide whether either one survives contact with production. I was the first tech hire at Krypto, a founding team member at TanX when the tech team was two people, and I've since been building Prysm. Alongside that I teach. Over 10,000 people follow along on YouTube, and I ran an eight-week backend architecture course at GeeksForGeeks. Away from the screen I travel, play badminton, and spend more time in the gym than my posture suggests.",
+    "I build systems people bet money on, which is a good way to learn the difference between code that works and code that is right. Exchange infrastructure that settles real funds, AI agents that have to be correct rather than merely convincing, and the unglamorous edge cases that decide whether either one survives a Tuesday. First tech hire at Krypto, founding engineer at TanX back when the tech team was two people and a lot of optimism, and now Prysm. I teach what I build: 10,000+ people on YouTube and an eight-week backend architecture course at GeeksForGeeks. There is always something half-finished on my machine. The parts worth explaining end up here.",
 
   avatarUrl: "/images/priyanshu.jpg",
 
@@ -90,7 +104,7 @@ export const DATA = {
     {
       value: "Top 1%",
       label: "On Topmate",
-      href: "https://topmate.io/priyanshu_gupta",
+      href: "https://topmate.io/priyanshugupta",
     },
   ] satisfies Stat[],
 
@@ -119,7 +133,7 @@ export const DATA = {
       start: "Dec 2024",
       end: "Present",
       description:
-        "An AI-first financial research and portfolio intelligence platform, which reached 30,000+ monthly visits and $22M of connected portfolios in its first year. Prysm resolves the whole investor journey, from pre-trade research and screening through in-trade monitoring to post-trade analysis, inside one conversational interface. It automates the fundamental, technical, and qualitative work so conviction gets built early, when it actually matters. I took it from idea to production on my own: natural language stock screening, AI-generated company research, real-time news with sentiment analysis, and quantitative portfolio metrics, running on a LangGraph agent system and a retrieval pipeline over 100,000+ documents that cites its sources. It cuts research time by more than half.",
+        "An AI-first financial research and portfolio intelligence platform. In its first year: 30,000+ monthly visits, $22M of connected portfolios, 5,000+ users, and 50,000+ AI queries answered. Prysm covers the whole investor journey, from pre-trade research and screening, through in-trade monitoring, to post-trade portfolio analysis, in a single conversational interface. It automates the fundamental, technical, and qualitative work so conviction gets built early, when it still matters, and cuts research time by more than half. I built it from idea to production: natural language stock screening, AI-generated company research, real-time news with sentiment analysis, and quantitative portfolio metrics, on a LangGraph agent system with memory that adapts across sessions, and a RAG pipeline over 100,000+ multi-format documents that attributes every claim to a source. Also a real-time voice assistant in 11 languages, streaming speech to text to LLM to speech, buffered ten words at a time to keep the latency conversational. I instrumented the funnel with Mixpanel, PostHog, and Metabase, defined the KPIs before launch rather than after, and took conversion from 18% to 43%.",
       video: "https://www.youtube.com/watch?v=51rkzlrJjfA",
     },
     {
@@ -172,20 +186,24 @@ export const DATA = {
       href: "https://github.com/priyanshu2015/portfolio-xray",
       dates: "2026",
       description:
-        "Your broker shows you a list of holdings. It doesn't show you that three of your \"diversified\" funds hold the same five large-caps. Portfolio X-Ray opens every Indian mutual fund and ETF, pulls out the stocks actually inside, and adds them up, so you can see your real sector, market-cap, and geographic exposure. Reads from Zerodha, broker-agnostic by design, and never places orders.",
-      technologies: ["Python", "HTML", "Zerodha Kite API", "MIT"],
+        "You own four funds, so you are diversified. Except three of them hold the same five large-caps, and you are far more concentrated than your broker's neat little list suggests. That hidden overlap is exactly what hurts in a downturn. Portfolio X-Ray opens every Indian mutual fund and ETF, pulls out the stocks actually inside, and adds them up, so you can see where your money really sits by sector, market cap, and geography. Reads your holdings from Zerodha, broker-agnostic by design, and never places an order.",
+      technologies: ["Python", "Zerodha Kite API", "No build step", "MIT"],
       links: [
         {
           type: "Source",
           href: "https://github.com/priyanshu2015/portfolio-xray",
         },
       ],
+      image: {
+        src: "/images/projects/portfolio-xray.jpg",
+        alt: "The Portfolio X-Ray dashboard showing sector, market-cap, and geographic look-through for a demo portfolio, with holdings and P&L broken down below",
+      },
     },
     {
       title: "LoRA and Efficient LLM Serving for Financial Expert Agents",
       dates: "2025",
       description:
-        "A research survey of parameter-efficient fine-tuning and multi-tenant serving: LoRA's 10,000x reduction in trainable parameters, and where vLLM, S-LoRA, and dLoRA actually earn their throughput gains. Evaluated FinLoRA, FinGPT, and layered RAG agent architectures for financial reasoning.",
+        "How do you serve a hundred specialised financial models without buying a hundred GPUs? A research survey of parameter-efficient fine-tuning and multi-tenant serving: LoRA training 10,000x fewer parameters, and where vLLM, S-LoRA, and dLoRA actually earn their claimed 4x throughput rather than just quoting it. Evaluated FinLoRA, FinGPT, and layered RAG agent architectures for financial reasoning.",
       technologies: ["LoRA", "vLLM", "S-LoRA", "RAG"],
       links: [],
     },
@@ -193,7 +211,7 @@ export const DATA = {
       title: "AI Trust & Citizen Participation in Digital Public Services",
       dates: "2025",
       description:
-        "A 2x2 between-subjects experiment (N=143) on how an AI's authenticity and its performance shape citizen trust. Both raised trust independently, but poor performance blunted the benefit of authenticity. Trust predicted participation and yet failed to predict disclosure, which suggests people weigh how sensitive the information is over how much they trust the system.",
+        "Does an AI that sounds human earn more trust than one that works? I ran a 2x2 experiment on 143 people to find out. Both helped, but sounding authentic stopped counting for much once the thing performed badly. The odd result: trust predicted whether people would participate, and predicted nothing at all about whether they would hand over their data. People weigh how sensitive the information is over how much they like you.",
       technologies: ["Qualtrics", "Prolific", "Statistics"],
       links: [],
     },
@@ -210,7 +228,7 @@ export const DATA = {
       title: "Privacy-Preserving Computation Techniques",
       dates: "2024",
       description:
-        "Implemented partially homomorphic encryption, secure multi-party computation, and zero-knowledge proofs across a multi-server Flask architecture, then measured what each one actually costs in performance and scalability.",
+        "Can several parties compute on data none of them are allowed to see? Implemented partially homomorphic encryption, secure multi-party computation, and zero-knowledge proofs across a multi-server Flask setup, then measured what each one actually costs. The cryptography is elegant; the bill is real.",
       technologies: ["Python", "Flask", "Cryptography", "ZKP"],
       links: [],
     },

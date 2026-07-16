@@ -99,8 +99,25 @@ Add an object to the top of the `work` array (newest first):
 },
 ```
 
-`end: "Present"` isn't only a label — it also drives the `worksFor` field in the
+`end: "Present"` isn't only a label. It also drives the `worksFor` field in the
 structured data that search engines and LLMs read.
+
+**Add press coverage to a job** with `links`. Someone else vouching for you beats another
+adjective, so this is worth doing whenever it exists:
+
+```ts
+links: [
+  {
+    label: "tanX hits $1B quarterly trading volume",
+    href: "https://...",
+    source: "GlobeNewswire",   // the masthead is the credential; it leads
+  },
+],
+```
+
+Don't add scraped article thumbnails. The Forbes piece's own preview image is a photo of
+Brine's founders, and putting a picture of three other people on your page implies they're
+you or your team.
 
 ### Change the bio
 
@@ -114,13 +131,38 @@ The `stats` array. Four of them fit the grid neatly.
 
 ```ts
 { value: "10K+", label: "YouTube subscribers" },
+{ value: "Top 1%", label: "On Topmate", href: "https://topmate.io/..." },  // href optional
 ```
+
+An `href` turns the label into a link so the claim can be checked, which is the whole
+reason the number is on the page. Add one wherever the proof is public.
 
 Keep these honest and current. A stale number is worse than no number.
 
 ### Add a project
 
 An object in `projects`, newest first. `links` and `technologies` can be empty arrays.
+
+**Open with the problem, not the stack.** "You own four funds, so you are diversified.
+Except three of them hold the same five large-caps" earns a read; "a portfolio analysis
+tool built with Python" doesn't. A question works well for research write-ups.
+
+**`image` is optional and should stay that way.** Set it only where a real artifact
+exists:
+
+```ts
+image: {
+  src: "/images/projects/portfolio-xray.jpg",
+  alt: "The Portfolio X-Ray dashboard showing sector, market-cap and geographic look-through",
+},
+```
+
+The research write-ups have nothing to screenshot, and generating a picture to fill the
+gap would be decoration pretending to be evidence, which is the opposite of what the
+section is for. A project with no `image` just renders as text, which is fine.
+
+Resize screenshots before committing (aim under ~200KB; images aren't optimised at build
+time). The image is cropped to 16:9 from the top in CSS, so put the good part up there.
 
 ---
 
@@ -150,5 +192,17 @@ If you change your name or `description`, regenerate the card:
 npm run og
 ```
 
-This happens automatically on every build too — the manual command is just for when you
+This happens automatically on every build too. The manual command is just for when you
 want to look at `public/og.png` before pushing.
+
+## Regenerate the favicon
+
+```bash
+npm run icons
+```
+
+Writes `favicon.ico`, `favicon-32x32.png`, `apple-icon-180x180.png`, and
+`android-icon-192x192.png`: a white "PG" in Geist Mono on near-black, the same typeface
+the site uses for dates and labels. Output is committed, so you only need this if the mark
+changes. Unlike the social card, it does **not** run on every build, because it never
+changes on its own.

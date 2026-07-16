@@ -10,6 +10,7 @@
     "prebuild": "node scripts/generate-og.mjs",
     "build": "next build",
     "og": "node scripts/generate-og.mjs",
+    "icons": "node scripts/generate-icons.mjs",
     "start": "npx serve out",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",

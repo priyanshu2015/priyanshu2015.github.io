@@ -1,10 +1,24 @@
 import { ArrowUpRight } from "lucide-react";
-import { DATA } from "@/data/resume";
+import { DATA, type Project } from "@/data/resume";
+
+/**
+ * DATA is declared `as const`, which makes `projects` a tuple of differently-shaped
+ * literal types rather than a list of Projects: entries without `image` or `href` simply
+ * have no such property, and reading one collapses the element type to `never`.
+ *
+ * The array is already checked against Project[] by `satisfies` in resume.ts, so this
+ * restates the type the data was verified against rather than asserting something new.
+ */
+const projects: readonly Project[] = DATA.projects;
 
 export function ProjectList() {
   return (
     <ol className="flex flex-col gap-9">
-      {DATA.projects.map((project) => (
+      {projects.map((project) => {
+        const image = project.image;
+        const href = project.href ?? project.links[0]?.href;
+
+        return (
         <li key={project.title}>
           <div className="flex items-baseline justify-between gap-4">
             <h3 className="font-medium">
@@ -34,6 +48,27 @@ export function ProjectList() {
             {project.description}
           </p>
 
+          {image ? (
+            // object-top: the dashboard is a tall screenshot, and everything worth
+            // seeing (the look-through charts) is at the top. Cropping in CSS beats
+            // shipping a second cropped copy of the file.
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 block overflow-hidden rounded-md border"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={image.src}
+                alt={image.alt}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[16/9] w-full object-cover object-top transition-opacity hover:opacity-90"
+              />
+            </a>
+          ) : null}
+
           {project.technologies.length > 0 ? (
             <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
               {project.technologies.map((tech) => (
@@ -47,7 +82,8 @@ export function ProjectList() {
             </ul>
           ) : null}
         </li>
-      ))}
+        );
+      })}
     </ol>
   );
 }
