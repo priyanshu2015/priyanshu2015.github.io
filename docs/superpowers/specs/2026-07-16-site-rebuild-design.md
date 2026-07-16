@@ -147,9 +147,15 @@ infrastructure; teaches. Ends with one short personal line (travel — 5+ countr
 badminton, gym, yoga). No resume-speak; specifically not the resume's "seeking to apply this
 depth to industrial challenges in the European ecosystem."
 
-**Stats.** 10K+ YouTube subscribers; 5/5 GFG instructor rating. Both confirmed by the
-resume. The "10k+ people mentored" and "top 1% on Topmate" claims from `personal-website`
-are dropped — unverified by the resume, and Topmate reads as selling.
+**Stats.** Four, as plain text — no links, no logos:
+
+- 10K+ YouTube subscribers
+- 10K+ people mentored
+- 5/5 GFG instructor rating
+- Top 1% on Topmate
+
+Topmate is named but **not linked** — the ranking is credibility, a booking link would be
+selling.
 
 **Experience** (most recent first):
 
@@ -157,9 +163,19 @@ are dropped — unverified by the resume, and Topmate reads as selling.
 |---|---|---|
 | Prysm Finance | Founder & Lead Engineer | Dec 2024 – Present |
 | TanX (prev. Brine Finance) | Senior Product Engineer & Founding Team Member | Nov 2022 – Jan 2024 |
+| GeeksForGeeks | Course Instructor (Part-Time) — 8-week Python/backend architecture course, 5/5 | Oct 2023 – Dec 2023 |
 | Krypto | Product Engineer, First-Tech Hire | Aug 2021 – Oct 2022 |
-| GeeksForGeeks | Course Instructor (8-week Python/backend architecture course, 5/5) | 2023 |
-| YouTube | Technical content creator, 10K+ subscribers | 2021 – Present |
+
+YouTube is **not** a timeline entry — it appears only as the 10K+ subscribers stat, since
+its start date isn't sourced and a dateless row in a dated timeline reads as a gap.
+
+Where `personal-website` and the resume disagree on dates (TanX Oct vs. Nov 2022; Krypto
+Sep vs. Oct 2022), the resume wins — it is newer.
+
+Two entries in `personal-website` are deliberately not carried over: **Tech Advisor**
+(Feb 2024 – Present), which is advisory work and reads as selling, and **Co-Founder,
+Health-Food Tech Startup** (Oct 2022 – Jan 2024), which the current resume omits. Raise
+either with the author if they should return.
 
 Prysm is **Present**, not the resume's "March 2026" — per the author, it continues partially
 on the backend. Prysm's entry carries the founder video
@@ -255,7 +271,3 @@ Neither blocks starting implementation:
 2. **Company/school logos** — Prysm, TanX, Krypto, GFG, Göttingen, VIT. Some exist in
    `personal-website/public/images/`; Göttingen is new. The timeline renders a neutral
    bordered circle when `logoUrl` is absent, so missing logos degrade gracefully.
-3. **GFG and YouTube dates need confirming.** The resume lists both under Extracurricular
-   with no dates. "GFG — 2023" is carried over from `personal-website` (which said Oct–Dec
-   2023) and "YouTube — 2021 – Present" is inferred, not sourced. Both are placeholders in
-   `resume.ts` until the author confirms; do not publish unverified dates.
