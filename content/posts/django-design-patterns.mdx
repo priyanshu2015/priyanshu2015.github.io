@@ -1,0 +1,116 @@
+---
+title: Django Design Patterns
+description: |
+  Design patterns for structuring a Django project, from a single app on one
+  server through multi-domain routing, independent deploys of the same codebase,
+  separate user tables, and microservices, with the trade-offs of each.
+date: 2024-06-04T00:00:45.510Z
+image: /images/blogs/django_design_patterns/thumbnail.png
+tags: ["Django", "Architecture"]
+draft: false
+---
+
+![Django design patterns](/images/blogs/django_design_patterns/thumbnail.png)
+
+> There are countless design patterns possible with any tech stack. Your creativity and specific use case will determine which pattern is best suited for your needs. Below, I outline various design patterns to inspire you. These patterns can be combined and modified in numerous ways, and how you implement them is up to you. It's also common to start with one pattern and later transition to another as your project evolves.
+
+## 1. Starting with a very basic design pattern
+
+![A basic Django design pattern: one project serving a single domain](/images/blogs/django_design_patterns/1.png)
+
+In the above diagram,
+- there is 1 Django project with multiple apps
+- `Project 1` is running on a server(local machine or cloud VM)
+- `Project 1` is connected to a database on a db server(this db server can be present on the same machine where `Project 1` is running or on a separate machine)
+- There is one user table(even if you want to have multiple user types, you have to manage them using a common table)
+- Now in order to make the above system available to public, first thing you will have to do is to point your domain to the server’s IP address using DNS Server(if you want to access your system through the domain name).
+- For deploying there can be multiple ways
+    1. Directly running Django using Gunicorn(WSGI Server) on port 80. 2 strategies to do this(for comparison https://stackoverflow.com/questions/19916016/gunicorn-nginx-server-via-socket-or-proxy) -
+        - By binding gunicorn to 80 port using this command: `gunicorn --bind 0.0.0.0:80 project.wsgi`
+        - **Better approach with less overhead:** Using gunicorn.sock file and using Supervisor(https://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/) or gunicorn.service file(https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
+        [In these resources, they do have used nginx as well, but you can skip that and directly run the django application on port 80 using gunicorn]
+    2. Running the project using Gunicorn(WSGI Server) on port 8000(or any other port using the above methods), then placing a web server(for ex. Nginx) in front of it.
+        - This web server will provide the following functionalities:
+            - Reverse Proxy - in order to route traffic coming on 80 port(HTTP)(either through IP address or domain/subdomain) to Gunicorn
+            - Handling static and media files - instead of putting a load on Django, you can serve static files by this web server
+            - SSL certificate - If this is configured, traffic will come on 443 port(HTTPS)
+    3. Packaging your django app using docker
+        - in the docker-compose file, run django app using gunicorn as a service, and then running `docker-compose up --build -d`
+        - You can run nginx also by specifying in docker-compose and making configurations for SSL, static & media files, and traffic routing or you can also run nginx normally on the machine and routing traffic to the exposed port of the docker container
+        - You can also use traefik(a light weight reverse proxy) in order to route traffic to docker container, but traefik do not serve static files. With traefik, there is no need to expose the port of django service in the container. You just have to make sure that traefik and django docker containers share a common network.
+
+
+## 2. Multiple domains/subdomains linked to the same project
+
+![Multiple domains and subdomains routed to the same Django project](/images/blogs/django_design_patterns/2_1.png)
+
+![Request routing across multiple domains mapped onto shared Django apps](/images/blogs/django_design_patterns/2_2.png)
+
+- First of all you will have to route traffic according to domain/subdomain through reverse proxy(nginx or any other) to django app.
+- Now django app will have to internally route the traffic according to domain/subdomain. If in case you want to route traffic to apps associated to specific subdomain, then you can try `django-subdomains` python pip package(there are other alternatives too) or you can create your own internal router.
+- Deployment can be done using the ways specified in the 1st design pattern.
+
+
+## 3. Multiple domains/subdomains linked to the same project but now you want same model to be associated to different domains/subdomain(or websites)
+
+For ex. You created a blog backend, now there are 2 domains/subdomains(techblog.com, financeblog.com), if a request come through the techblog.com domain you have to return blogs linked to techblog.com and if the request comes through financeblog.com then blogs associated to this. But you want to use the same table for both of them, then you can use `django site framework` . It's also possible to link an object with both websites using ManyToManyField with site object.
+
+You can deploy this in 2 ways -
+
+1. Serving both websites using the same codebase, this will use `get_current_site()` (https://docs.djangoproject.com/en/4.1/ref/contrib/sites/#django.contrib.sites.shortcuts.get_current_site) to get the domain with which user has requested for, and give response accordingly.
+2. Deploying each website independently, 2 identical django projects but deployed separately(difference will be in settings.py file + webserver/reverse proxy configuration). In this case also you can use `get_current_site()` to identify user request domain but here ****you can also specify SITE_ID in django settings, this SITE_ID will be specific to domain/subdomain and decide which data has to be returned to the user. Ofcourse you can scale both horizontally independently as much as possible.
+    - Cons
+        - If any change happens to repo, it has to be updated in 2 places
+
+
+## 4. Deploying same code independently, to serve different functionality on both
+
+![The same Django codebase deployed independently, each deployment serving different functionality](/images/blogs/django_design_patterns/4.png)
+
+in project’s urls.py disabling some app URLs for server 1 and some in server 2.
+
+You can deploy in this fashion in a lot of ways -
+
+- Deploying both on same server by making separate settings file and urls.py file
+- Deploying on 2 different servers(here also separate settings file)
+- You can even associate multiple subdomains/domains to one independent deployment.
+
+
+## 5. Using a different user table to server multiple user types
+
+![Separate user tables backing multiple user types in one Django project](/images/blogs/django_design_patterns/5.png)
+
+There are multiple ways to handle it:
+- Making a separate user table in a database, then making a custom authentication backend
+- Using a different database on same db server or a different db server(on same or different machine)
+    - Here also you will have to write a custom authentication backend
+    - You can also write a db router, to use different db according to specified app in your project
+    - Cons
+        - Django doesn’t support foreign key relationship over models on different database. You will have to make queries to different db and then merge data by your own. Here is the reference which you may checkout https://stackoverflow.com/questions/6830564/how-to-use-django-models-with-foreign-keys-in-different-dbs
+- You can associate domain/subdomain according to your scenario by taking ideas from above design patterns
+
+
+## 6. Using Microservice Architecture
+
+![Django services split along a microservice architecture](/images/blogs/django_design_patterns/6_1.png)
+![Inter-service communication between the split Django microservices](/images/blogs/django_design_patterns/6_2.png)
+
+- For communication between 2 microservices, you can use following ways:
+    - Remote Procedure Calls(RPC)
+    - Message Brokers
+    - REST API
+
+
+- You can deploy both microservices on the same server or different servers
+
+
+
+Further for scaling your application, you can check out this video: https://www.youtube.com/watch?v=yoggLJv72Ps&t=2229s
+
+
+In order to scale DB, there are different techniques available like `replication` and `sharding` which I will be covering in the separate blog.
+
+
+See you in the next blog :)
+
+___

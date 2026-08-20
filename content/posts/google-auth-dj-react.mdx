@@ -1,0 +1,325 @@
+---
+title: Integrating Google Sign-In with Django and ReactJS
+description: |
+  Add Google Sign-In to your Django and React app with secure JWT authentication. This guide walks you through the most flexible and customizable setup for seamless, secure login, tailored to fit any app’s needs.
+date: 2024-10-30T00:00:45.510Z
+image: /images/blogs/google_auth_dj_react/thumbnail.png
+tags: ["Django", "React", "Authentication"]
+draft: false
+---
+
+![Integrating Google Sign-In with Django and React](/images/blogs/google_auth_dj_react/thumbnail.png)
+
+Using Google Sign-In with Django and React is a streamlined way to handle user authentication. In this tutorial, we’ll use `simplejwt` to handle JWT tokens in Django(you can use any other python package too), providing a secure and efficient authentication process.
+
+## Step 1: Set Up Google API Credentials
+1. Go to the Google Cloud Console.
+2. Create a project and enable the OAuth consent screen.
+    - Set the application name, support email, and add authorized domains (e.g., include your frontend domains like localhost:3000 and your deployed frontend URL).
+    - Add a developer email to receive notifications from Google regarding any changes to the project.
+    - Publishing Your App: Only publish your app if it's not intended for internal or testing purposes. While you can use it in a production environment without publishing, doing so offers several advantages, such as:
+        - Customization of branding elements, including your app’s name, logo, and support email.
+        - Increased user trust and transparency regarding data usage.
+        - If your app requires sensitive scopes to access private data, publishing is essential. You may want to publish your app after successful integration.
+    - For basic authentication, only non-sensitive scopes are necessary (e.g., /auth/userinfo.email). There's no need to add test users if sensitive scopes are not being used.
+3. Navigate to APIs & Services > Credentials
+    - Click the "Create Credentials" button and select "OAuth Client ID."
+    - Choose "Web Application" as the application type.
+    - Name your Client ID and add authorized frontend domains.
+    - (Optional) Set the authorized redirect URIs to your backend callback (e.g., http://localhost:8000/auth/google/callback/). This step not needed for the flow used in this article.
+4. Note down the Client ID and Client Secret for later use.
+
+## Step 2: Set Up Django Backend with Simple JWT
+
+### 2.1 Install Dependencies
+
+First, install djangorestframework and djangorestframework-simplejwt:
+
+```shell
+pip install djangorestframework djangorestframework-simplejwt requests
+```
+
+
+### 2.2 Configure Django Settings
+
+In settings.py, add simplejwt as the authentication class and configure REST framework to use JWT tokens:
+
+```python
+# settings.py
+INSTALLED_APPS = [
+    'rest_framework',
+    # other apps
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# Simple JWT settings (optional)
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+```
+
+
+### 2.3 Create a Custom Google Login View
+Set up a view to handle Google tokens from the frontend, verify them with Google, and return a JWT if valid.
+
+```python
+# views.py
+from .serializers import GoogleAuthResponseSerializer
+from django.contrib.auth import get_user_model
+import logging
+import shortuuid
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.generics import GenericAPIView
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.hashers import make_password
+from rest_framework.response import Response
+import requests
+from rest_framework import status
+from django.db import transaction
+from django.conf import settings
+
+logger = logging.getLogger(__file__)
+User = get_user_model()
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        "refresh": str(refresh),
+        "access": str(refresh.access_token),
+    }
+
+def create_username(email):
+    # You can use your own logic too for creating the username
+    try:
+        total_retries = 5
+        email_split = email.rsplit(
+            "@", 1
+        )
+        email_part = email_split[0][0:20]
+        clean_email_part = "".join(char for char in email_part if char.isalnum())
+        for i in range(0, total_retries):
+            uuid = shortuuid.uuid()  # returns a 22 length alphanumeric string
+            username = (
+                f"{clean_email_part}_{uuid}".lower()
+            )
+            existing_user = User.objects.filter(
+                username=username
+            )
+            if existing_user.exists():
+                continue
+            else:
+                return username
+        raise Exception("Max retries done for creating a new username.")
+    except Exception as e:
+        raise Exception("Error while creating a new username") from e
+
+class GoogleAuthView(GenericAPIView):
+    response_serializer_class = UserLoginSerializer
+
+    def post(self, request):
+        try:
+            response = requests.get('https://www.googleapis.com/oauth2/v3/userinfo', headers={
+                "Authorization": f"Bearer {request.data.get('token')}"
+            })
+            response_data = response.json()
+
+            logger.info("response from verify_oauth2_token", extra={"response_data": response_data})
+            if 'error' in response_data:
+                logger.error("Wrong google token / this google token is already expired.", exc_info=True)
+                return Response({
+                    "status": "error",
+                    "message": "Wrong google token / this google token is already expired.",
+                    "payload": {}
+                }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            logger.error("Unexpected error occurred while hitting google auth api for authenticating the user", exc_info=True)
+            return Response({
+                "status": "error",
+                "message": "Unexpected error occurred, contact support for more info",
+                "payload": {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        google_response_serializer = GoogleAuthResponseSerializer(data=response_data)
+        if google_response_serializer.is_valid() is False:
+            logger.error("Unexpected data received from google while authenticating the user.", exc_info=True)
+            return Response({
+                "status": "error",
+                "message": "Unexpected error occurred, contact support for more info",
+                "payload": {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        validated_data = google_response_serializer.validated_data
+
+        email = validated_data['email'].lower()
+        given_name = validated_data["given_name"]
+        family_name = validated_data.get("family_name", "")
+        picture = validated_data.get("picture")
+
+        # Verify the Google Client ID
+        if validated_data['aud'] != settings.GOOGLE_CLIENT_ID:
+            logger.error("received aud not equivalent to the ", exc_info=True)
+            return Response({
+                "status": "error",
+                "message": "Invalid Token",
+                "payload": {}
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        is_new_user = False
+
+        with transaction.atomic():
+            # create user if not exist
+            user = User.objects.filter(email=email).first()
+            if user is None:
+                is_new_user = True
+                username = create_username(email)
+                # provider random default password
+                password = make_password(BaseUserManager().make_random_password())
+                user = User.objects.create_user(
+                    username=username, password=password, email=email, first_name=given_name, last_name=family_name,
+                    extras={"google_avatar_url": picture}
+                )
+
+            if user.is_active is False:
+                user.is_active = True
+                user.save()
+
+            if user.google_auth_enabled is False:
+                user.google_auth_enabled = True
+                user.save()
+
+        serializer_data = self.response_serializer_class(
+            user, context={"request": request}
+        )
+
+        return Response(
+            data={
+                "status": "success",
+                "message": "Login Successful",
+                "payload": serializer_data.data,
+                "token": get_tokens_for_user(user),
+            },
+            status=status.HTTP_201_CREATED,
+        )
+```
+
+Add this serializer to validate response from google
+```python
+from rest_framework import serializers
+
+class GoogleAuthResponseSerializer(serializers.Serializer):
+    sub = serializers.CharField()
+    email = serializers.EmailField()
+    email_verified = serializers.BooleanField()
+    name = serializers.CharField()
+    picture = serializers.URLField()
+    given_name = serializers.CharField()
+    family_name = serializers.CharField(required=False)
+```
+
+> Verifying the Google Client ID on the Django backend is crucial for ensuring that the token came from your authorized Google OAuth application. This verification step helps prevent scenarios where tokens from unauthorized applications might be used to authenticate on your platform.
+
+Add this view to your urls.py:
+
+```python
+# urls.py
+from django.urls import path
+from .views import google_login
+
+urlpatterns = [
+    path("auth/google-login/", google_login, name="google_login"),
+]
+```
+
+
+## Step 3: React Frontend Setup
+
+### 3.1 Install Google OAuth Library
+In your React app, install the Google OAuth library:
+
+```shell
+npm install @react-oauth/google
+```
+
+### 3.2 Set Up Google Sign-In in React
+Create a Google Sign-In button component. You can customize it to fit your needs.
+
+```js
+import { useGoogleLogin } from '@react-oauth/google';
+
+const GoogleSignInButton = ({ handleGoogleSignIn }) => {
+  const login = useGoogleLogin({
+      onSuccess: tokenResponse => handleGoogleSignIn(tokenResponse),
+  });
+
+  return (
+      <button onClick={() => login()}>Sign in with Google</button>
+  );
+};
+
+export default GoogleSignInButton;
+```
+
+In your React login component, configure Google Sign-In to send the token to the Django backend for JWT exchange:
+
+```js
+import GoogleSignInButton from "./GoogleSignInButton";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+const GOOGLE_AUTH_CLIENT_ID = process.env.GOOGLE_AUTH_CLIENT_ID;
+const API_URL = process.env.API_URL;
+
+<GoogleOAuthProvider clientId={GOOGLE_AUTH_CLIENT_ID}>
+    <GoogleSignInButton
+        handleGoogleSignIn={handleGoogleSignIn}
+    />
+</GoogleOAuthProvider>
+
+
+const handleGoogleSignIn = async (response) => {
+    try{
+
+        const { data } = await axios.post(
+            `${API_URL}/auth/google-login/`,
+            {
+                token: response.access_token
+            },
+        )
+        // Handle JWT token storage and logic here
+    }
+
+    catch (e) {
+        // Handle error
+    }
+}
+```
+
+
+## Testing the Integration
+Start both the Django backend and the React frontend:
+
+Start Django:
+```shell
+python manage.py runserver
+```
+
+Start the React app:
+```shell
+npm start
+```
+
+You can now log in using Google in the React app. The backend verifies the Google token, creates a user if necessary, and returns JWT token.
+
+## Conclusion
+This tutorial demonstrated how to implement Google Sign-In in a Django and React application using secure JWT authentication. This approach enhances user experience with seamless login and offers a flexible, customizable integration tailored to specific requirements. By leveraging Google OAuth and simplejwt, developers can ensure a secure authentication process while maintaining control over user management. This modern, efficient authentication solution effectively meets the needs of users and streamlines the login experience.
+
+___

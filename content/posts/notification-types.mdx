@@ -1,0 +1,179 @@
+---
+title: Decoding Notifications Push, In-App, Email, SMS, and More
+description: |
+  Explore the technical nuances of push, in-app, email, SMS notifications, and more to build robust communication strategies in the digital age.
+date: 2024-06-19T00:00:45.510Z
+image: /images/blogs/notification_types/thumbnail.png
+tags: ["Architecture", "Notifications"]
+draft: false
+---
+
+![Push, in-app, email, and SMS notification types compared](/images/blogs/notification_types/thumbnail.png)
+
+
+In today's interconnected world, notifications are essential for keeping users informed and engaged across digital platforms. From push notifications that deliver real-time updates to email notifications ensuring detailed communication, each type plays a crucial role in user interaction. This blog explores the technical intricacies behind various notification types: push, in-app, email, SMS, and more. We delve into their protocols, implementation methods, integration with service providers, and how developers can leverage these tools to build comprehensive notification systems that enhance user experience and communication efficiency.
+
+
+## Push notifications
+
+**Description:** Messages delivered to a user's device (mobile or desktop) even when the app is not actively in use.
+
+**Technology:** Utilizes services like Firebase Cloud Messaging (FCM), Apple Push Notification Service (APNS), or Push Notification Service (PNS) for various platforms.
+
+**Benefits:** Immediate delivery, supports rich media, can wake up a device.
+
+**Cons:** Requires user permission, can be perceived as intrusive if overused.
+
+#### Technical Details:
+
+##### Push Notifications on iOS/MacOS/Android Devices:
+- Device Registration: When an app is installed, it obtains a unique device token from Firebase in android, and from APNs in iOS/MacOS.
+- Authentication: The app server authenticates with Firebase/APNS using API keys provided by Google/Apple.
+- Sending Notifications: Your Backend Server sends HTTP requests to FCM/APNS API with JSON payloads containing notification details.
+- Delivery: FCM delivers notifications to Android devices via a persistent connection over HTTP/2, ensuring efficient and reliable delivery. Similarly, APNS delivers notifications to iOS and MacOS devices through persistent connections managed by Apple's servers.
+- FCM can even integrate with Apple Push Notification Service (APNS), allowing Firebase to send notifications to iOS/MacOS devices using APNS device tokens and the HTTP/2 protocol.
+
+> The same mechanism is used by Windows Push Notification Services(WNS) to send notifications to Windows Desktop Apps. In this case your backend server sends HTTP requests to WNS API and WNS delivers notifications to Windows devices via persistent connections managed by Microsoft.
+
+##### Web Push Notifications:
+- Service Worker Registration: Websites register a service worker (a script that runs in the background) to handle push events. The web application registers a service worker using the `navigator.serviceWorker.register` method.
+- Push API: Websites use the Push API to subscribe to push services provided by browser vendors (e.g., Chrome Push Service, Mozilla Push Service).
+    - Process:
+        - The web application requests permission from the user to send notifications.
+        - Upon permission, the application subscribes to the push service using the pushManager.subscribe method.
+        - This generates a subscription object containing an endpoint URL (provided by the browser’s push service) and cryptographic keys.
+- Sending Notifications: Your backend server sends push notifications directly to the browser's push service using the subscription endpoint.
+    - Process:
+        - The backend server stores subscription data, including the endpoint URL and keys(given by Push Service).
+        - Payload: The server prepares the notification payload in JSON format.
+        - Web Push Protocol: The server sends a POST request to the subscription endpoint URL with the payload.
+        - Encryption: The payload is encrypted using the keys provided during subscription (VAPID keys for identification).
+- Handling Push Events in the Service Worker: The service worker listens for the `push` event and displays the notification using the `showNotification` method.
+
+> Instead of directly communicating with the Browser Push Service, you can use FCM as an intermediary. The backend server sends an HTTP POST request to the FCM endpoint, including the subscription endpoint URL, and the notification payload. FCM then forwards the notification to the browser's push service.
+
+
+## In-App Notifications:
+
+**Description:** Notifications delivered within the app while the user is actively using it.
+
+**Technology:** Can be implemented using SSE, HTTP/2, or WebSockets for real-time updates.
+
+**Benefits:** Contextual and timely, enhances user engagement during app usage.
+
+**Cons:** Limited to app usage time, does not reach users when the app is closed.
+
+### Implementation via SSE
+
+**Description: SSE enables servers to push updates to clients over a persistent HTTP or HTTPS connection(HTTP/1.1).
+
+**Protocol:** Uses the text/event-stream MIME type for server-to-client communication.
+
+#### Technical Details:
+- Setup: Establishes a single long-lived connection per client.
+- Message Format: Server sends data to the client using a specific format `data: <message>\n\n`.
+- Benefits: Simple to implement, efficient for one-way notifications, reduces server load compared to polling.
+- Optionally, SSE supports other event fields such as event, id, and retry for better control and handling of events.
+
+#### Limitations:
+- Limited to UTF-8
+- Only supports one-way communication from the server to the client.
+- SSE relies on a single long-lived HTTP connection. While SSE automatically attempts to reconnect if the connection drops, it lacks the sophisticated reconnection strategies available in WebSockets
+- Resource consuming and complicated to scale horizontally(complex session management and state synchronization).
+
+#### Usecases:
+- Stock ticker streaming
+- Twitter feed updating
+- Real-time notifications
+
+
+### Implementation via HTTP/2
+
+**Description:** HTTP/2 enhances traditional HTTP with features like multiplexing, header compression, and server push.
+
+**Protocol:** A binary protocol that optimizes data transfer over a single TCP connection.
+
+#### Technical Details:
+- Multiplexing: Handles multiple concurrent requests and responses over a single connection.
+- Header Compression: Reduces overhead, improves efficiency in resource delivery.
+- Server Push: Proactively sends resources to clients before they are requested.
+
+#### Limitations:
+- Complex to set up
+- Primarily server-to-client with limited bidirectional capabilities.
+
+#### Usecases:
+- Suited for optimizing web performance
+- Reducing latency in resource delivery
+
+### Implementation via WebSockets
+
+**Description:** Provides full-duplex communication channels over a single TCP connection.
+
+**Protocol:** Starts with an HTTP handshake and upgrades to a persistent WebSocket connection.
+
+#### Technical Details:
+- Bidirectional Communication: Supports simultaneous data transfer between client and server.
+- Low Latency: Ideal for real-time applications requiring immediate updates. After the initial HTTP handshake, WebSockets use a lighter protocol with less overhead for each message, as frames are smaller and more efficient.
+- Protocol: Custom WebSocket protocol for message framing and control.
+
+#### Limitations:
+- Complex and task-demanding to set up
+- Requires careful resource management
+- Not universally supported
+
+#### Usecases:
+- Chat applications
+- Real-time gaming
+- Live data feeds
+
+
+## Email Notifications:
+
+**Description:** Messages sent to a user’s email address.
+
+**Technology:** Relies on SMTP (Simple Mail Transfer Protocol) and email service providers (e.g., SendGrid, Mailgun).
+
+**Benefits:** Widely accessible, can include detailed information.
+
+**Cons:** Delivery can be delayed, messages may end up in spam folders.
+
+> When an email is sent, the SMTP server of the sender's email provider (e.g., Gmail's SMTP server) communicates with the recipient's mail server (which could belong to any email provider, such as Yahoo or Outlook) to deliver the email.
+
+### Technical Details:
+- The sender’s email client connects to their email provider’s SMTP server (e.g., smtp.gmail.com for Gmail). The connection is typically secured using TLS (Transport Layer Security) to protect the email content and credentials during transmission.
+- The email client performs an SMTP handshake with the server. The client authenticates with the SMTP server using a username and password.
+- The email client sends the email using SMTP commands (MAIL FROM, RCPT TO, DATA). The SMTP server accepts the email for delivery.
+- The sender's SMTP server performs a DNS lookup to find the MX (Mail Exchange) records of the recipient's domain. MX records specify the mail servers responsible for receiving emails for that domain. For example, the MX records for `yahoo.com` might include `mta5.am0.yahoodns.net`.
+- The sender's SMTP server connects to the recipient's mail server as specified in the MX records.
+- The sender’s SMTP server communicates with the recipient’s SMTP server using standard SMTP commands.
+- The recipient's server processes the email and delivers it to the appropriate mailbox.
+
+> Email providers use SPF (Sender Policy Framework), DKIM (DomainKeys Identified Mail), and DMARC (Domain-based Message Authentication, Reporting & Conformance) to verify the authenticity of the email sender and protect against email spoofing.
+
+
+## SMS Notifications:
+
+**Description:** Text messages sent directly to a user’s mobile phone.
+
+**Technology:** Utilizes SMS gateways (e.g., Twilio, Nexmo) to deliver messages.
+
+**Benefits:** High open rates, immediate delivery, reach users who may not have internet access or are not actively using an app.
+
+**Cons:** Limited message length, may incur costs per message.
+
+### Technical Details:
+- To send SMS notifications programmatically, an application integrates with an SMS gateway provider.
+- Authentication with the SMS gateway provider is typically done using API keys or credentials provided by the gateway. This ensures secure access to their API endpoints for sending SMS messages.
+- The application makes an HTTP request to the SMS gateway's API endpoint, specifying parameters such as recipient's phone number, message content, and sender ID.
+- The SMS gateway receives the API request, validates the parameters, and initiates the delivery process.
+- The SMS gateway forwards the message to the appropriate mobile network operator (MNO) based on the recipient's phone number.
+    > SMS gateways may maintain partnerships with mobile network operators (MNOs) worldwide to ensure broad coverage. This allows them to deliver messages to virtually any mobile number globally.
+- Once received by the MNO, the SMS message is delivered to the recipient's mobile device via the cellular network. The message appears as a standard text message on the recipient's SMS inbox.
+
+> Delivery times for international SMS messages can vary based on factors such as network congestion, time zones, and local regulations. Costs may also vary depending on the SMS gateway provider and the destination country.
+
+
+## Conclusion
+
+In conclusion, notifications, whether push, in-app, email, or SMS, each serve distinct purposes in modern communication strategies. Integrating a unified notification service that harnesses the strengths of each type, while leveraging dedicated service providers, ensures efficient and effective user engagement across various platforms and devices. By understanding and implementing these diverse notification mechanisms, developers can tailor user experiences and enhance communication capabilities to meet evolving user expectations and application requirements.
