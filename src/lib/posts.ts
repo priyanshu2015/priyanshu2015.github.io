@@ -86,9 +86,28 @@ export function getPostBySlug(slug: string): Post | undefined {
   return getAllPosts().find((p) => p.slug === slug);
 }
 
-/** The homepage shows a handful; /blog shows everything. */
-export function getRecentPosts(count = 4): Post[] {
-  return getAllPosts().slice(0, count);
+/**
+ * The homepage shows a handful; /blog shows everything.
+ *
+ * The posts the homepage leads with, in this order — hand-picked rather than
+ * newest-first, because "what I want to be read" and "what I published last" are
+ * not the same list. Unknown or drafted slugs are skipped; if none resolve, the
+ * homepage falls back to the most recent posts.
+ */
+const FEATURED_SLUGS = [
+  "celery",
+  "scaling-websocket-server",
+  "django-design-patterns",
+  "rabbitmq",
+];
+
+export function getFeaturedPosts(count = 4): Post[] {
+  const all = getAllPosts();
+  const featured = FEATURED_SLUGS.map((slug) =>
+    all.find((p) => p.slug === slug)
+  ).filter((p): p is Post => p !== undefined);
+
+  return featured.length > 0 ? featured.slice(0, count) : all.slice(0, count);
 }
 
 /** "4 Jun 2024" — short, unambiguous across locales, no ordinal suffixes. */

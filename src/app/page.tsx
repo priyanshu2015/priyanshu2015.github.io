@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { DATA } from "@/data/resume";
-import { getRecentPosts } from "@/lib/posts";
+import { getFeaturedPosts } from "@/lib/posts";
 import { Section } from "@/components/section";
 import { Stats } from "@/components/stats";
 import { Timeline } from "@/components/timeline";
@@ -12,7 +12,7 @@ import { SocialLinks } from "@/components/social-links";
 import { personJsonLd, serializeJsonLd } from "@/lib/json-ld";
 
 export default function Home() {
-  const posts = getRecentPosts(4);
+  const posts = getFeaturedPosts(4);
 
   return (
     <>
@@ -59,6 +59,10 @@ export default function Home() {
         <Timeline />
       </Section>
 
+      <Section id="projects" title="Projects">
+        <ProjectList />
+      </Section>
+
       <Section id="writing" title="Writing">
         <PostList posts={posts} />
         {posts.length > 0 ? (
@@ -69,10 +73,6 @@ export default function Home() {
             All writing →
           </Link>
         ) : null}
-      </Section>
-
-      <Section id="projects" title="Projects">
-        <ProjectList />
       </Section>
 
       <Section id="education" title="Education">

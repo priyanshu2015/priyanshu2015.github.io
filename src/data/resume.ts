@@ -77,7 +77,7 @@ export const DATA = {
    * subtitle. Keep it to one line.
    */
   description:
-    "I build backend systems and AI agents, and write about how they work underneath.",
+    "Engineering systems, software infrastructure, and AI agents. I write about how they work under the hood.",
 
   /** The About paragraph. Markdown is not parsed here, so keep it plain prose. */
   summary:
@@ -199,19 +199,31 @@ export const DATA = {
     },
     {
       title: "LoRA and Efficient LLM Serving for Financial Expert Agents",
+      href: "https://drive.google.com/drive/folders/1IssVKiYtG9WxIElw2vZtsRNu8tJuk4XJ?usp=sharing",
       dates: "2025",
       description:
         "How do you serve a hundred specialised financial models without buying a hundred GPUs? A research survey of parameter-efficient fine-tuning and multi-tenant serving: LoRA training 10,000x fewer parameters, and where vLLM, S-LoRA, and dLoRA actually earn their claimed 4x throughput rather than just quoting it. Evaluated FinLoRA, FinGPT, and layered RAG agent architectures for financial reasoning.",
       technologies: ["LoRA", "vLLM", "S-LoRA", "RAG"],
-      links: [],
+      links: [
+        {
+          type: "Paper",
+          href: "https://drive.google.com/drive/folders/1IssVKiYtG9WxIElw2vZtsRNu8tJuk4XJ?usp=sharing",
+        },
+      ],
     },
     {
       title: "AI Trust & Citizen Participation in Digital Public Services",
+      href: "https://drive.google.com/file/d/1l2wc_TAqg31Mtq1RVTzVY2Mg2Zx4YseU/view?usp=sharing",
       dates: "2025",
       description:
         "Does an AI that sounds human earn more trust than one that works? We ran a 2x2 experiment on 143 people to find out. Both helped, but sounding authentic stopped counting for much once the thing performed badly. The odd result: trust predicted whether people would participate, and predicted nothing at all about whether they would hand over their data. People weigh how sensitive the information is over how much they like you.",
       technologies: ["Qualtrics", "Prolific", "Statistics"],
-      links: [],
+      links: [
+        {
+          type: "Paper",
+          href: "https://drive.google.com/file/d/1l2wc_TAqg31Mtq1RVTzVY2Mg2Zx4YseU/view?usp=sharing",
+        },
+      ],
     },
     {
       title: "LetsProgressify",
@@ -224,11 +236,17 @@ export const DATA = {
     },
     {
       title: "Privacy-Preserving Computation Techniques",
+      href: "https://github.com/priyanshu2015/PPC-Techniques-Implementation",
       dates: "2024",
       description:
         "Can several parties compute on data none of them are allowed to see? Implemented partially homomorphic encryption, secure multi-party computation, and zero-knowledge proofs across a multi-server Flask setup, then measured what each one actually costs. The cryptography is elegant; the bill is real.",
       technologies: ["Python", "Flask", "Cryptography", "ZKP"],
-      links: [],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/priyanshu2015/PPC-Techniques-Implementation",
+        },
+      ],
     },
   ] satisfies Project[],
 
