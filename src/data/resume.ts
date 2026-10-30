@@ -79,6 +79,7 @@ export const DATA = {
   description:
     "Engineering systems, software infrastructure, and AI agents. I write about how they work under the hood.",
 
+
   /** The About paragraph. Markdown is not parsed here, so keep it plain prose. */
   summary:
     "I build systems people make decisions on, usually with money attached, which is a good way to learn the difference between code that works and code that is right. In practice that has meant product, AI, and finance in roughly equal measure: exchange infrastructure that settles real funds, AI agents that have to be correct rather than merely convincing, and the unglamorous edge cases that decide whether either one survives a Tuesday. I've been a founding team member at trading exchanges, and started Prysm in 2024. There is always something half-finished on my machine, and the parts worth explaining end up here.",
