@@ -21,9 +21,10 @@ export function Nav() {
   return (
     <nav
       aria-label="Main"
-      className="mb-14 flex items-center justify-between font-mono text-sm"
+      className="mb-10 flex items-start justify-between gap-4 font-mono text-[13px] sm:mb-14 sm:items-center sm:text-sm"
     >
-      <ul className="flex items-center gap-5">
+      {/* Wraps onto a second row on narrow phones instead of running off the screen */}
+      <ul className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-5">
         {links.map((link) => {
           // Anchor links never claim the current-page state: you're still on whatever
           // page you were on, and marking Contact as current would be a lie.
@@ -40,7 +41,7 @@ export function Nav() {
                 href={link.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "transition-colors hover:text-foreground",
+                  "whitespace-nowrap transition-colors hover:text-foreground",
                   active ? "text-foreground" : "text-muted-foreground"
                 )}
               >
