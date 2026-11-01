@@ -7,7 +7,9 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Home" },
+  { href: "/playbook", label: "AI Playbook" },
   { href: "/blog", label: "Writing" },
+  { href: "/resources", label: "Resources" },
   // Absolute, not a bare "#contact": from a blog post there is no contact section on
   // the page, so the link has to take you home first and then to the anchor.
   { href: "/#contact", label: "Contact" },

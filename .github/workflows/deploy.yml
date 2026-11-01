@@ -42,6 +42,8 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_FORMSPREE_ID: ${{ secrets.FORMSPREE_ID }}
+          NEXT_PUBLIC_GA_ID: ${{ secrets.GA_ID }}
+          NEXT_PUBLIC_GSC_VERIFICATION: ${{ secrets.GSC_VERIFICATION }}
 
       - uses: actions/configure-pages@v5
 

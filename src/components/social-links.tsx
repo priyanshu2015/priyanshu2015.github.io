@@ -1,10 +1,11 @@
-import { Github, Linkedin, Youtube } from "lucide-react";
+import { Github, Instagram, Linkedin, Youtube } from "lucide-react";
 import { DATA } from "@/data/resume";
 
 const icons = {
   github: Github,
   linkedin: Linkedin,
   youtube: Youtube,
+  instagram: Instagram,
 } as const;
 
 export function SocialLinks() {

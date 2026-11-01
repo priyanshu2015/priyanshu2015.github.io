@@ -8,7 +8,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { getAllPosts, getPostBySlug, formatDate, readingTime } from "@/lib/posts";
 import { mdxComponents } from "@/components/mdx/mdx-components";
-import { blogPostingJsonLd, serializeJsonLd } from "@/lib/json-ld";
+import { blogPostingJsonLd, breadcrumbJsonLd, postImage, serializeJsonLd } from "@/lib/json-ld";
 import { DATA } from "@/data/resume";
 
 type Params = { slug: string };
@@ -31,8 +31,8 @@ export async function generateMetadata({
   const url = `/blog/${post.slug}`;
 
   // Posts carry their own thumbnail, which already reads as a title card. Posts without
-  // one fall back to the site card rather than showing nothing.
-  const image = post.image ?? "/og.png";
+  // one get a generated card with their title (scripts/generate-og.mjs).
+  const image = postImage(post);
 
   return {
     title: post.title,
@@ -45,7 +45,8 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       authors: [DATA.name],
-      images: [{ url: image, alt: post.title }],
+      images: [{ url: image, width: 1200, height: 630, alt: post.title }],
+      ...(post.tags.length > 0 ? { tags: post.tags } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -79,6 +80,17 @@ export default async function PostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: serializeJsonLd(blogPostingJsonLd(post)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(
+            breadcrumbJsonLd([
+              { name: "Writing", path: "/blog/" },
+              { name: post.title, path: `/blog/${post.slug}/` },
+            ])
+          ),
         }}
       />
 

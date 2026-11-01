@@ -27,9 +27,6 @@ export function EducationList() {
             </h3>
             <p className="mt-1 font-mono text-xs text-muted-foreground">{edu.degree}</p>
           </div>
-          <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
-            {edu.start} – {edu.end}
-          </span>
         </li>
       ))}
     </ol>

@@ -36,3 +36,4 @@ services.html
 
 # design notes and decision records — kept locally, never published
 /docs/
+.superpowers/

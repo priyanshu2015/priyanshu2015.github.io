@@ -40,3 +40,23 @@ export function Stats() {
     </dl>
   );
 }
+
+/** Compact one-line version for the page footer: older credentials, kept but quiet. */
+export function StatsLine() {
+  return (
+    <p className="font-mono text-xs text-muted-foreground">
+      {DATA.stats.map((s, i) => (
+        <span key={s.label}>
+          {i > 0 ? " · " : ""}
+          {s.href ? (
+            <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+              {s.value} {s.label}
+            </a>
+          ) : (
+            `${s.value} ${s.label}`
+          )}
+        </span>
+      ))}
+    </p>
+  );
+}

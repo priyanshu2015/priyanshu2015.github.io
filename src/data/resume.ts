@@ -13,7 +13,7 @@
 export type Social = {
   name: string;
   url: string;
-  icon: "github" | "linkedin" | "youtube" | "mail";
+  icon: "github" | "linkedin" | "youtube" | "instagram" | "mail";
 };
 
 export type Stat = {
@@ -77,15 +77,51 @@ export const DATA = {
    * subtitle. Keep it to one line.
    */
   description:
-    "Engineering systems, software infrastructure, and AI agents. I write about how they work under the hood.",
+    "I build data infrastructure and AI products. Right now that's Prysm. I share what I learn along the way, so you don't have to figure it all out alone.",
 
 
   /** The About paragraph. Markdown is not parsed here, so keep it plain prose. */
   summary:
-    "I build systems people make decisions on, usually with money attached, which is a good way to learn the difference between code that works and code that is right. In practice that has meant product, AI, and finance in roughly equal measure: exchange infrastructure that settles real funds, AI agents that have to be correct rather than merely convincing, and the unglamorous edge cases that decide whether either one survives a Tuesday. I've been a founding team member at trading exchanges, and started Prysm in 2024. There is always something half-finished on my machine, and the parts worth explaining end up here.",
+    "For the last few years I've been building products where real money and data are involved. I was a founding engineer at trading exchanges, and since 2024 I'm building Prysm, an AI research platform for investors. Working on these taught me that in finance, code that runs is not enough. The numbers have to be exactly right, every time. One small mistake meant someone lost real money, so I learned to be extra careful: double-check everything, plan for what can go wrong, and build systems people can rely on. I'm still learning every day, and I write here about what worked, what broke, and what I would do differently.",
+
+  /** Short principles shown under About. Keep each to one line. */
+  principles: [
+    { k: "Get it right first", v: "If it touches someone's money, it has to be correct." },
+    { k: "Measure it", v: "Numbers over gut feeling." },
+    { k: "Build, then share", v: "Ship to real users, then write about it." },
+  ],
 
   avatarUrl: "/images/priyanshu.jpg",
 
+  /** Lead card on the homepage. Capabilities and outcomes only, no implementation details. */
+  featured: {
+    name: "Prysm",
+    href: "https://www.prysmai.in",
+    role: "Founder & Chief Architect",
+    since: "Dec 2024",
+    pitch:
+      "Building the financial layer for Indian markets. AI workflows for deep research that blend fundamental, technical and qualitative research, to help people build their own market conviction.",
+    /** Shown under the pitch. */
+    clients: {
+      text: "Already serving leading clients. Want to plug Prysm into your app?",
+      email: "priyanshu@prysmai.in",
+    },
+    metrics: [
+      { value: "30K+", label: "monthly visits" },
+      { value: "$22M", label: "portfolios connected" },
+      { value: "5,000+", label: "users" },
+      { value: "50K+", label: "AI queries answered" },
+    ],
+    /** What it does, across the investor journey. */
+    journey: [
+      { id: "pre", label: "Pre-trade", body: "Research and screen stocks by just asking, before you put money in." },
+      { id: "in", label: "In-trade", body: "While you place a trade: price action, news and sentiment for that stock, right where you need it." },
+      { id: "post", label: "Post-trade", body: "Portfolio analysis, connected straight from your broker." },
+    ],
+    video: "https://www.youtube.com/watch?v=51rkzlrJjfA",
+  },
+
+  /** Older credentials. Shown as one quiet line at the bottom of the homepage. */
   stats: [
     {
       value: "10K+",
@@ -119,21 +155,25 @@ export const DATA = {
         url: "https://www.youtube.com/@priyanshuguptaofficial",
         icon: "youtube",
       },
+      {
+        name: "Instagram",
+        url: "https://www.instagram.com/transparent.detailed/",
+        icon: "instagram",
+      },
     ] satisfies Social[],
   },
 
   work: [
     {
       company: "Prysm Finance",
-      href: "https://www.prysm.fi",
+      href: "https://www.prysmai.in",
       logoUrl: "/images/work/prysm.png",
       title: "Founder & Chief Architect",
       start: "Dec 2024",
       end: "Present",
-      // Capabilities and outcomes only — implementation details stay off a public page.
+      // The full story is in the featured card at the top of the page; this is the record.
       description:
-        "An AI-first financial research and portfolio intelligence platform. In its first year: 30,000+ monthly visits, $22M of connected portfolios, 5,000+ users, and 50,000+ AI queries answered. Prysm covers the whole investor journey, from pre-trade research and screening, through in-trade monitoring, to post-trade portfolio analysis, in a single conversational interface. It automates the fundamental, technical, and qualitative work so conviction gets built early, when it still matters, and cuts research time by more than half. We built it from idea to production: natural language stock screening, AI-generated company research that shows its sources, real-time news with sentiment analysis, quantitative portfolio metrics, and a voice assistant that answers in 11 languages.",
-      video: "https://www.youtube.com/watch?v=51rkzlrJjfA",
+        "Founded Prysm and built it from idea to 5,000+ users in the first year.",
     },
     {
       company: "TanX (prev. Brine Finance)",
@@ -143,7 +183,7 @@ export const DATA = {
       start: "Nov 2022",
       end: "Jan 2024",
       description:
-        "Joined when the tech team was two people and helped grow it to ten, mentoring engineers and owning the exchange's core end to end: the order execution engine, on-chain deposits, L1 and L2 transfers, and StarkEx zero-knowledge settlement. TanX became a top-10 global DEX and cleared over $1B in quarterly trading volume. I led the integrations with institutional market makers, LayerSwap, and Merkle Science, which is where most of the liquidity and compliance surface came from. When a StarkEx settlement ratio error stalled more than 1,000 transactions, I spent six weeks reverse-engineering their fee and price model and wrote the automation that cleared every edge case, unblocking the trading loop.",
+        "Joined when the tech team was two people and helped grow it to ten, mentoring engineers and owning the exchange's core end to end: the order execution engine, on-chain deposits, L1 and L2 transfers, and StarkEx zero-knowledge settlement. TanX became a top-10 global DEX and cleared over $1B in quarterly trading volume. I led the integrations with institutional market makers, LayerSwap, and Merkle Science, which is where most of the liquidity and compliance surface came from, and built the on-ramp integrations with Polygon and Starknet. When a StarkEx settlement ratio error stalled more than 1,000 transactions, I spent six weeks reverse-engineering their fee and price model and wrote the automation that cleared every edge case, unblocking the trading loop.",
       links: [
         {
           label: "tanX hits $1B quarterly trading volume",
@@ -231,9 +271,13 @@ export const DATA = {
       href: "https://www.letsprogressify.com",
       dates: "2024",
       description:
-        "A learning platform built for a 10,000+ subscriber community, supporting structured resource publishing and content monetisation. Included an ETL pipeline that aggregated hackathons, competitions, and conferences from several platforms into one tracked dashboard.",
+        "A learning platform for a 10,000+ subscriber community, built around Roadmaps: an interactive, drag-and-drop canvas where every topic carries its own resources, deadline, and rules for what can be done in parallel, what's optional, and what's recommended. Expert-verified roadmaps to start from, or build your own with AI. Also shipped an ETL pipeline that pulled hackathons, competitions, and conferences from several platforms into one tracked dashboard.",
       technologies: ["Python", "Django", "Next.js", "PostgreSQL", "Docker"],
       links: [{ type: "Website", href: "https://www.letsprogressify.com" }],
+      image: {
+        src: "/images/projects/letsprogressify-roadmap.jpg",
+        alt: "The LetsProgressify Roadmaps editor showing a System Design roadmap as a node graph, with a legend for ordering rules and a side panel for resources, deadline, and timeframe",
+      },
     },
     {
       title: "Privacy-Preserving Computation Techniques",

@@ -48,13 +48,16 @@ export function personJsonLd() {
       ...(edu.href ? { url: edu.href } : {}),
     })),
     knowsAbout: [
+      "Data Infrastructure",
+      "AI Agents",
+      "Retrieval-Augmented Generation",
+      "Claude Code",
+      "Model Context Protocol",
+      "Financial Technology",
       "Backend Engineering",
       "Distributed Systems",
-      "LLM Agents",
-      "Retrieval-Augmented Generation",
       "Python",
       "Django",
-      "Message Brokers",
     ],
     sameAs: DATA.contact.social.map((s) => s.url),
   };
@@ -83,8 +86,74 @@ export function blogPostingJsonLd(post: PostMeta) {
     },
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    ...(post.image ? { image: `${DATA.url}${post.image}` } : {}),
+    image: `${DATA.url}${postImage(post)}`,
+    inLanguage: "en",
     ...(post.tags.length > 0 ? { keywords: post.tags.join(", ") } : {}),
+  };
+}
+
+/** A post's own thumbnail, or the card scripts/generate-og.mjs renders for it. */
+export function postImage(post: Pick<PostMeta, "slug" | "image">): string {
+  return post.image ?? `/og/blog/${post.slug}.png`;
+}
+
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: DATA.name,
+    url: `${DATA.url}/`,
+    description: DATA.description,
+    inLanguage: "en",
+    author: { "@type": "Person", name: DATA.name, url: DATA.url },
+  };
+}
+
+/** Breadcrumbs, from the home page down. `path` is site-relative with a trailing slash. */
+export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [{ name: "Home", path: "/" }, ...trail].map((crumb, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: crumb.name,
+      item: `${DATA.url}${crumb.path}`,
+    })),
+  };
+}
+
+/** A page that is a curated list of links, like the Playbook or Resources. */
+export function collectionJsonLd({
+  name,
+  description,
+  path,
+  items,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  items: { name: string; url?: string; description?: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url: `${DATA.url}${path}`,
+    inLanguage: "en",
+    author: { "@type": "Person", name: DATA.name, url: DATA.url },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        ...(item.url ? { url: item.url } : {}),
+        ...(item.description ? { description: item.description } : {}),
+      })),
+    },
   };
 }
 

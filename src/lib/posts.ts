@@ -74,7 +74,8 @@ export function getAllPosts(): Post[] {
     .readdirSync(POSTS_DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map(parseFile)
-    .filter((p) => !p.draft)
+    // Drafts show in `next dev` so they can be reviewed in place; never in a build.
+    .filter((p) => shouldCache ? !p.draft : true)
     .sort((a, b) => b.date.localeCompare(a.date));
 
   if (shouldCache) cache = posts;
@@ -95,6 +96,10 @@ export function getPostBySlug(slug: string): Post | undefined {
  * homepage falls back to the most recent posts.
  */
 const FEATURED_SLUGS = [
+  "scaling-llm-rag-workflows",
+  "launch-with-zero-infra-spend",
+  "launching-your-product-serving-real-clients",
+  "forward-deployed-engineer-roadmap",
   "celery",
   "scaling-websocket-server",
   "django-design-patterns",

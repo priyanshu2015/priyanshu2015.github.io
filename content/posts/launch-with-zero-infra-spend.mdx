@@ -1,0 +1,79 @@
+---
+title: "Free cloud credits for startups: how we launched with zero infra spend"
+description: |
+  AWS Activate, Google for Startups, Vercel, Cloudflare and Neon: the free credits and platforms we used to take Prysm from 0 to 30K monthly visits.
+date: 2026-11-01T00:00:00.000Z
+tags: ["Startups", "Cloud credits", "AWS", "Google Cloud", "Infrastructure", "India"]
+draft: false
+---
+
+When you're starting out, every rupee you spend on servers is a rupee you don't spend on the product. We took Prysm from 0 to 30K monthly visits without paying for infrastructure in the early days. It wasn't a trick. We just used the free credits and free tiers that cloud companies already give to new builders, one after another.
+
+I made a [short reel about this](https://www.instagram.com/p/DTvPYUkjdDV/). This post is the detailed version, with links.
+
+> Credit amounts and rules change often. Everything below is correct as far as I know at the time of writing, but always check the official page before you plan around a number.
+
+## The idea: stack credits in order
+
+Don't apply for everything on day one. Credits expire, usually within a year. Use them in this order so they last as long as possible:
+
+1. **Free trial credits** while you build and test.
+2. **Startup program credits** once you have a real product and a website.
+3. **Free-forever tiers** for the parts that never need to be paid for.
+
+## Step 1: Free trial credits
+
+These are for new accounts and need almost nothing to get.
+
+| Provider | What you get | Link |
+| --- | --- | --- |
+| Google Cloud | $300 in credits for new customers, plus 20+ products with a free usage limit | [cloud.google.com/free](https://cloud.google.com/free) |
+| AWS | New accounts get $100 in credits, up to $200 as you try core services, on a free plan for up to 6 months | [aws.amazon.com/free](https://aws.amazon.com/free) |
+
+Use this phase to build and test. Don't run production traffic on a trial if you can avoid it, because when it ends you'll be migrating in a hurry.
+
+## Step 2: Startup programs
+
+Once you have a working product, a website, and ideally a company page on LinkedIn, apply to these. Most don't need investors.
+
+- **AWS Activate.** You get $1,000 in credits as a self-funded startup, even before you are registered. Once your startup has a DPIIT recognition certificate, you can apply for $4,000 more. [aws.amazon.com/activate](https://aws.amazon.com/activate/)
+- **Google for Startups Cloud Program.** You get $2,000 in credits as an early, pre-funded startup, and much larger tiers open up once you're funded or building with AI. [cloud.google.com/startup](https://cloud.google.com/startup)
+- **Microsoft for Startups.** Azure credits that unlock in levels as you go, plus other tools. No investor needed. [startups.microsoft.com](https://startups.microsoft.com)
+- **Vercel for Startups.** Credits for hosting your frontend on Vercel, reported at up to $30,000 for eligible startups. [Apply here](https://vercel.com/startups/credits)
+- **Cloudflare for Startups.** Credits for Cloudflare's developer platform, with smaller tiers for bootstrapped startups. [cloudflare.com/forstartups](https://www.cloudflare.com/forstartups/)
+
+Two tips from experience:
+
+- **Write a clear one-paragraph description** of what you're building and who it's for. A vague application is the most common reason I've seen people get rejected.
+- **Use your company email and domain**, not a Gmail address. It makes you look like a real company, because you are one.
+
+## Step 3: Free platforms for each part of your stack
+
+Here's how the pieces fit. Some of these are free forever within limits, so you never have to pay for them while you're small.
+
+| Part | What I'd use | Why |
+| --- | --- | --- |
+| Frontend | [Vercel](https://vercel.com) or [Cloudflare Pages](https://pages.cloudflare.com) | Push to GitHub and it's live. Vercel's free Hobby plan is for non-commercial use, so once you're a company, [apply for Vercel startup credits](https://vercel.com/startups/credits). |
+| Database | [Neon](https://neon.com) | Serverless Postgres with a free plan. It scales to zero when nobody is using it, so a side project or early product costs nothing. |
+| Backend | AWS or Google Cloud, on credits | Servers and managed databases (like Amazon RDS) once you outgrow free tiers, paid for by the credits from Steps 1 and 2. |
+| Caching | A managed Redis on your cloud credits | Cache expensive queries and AI answers. It saves money and makes the app faster. |
+| File storage | [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/) | 10 GB free every month and no egress fees, so serving files doesn't surprise you with a bill. |
+| AI models | [Gemini API](https://ai.google.dev) free tier, then cloud credits | Good enough to prototype AI features without paying per call on day one. |
+| Building | [Claude Code](https://claude.com/claude-code) | Not free, but it's how a small team ships at the speed of a bigger one. |
+| Domain | Any registrar; [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) sells at cost | The one thing you will probably pay for. It's worth it. |
+
+## Mistakes to avoid
+
+- **Set billing alerts on day one.** Every provider lets you set a budget alert. One forgotten GPU or a runaway loop can burn through credits in a weekend.
+- **Know your expiry dates.** Put them in a calendar. Plan the switch to the next set of credits before the current ones run out.
+- **Don't lock yourself in.** Credits on one cloud are tempting, but keep your app in containers and use standard databases, so moving later is a weekend, not a month.
+- **Credits don't cover everything.** Marketplace and third-party services usually aren't included. Read what's excluded.
+- **Free doesn't mean unlimited.** Free tiers have usage limits. Watch them as you grow.
+
+## When to start paying
+
+Pay when it buys you something you need: reliability for paying customers, support, or time. By then you should have revenue or funding to cover it. Credits are there to get you to that point, not to replace a business model.
+
+If you're at the stage of serving real clients, read [Launching your product and serving real clients](/blog/launching-your-product-serving-real-clients/) next.
+
+Building something and stuck on infra? [Reach out](/#contact). I'm happy to help.

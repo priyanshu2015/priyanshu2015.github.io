@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { DATA } from "@/data/resume";
+import { DATA, type Work } from "@/data/resume";
 import { VideoFacade } from "@/components/video-facade";
 
 /**
@@ -12,7 +12,7 @@ import { VideoFacade } from "@/components/video-facade";
 export function Timeline() {
   return (
     <ol className="flex flex-col gap-10">
-      {DATA.work.map((job) => (
+      {(DATA.work as readonly Work[]).map((job) => (
         <li key={`${job.company}-${job.start}`}>
           <div className="flex items-baseline justify-between gap-4">
             <h3 className="font-medium">

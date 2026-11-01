@@ -1,0 +1,91 @@
+---
+title: "Scaling LLM and RAG pipelines in production"
+description: |
+  How to take a RAG pipeline past the demo: ingestion, hybrid search and reranking, evals, latency budgets, cost control and serving many models in production.
+date: 2026-10-30T00:00:00.000Z
+tags: ["AI", "RAG", "LLM", "Infrastructure"]
+draft: false
+---
+
+A RAG demo takes an afternoon: embed some documents, put them in a vector store, stuff the top results into a prompt. It works because the demo questions were chosen by the person who built it. Production is the opposite. Users ask things you never imagined, the data keeps changing, and every answer costs money and time.
+
+This is the order in which I'd harden a pipeline. Each layer fails differently, so each needs its own fix.
+
+## 1. Ingestion is a data pipeline, not a script
+
+Most RAG quality problems are data problems that surface as model problems.
+
+- **Make loads idempotent.** Re-running ingestion for the same document must produce the same state, not duplicates. Key every chunk by a stable ID derived from the source and its position.
+- **Track freshness.** Store when each source was last fetched and its version or hash. A stale answer that sounds confident is worse than "I don't know".
+- **Handle change.** When a filing is amended or an article is edited, delete the old chunks for that source before inserting new ones.
+- **Keep metadata.** Date, source, document type, and access scope on every chunk. You will filter on these constantly.
+
+Chunking deserves real thought. Split on structure (headings, paragraphs, table boundaries) before falling back to size, and keep a little overlap. Tables and numeric data usually need their own handling, because splitting a table in half destroys its meaning.
+
+## 2. Retrieval: get the right 5 chunks, not 50
+
+Pure vector search is a starting point, not an answer.
+
+1. **Hybrid search.** Combine keyword (BM25) with vector similarity. Keyword search wins on exact names, tickers, and IDs; vectors win on paraphrase.
+2. **Metadata filters first.** Narrow by date, company, or document type before similarity. It is cheaper and more accurate than hoping the embedding captures it.
+3. **Rerank.** Retrieve a wider set (say 30), then rerank with a cross-encoder or a small model and keep the top few. This is usually the biggest single quality gain.
+4. **Query rewriting.** Turn a vague follow-up ("what about last quarter?") into a standalone query using the conversation.
+
+## 3. Evaluate before you optimise
+
+You cannot improve what you cannot measure, and "it felt better" does not survive the next model upgrade.
+
+Build a small set of real questions with known good sources and answers. Start with 50; grow it from production failures. Then track separate numbers for separate stages:
+
+| Stage | What to measure |
+| --- | --- |
+| Retrieval | Did the right chunk appear in the top k (recall@k)? |
+| Generation | Is the answer supported by the retrieved text (faithfulness)? |
+| End to end | Did it answer the question, with a correct citation? |
+
+Splitting these tells you where to look. Low recall means fix ingestion or retrieval. Good recall with bad answers means fix the prompt or model. Tools such as Ragas give you ready-made metrics, and an LLM judge can score at scale as long as you spot-check it against humans.
+
+## 4. The latency budget
+
+Users feel the first token, not the last. Budget each stage and stream the output.
+
+```text
+embed query      ~50 ms
+retrieve         ~100 ms
+rerank           ~200 ms
+LLM first token  ~500 ms   <- stream from here
+```
+
+These numbers are illustrative; measure your own. The habits that matter: run independent steps in parallel, cache embeddings of repeated queries, keep the prompt short, and stream. If a step is slow, trace it before guessing.
+
+## 5. Cost control
+
+LLM cost scales with tokens, so most savings come from sending fewer of them.
+
+- **Cache** embeddings and frequent complete answers. Use the provider's prompt caching for the long, stable part of the prompt.
+- **Route.** Send simple queries to a small, cheap model and reserve the large one for hard reasoning.
+- **Trim context.** Retrieve less, rerank harder, and drop chunks the reranker scored low.
+- **Track cost per query** as a first-class metric next to latency. A feature nobody monitored can quietly triple your bill.
+
+## 6. Serving many specialised models
+
+If different users or domains need different behaviour, hosting a full model per use case gets expensive fast. Parameter-efficient fine-tuning (LoRA) trains small adapter weights on top of a shared base model, and systems such as vLLM and S-LoRA can serve many adapters from the same GPUs. The trade-off is operational: more adapters means more versions to evaluate, deploy, and roll back. Reach for it when a prompt plus retrieval has stopped being enough, not before.
+
+## 7. Operate it like a service
+
+- **Trace every request** end to end: query, retrieved chunk IDs, prompt, response, latency, cost. When an answer is wrong you need to replay exactly what the model saw.
+- **Fail soft.** Time-box retrieval and the model call; return a degraded answer or an honest "couldn't find this" rather than hanging.
+- **Show sources.** Citations are a trust feature and a debugging feature at once.
+- **Version everything**: prompts, chunking settings, embedding model, and index. Changing one silently changes behaviour.
+- **Protect data.** Enforce access scope at retrieval time so one client can never be shown another's documents.
+
+## A short checklist
+
+- [ ] Idempotent ingestion with freshness tracking
+- [ ] Hybrid retrieval, metadata filters, reranking
+- [ ] An eval set, with retrieval and generation scored separately
+- [ ] Streaming, parallel steps, and measured latency per stage
+- [ ] Caching, model routing, and cost per query tracked
+- [ ] Full request tracing and versioned prompts and indexes
+
+Do these in order. Teams that skip to fine-tuning before they have an eval set usually spend months improving something they cannot see.
