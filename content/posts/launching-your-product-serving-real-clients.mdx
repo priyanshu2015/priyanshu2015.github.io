@@ -1,0 +1,95 @@
+---
+title: "Launching your product and serving real B2B clients: a checklist"
+description: |
+  A practical launch checklist for serving paying B2B clients: SLOs, monitoring, data pipelines, tenant isolation, onboarding, incident handling and pricing.
+date: 2026-10-30T00:00:00.000Z
+tags: ["Product", "B2B", "Startups", "SaaS"]
+draft: false
+---
+
+> Just getting started and want to keep costs at zero? Read [How to launch your product with zero infra spend](/blog/launch-with-zero-infra-spend/) first.
+
+Launching is not the hard part. Staying up, staying correct, and staying trusted while real people depend on you is. This is the checklist I'd run through before the first client, and again before the tenth.
+
+## 1. Decide what "working" means, in numbers
+
+Before launch, write down what the client is promising their own users when they build on you.
+
+- **Availability.** Pick a target (for example 99.9% monthly) and calculate what it allows: roughly 43 minutes of downtime a month. If you cannot meet it, promise less.
+- **Latency.** A p95 target per endpoint, measured at the edge.
+- **Correctness.** For anything involving money, data, or AI answers, define what a wrong result costs and how you would detect one.
+
+These become your SLOs. They give every later argument ("is this outage serious?", "should we ship this risky change?") something concrete to point at.
+
+## 2. See the system before you need to
+
+Instrument first, not after the first incident.
+
+- **Logs** that are structured and carry a request ID.
+- **Metrics** for the four basics: traffic, errors, latency, saturation.
+- **Traces** across services so one slow request can be followed end to end.
+- **Alerts** on symptoms users feel (error rate, latency), not on every CPU spike.
+
+If you only add one thing: an alert that wakes a human when real users are failing, plus a runbook that says what to check first.
+
+## 3. Build the data layer like a product
+
+When clients depend on your data, the data infrastructure is the product, whether or not you call it that.
+
+- **Idempotent, replayable pipelines.** You will need to re-run a day of ingestion. Make that safe.
+- **Reconciliation.** Compare your numbers with the source of truth on a schedule and alert on drift.
+- **Versioned schemas and APIs.** Never change a response shape under a client. Add fields, deprecate loudly, remove late.
+- **Auditability.** For every number or answer you serve, be able to say where it came from and when.
+- **Backups, and a restore you have actually tested.** A backup you have never restored is a hope.
+
+## 4. Serving businesses is different from serving users
+
+B2B customers ask questions consumer apps never hear.
+
+| Concern | What they want |
+| --- | --- |
+| Isolation | Their data is never visible to another tenant |
+| Access | API keys per client, scoped and revocable; SSO for their staff |
+| Limits | Documented rate limits and fair-use policy |
+| Change | Notice before breaking changes, and a changelog |
+| Proof | Security answers, uptime history, and an incident process |
+| Contact | A named human and a response-time commitment |
+
+Build tenant isolation and per-client keys early. Retrofitting them into a system that assumed one user is painful.
+
+## 5. Onboarding is a feature
+
+The first ten clients decide whether there is an eleventh.
+
+- Give them a sandbox and sample data so they can try without risk.
+- Aim for a working first call in 15 minutes: copy-paste examples, not a reference manual.
+- Sit with the first few while they integrate. Every stumble you watch is a documentation bug or a product bug.
+- Write down what each client asked for that you did not expect. That list is your roadmap.
+
+## 6. Operate with trust
+
+Trust is built in how you behave when things break.
+
+- **Publish a status page** and update it before clients ask.
+- **Communicate early and plainly.** Say what is affected, what you know, and when you will update next. Do not wait until you have the full answer.
+- **Write blameless postmortems.** What happened, why the system allowed it, what changes. Share the summary with affected clients.
+- **Keep a changelog.** Clients forgive change they were told about.
+
+## 7. Money and scope
+
+- **Meter usage from day one**, even if you do not bill on it yet. You cannot price what you cannot measure.
+- **Know your cost per client.** AI and data products can be quietly unprofitable at the wrong tier.
+- **Say no with a reason.** A custom request that bends your architecture for one client is expensive forever. Offer the version that fits the product.
+
+## Pre-launch checklist
+
+- [ ] SLOs written down and measured
+- [ ] Structured logs, metrics, traces, and a symptom-based alert
+- [ ] Replayable pipelines and a restore test
+- [ ] Per-client API keys, tenant isolation, and rate limits
+- [ ] Versioned API, changelog, and deprecation policy
+- [ ] Sandbox, quick-start docs, and a named support contact
+- [ ] Status page and an incident template
+- [ ] Usage metering and cost per client
+
+Launch small, watch closely, and fix the boring things before they become incidents.

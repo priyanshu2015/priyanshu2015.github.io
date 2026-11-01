@@ -1,16 +1,30 @@
 import Link from "next/link";
+import { ArrowUpRight, Instagram } from "lucide-react";
 import { DATA } from "@/data/resume";
 import { getFeaturedPosts } from "@/lib/posts";
 import { Section } from "@/components/section";
-import { Stats } from "@/components/stats";
+import { StatsLine } from "@/components/stats";
+import { FeaturedWork } from "@/components/featured-work";
+import { PlaybookGrid } from "@/components/playbook-grid";
 import { Timeline } from "@/components/timeline";
 import { EducationList } from "@/components/education-list";
 import { ProjectList } from "@/components/project-list";
 import { PostList } from "@/components/post-list";
 import { ContactForm } from "@/components/contact-form";
 import { SocialLinks } from "@/components/social-links";
-import { personJsonLd, serializeJsonLd } from "@/lib/json-ld";
+import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/json-ld";
 
+const LEARN = [
+  { label: "Resource hub", note: "Books, talks and courses I recommend. I keep adding to it.", href: "/resources", internal: true },
+  { label: "YouTube", note: "Longer videos on engineering, and my courses.", href: "https://www.youtube.com/@priyanshuguptaofficial", internal: false },
+  { label: "@transparent.detailed", note: "Short videos on how I build with AI.", href: "https://www.instagram.com/transparent.detailed/", internal: false },
+];
+
+/**
+ * Order is deliberate: what I'm building now, how I think, what I've written, then the
+ * record. Prysm leads as an interactive card; under Experience it's one line, because
+ * the story has already been told.
+ */
 export default function Home() {
   const posts = getFeaturedPosts(4);
 
@@ -19,6 +33,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd()) }}
       />
 
       <section id="hero" className="flex flex-col gap-4">
@@ -30,6 +48,9 @@ export default function Home() {
             <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               {DATA.description}
             </p>
+            <div className="mt-2">
+              <StatsLine />
+            </div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -43,24 +64,43 @@ export default function Home() {
         <div className="mt-1">
           <SocialLinks />
         </div>
+        <a
+          href="https://www.instagram.com/transparent.detailed/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group mt-2 flex items-start gap-3 rounded-lg border bg-muted/50 p-4 transition-colors hover:bg-muted"
+        >
+          <Instagram className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
+          <span className="text-sm leading-relaxed">
+            <span className="mr-2 rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              New
+            </span>
+            I started an Instagram page,{" "}
+            <span className="font-medium underline decoration-border underline-offset-4 group-hover:decoration-foreground">
+              @transparent.detailed
+            </span>
+            , to help you use AI well and build your own financial opinion. Check it out, maybe
+            you&apos;ll find something useful. Thanks!
+          </span>
+        </a>
       </section>
+
+      <Section id="now" title="Now">
+        <FeaturedWork />
+      </Section>
 
       <Section id="about" title="About">
         <p className="text-base leading-relaxed text-muted-foreground">
           {DATA.summary}
         </p>
-      </Section>
-
-      <Section id="numbers" title="Numbers">
-        <Stats />
-      </Section>
-
-      <Section id="work" title="Work">
-        <Timeline />
-      </Section>
-
-      <Section id="projects" title="Projects">
-        <ProjectList />
+        <dl className="mt-6 grid gap-3 sm:grid-cols-3">
+          {DATA.principles.map((p) => (
+            <div key={p.k} className="rounded-md border p-3">
+              <dt className="font-mono text-xs">{p.k}</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{p.v}</dd>
+            </div>
+          ))}
+        </dl>
       </Section>
 
       <Section id="writing" title="Writing">
@@ -75,17 +115,58 @@ export default function Home() {
         ) : null}
       </Section>
 
+      <Section id="playbook" title="AI Playbook">
+        <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+          Skills, connectors and tools I actually use with Claude, by use case.
+        </p>
+        <PlaybookGrid compact />
+        <Link
+          href="/playbook"
+          className="mt-5 inline-block font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Full playbook →
+        </Link>
+      </Section>
+
+      <Section id="work" title="Experience">
+        <Timeline />
+      </Section>
+
+      <Section id="projects" title="Projects">
+        <ProjectList />
+      </Section>
+
+      <Section id="learn" title="Learn with me">
+        <ul className="grid gap-3 sm:grid-cols-3">
+          {LEARN.map((l) => (
+            <li key={l.label}>
+              <a
+                href={l.href}
+                {...(l.internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                className="group block h-full rounded-md border p-3 transition-colors hover:bg-muted"
+              >
+                <span className="inline-flex items-center gap-1 font-mono text-xs">
+                  {l.label}
+                  <ArrowUpRight className="size-3 text-muted-foreground transition-colors group-hover:text-foreground" aria-hidden />
+                </span>
+                <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{l.note}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       <Section id="education" title="Education">
         <EducationList />
       </Section>
 
       <Section id="contact" title="Contact">
         <p className="mb-6 text-base leading-relaxed text-muted-foreground">
-          If you're working on something interesting, or you want to argue with
-          something I've written, I'd like to hear about it.
+          Building something with data or AI, or want to discuss something I wrote? Reach out.
         </p>
         <ContactForm />
       </Section>
+
     </>
   );
 }

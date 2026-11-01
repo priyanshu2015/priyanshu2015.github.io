@@ -1,0 +1,103 @@
+---
+title: "Forward deployed engineer (FDE) roadmap: skills, projects and interview prep"
+description: |
+  How to become a forward deployed engineer: what the FDE role is, the skills to learn in order, projects that prove them, interview prep and a 12-month plan.
+date: 2026-10-30T00:00:00.000Z
+tags: ["Career", "Forward deployed engineer", "AI", "Engineering"]
+draft: false
+---
+
+A forward deployed engineer (FDE) is a software engineer who works directly with customers: embedded in their problem, building real systems on their data, and carrying what they learn back to the product. The role sits between engineering, consulting, and product, and it has grown quickly alongside enterprise AI, because the hard part of AI is rarely the model. It is fitting the model to a messy real-world workflow.
+
+This roadmap is a path I'd follow. Treat the stages as a guide, not a gate.
+
+## What the job actually looks like
+
+- Understand a customer's workflow and where it hurts.
+- Pull data from their systems, clean it, and make it usable.
+- Build and ship a working solution fast, often with the customer watching.
+- Debug problems in production that you did not cause.
+- Feed patterns back to the core product team so the next customer needs less custom work.
+
+**FDE vs solutions engineer:** solutions engineers mostly demo, scope, and support. FDEs write and ship production code for the customer. **FDE vs consultant:** consultants advise and hand over; FDEs build and stay until it works.
+
+## Stage 1: Strong engineering base
+
+You will be trusted with real systems, so the basics have to be solid.
+
+- One backend language well (Python is the common choice) plus enough TypeScript to build a UI.
+- SQL and a relational database, including indexes and query plans.
+- HTTP, REST APIs, authentication, and webhooks.
+- Git, Docker, and one cloud provider's basics.
+- Async work: queues, retries, idempotency.
+
+Good places to learn the last two: the Celery, RabbitMQ, Docker, and WebSocket posts on this site, and the docs listed in the [resource hub](/resources).
+
+## Stage 2: Data fluency
+
+Most customer work is data work before it is anything else.
+
+- Read messy CSVs, PDFs, and APIs and turn them into clean tables.
+- Write ETL pipelines that are rerunnable and tell you when they fail.
+- Learn to model data so questions become simple queries.
+- Be comfortable with integration: pagination, rate limits, partial failures, schema drift.
+
+## Stage 3: AI and LLM engineering
+
+- How LLMs behave: context windows, tokens, temperature, failure modes.
+- Prompt and tool design, structured outputs, and function calling.
+- Retrieval (RAG): chunking, hybrid search, reranking.
+- Agents: when a simple workflow beats an agent, and how to keep agents on rails.
+- **Evals.** Build a test set and measure. This separates demos from deployments. See [Scaling LLM and RAG workflows past the demo](/blog/scaling-llm-rag-workflows/).
+
+## Stage 4: Customer-facing craft
+
+This is what distinguishes an FDE from a backend engineer.
+
+- **Scoping.** Turn "we want AI" into a specific, testable first deliverable.
+- **Communication.** Short written updates: what's done, what's next, what's blocked.
+- **Demos.** Show the customer their own data working, not a generic example.
+- **Saying no.** Decline a request with a reason and offer the version that fits.
+- **Handling ambiguity.** Make progress with 70% of the information and state your assumptions.
+
+## Stage 5: Production operations
+
+Shipping is half the job; keeping it running is the other half.
+
+- Logging, metrics, tracing, and alerting.
+- Security basics: secrets, least privilege, tenant isolation.
+- Writing runbooks and doing blameless postmortems.
+- See [Launching your product and serving real clients](/blog/launching-your-product-serving-real-clients/) for a full checklist.
+
+## Projects that prove it
+
+Employers look for evidence of the whole loop, not isolated skills. Aim for two or three of these, with write-ups:
+
+1. **A RAG assistant over messy real documents**, with an eval set and a short report of what failed and what you changed.
+2. **An integration pipeline** pulling from two real APIs into a clean database, with retries, idempotency, and monitoring.
+3. **An agent that completes a real workflow** (for example processing invoices or triaging tickets) with human review and logs.
+4. **A small multi-tenant API** with per-client keys, rate limits, and a changelog.
+
+For each, publish the repository, a short architecture diagram, and a candid note on trade-offs.
+
+## Preparing for the interview
+
+- **Coding:** practical problems on data wrangling and APIs more than pure algorithms.
+- **System design:** be ready to design an ingestion-to-answer pipeline and discuss failure modes.
+- **Case/scenario:** "A customer's data is messy and they need results in two weeks. What do you do?" Walk through scoping, risk, and a first deliverable.
+- **Communication:** practise explaining a technical decision to a non-technical person in two minutes.
+
+## A rough timeline
+
+| Months | Focus |
+| --- | --- |
+| 0 to 3 | Stages 1 and 2, plus one pipeline project |
+| 3 to 6 | Stage 3, with a RAG project and an eval set |
+| 6 to 9 | Stages 4 and 5; write up two projects; ship something for a real user |
+| 9 to 12 | Apply, interview, and iterate on feedback |
+
+Adjust for your starting point. The most reliable shortcut is to get a real user for something you build, even a small one. Real feedback teaches the customer-facing skills faster than any course.
+
+## Where to go next
+
+Browse the [resource hub](/resources) for books, papers, and docs, and the [AI Playbook](/playbook) for the tools I use to build faster.

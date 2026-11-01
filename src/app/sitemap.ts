@@ -20,6 +20,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${DATA.url}/playbook/`,
+      lastModified: latest,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${DATA.url}/resources/`,
+      lastModified: latest,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${DATA.url}/blog/`,
       lastModified: latest,
       changeFrequency: "weekly",

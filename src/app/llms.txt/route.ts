@@ -1,5 +1,7 @@
 import { DATA } from "@/data/resume";
 import { getAllPosts, formatDate } from "@/lib/posts";
+import { PLAYBOOK } from "@/data/playbook";
+import { RESOURCES } from "@/data/resources";
 
 export const dynamic = "force-static";
 
@@ -40,7 +42,7 @@ ${DATA.work
 ## Education
 
 ${DATA.education
-  .map((edu) => `- ${edu.school}: ${edu.degree} (${edu.start} to ${edu.end})`)
+  .map((edu) => `- ${edu.school}: ${edu.degree}`)
   .join("\n")}
 
 ## Projects
@@ -66,6 +68,38 @@ ${
         .join("\n")
     : "No posts published yet."
 }
+
+## Now: ${DATA.featured.name}
+
+${DATA.featured.href}
+
+${DATA.featured.pitch}
+
+${DATA.featured.clients.text} Contact: ${DATA.featured.clients.email}
+
+## AI Playbook
+
+The Claude skills, MCP connectors and tools I use, by use case. Full page: ${DATA.url}/playbook/
+
+${PLAYBOOK.map(
+  (cat) =>
+    `### ${cat.title}\n\n${cat.blurb}\n\n${cat.steps
+      .map((step, i) => `${i + 1}. ${step.title}: ${step.what} (${step.options.join(", ")})`)
+      .join("\n")}\n\n${cat.items
+      .map((item) => `- ${item.name}${item.href ? ` (${item.href})` : ""}: ${item.use}`)
+      .join("\n")}`
+).join("\n\n")}
+
+## Resources
+
+Talks, courses and reading I recommend. Full page: ${DATA.url}/resources/
+
+${RESOURCES.map(
+  (g) =>
+    `### ${g.title}\n\n${g.items
+      .map((r) => `- [${r.title}](${r.href})${r.by ? ` by ${r.by}` : ""}: ${r.note}`)
+      .join("\n")}`
+).join("\n\n")}
 
 ## Feeds
 
