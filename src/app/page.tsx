@@ -75,11 +75,11 @@ export default function Home() {
             <span className="mr-2 rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               New
             </span>
-            I started an Instagram page,{" "}
+            I started a new page,{" "}
             <span className="font-medium underline decoration-border underline-offset-4 group-hover:decoration-foreground">
               @transparent.detailed
             </span>
-            , to help you use AI well and build your own financial opinion. Check it out, maybe
+            , on using AI better and building your own financial opinion. Check it out, maybe
             you&apos;ll find something useful. Thanks!
           </span>
         </a>

@@ -77,7 +77,7 @@ export const DATA = {
    * subtitle. Keep it to one line.
    */
   description:
-    "I build data infrastructure and AI products. Right now that's Prysm. I share what I learn along the way, so you don't have to figure it all out alone.",
+    "Systems, infrastructure and AI agents, and how they work under the hood. I also share investing learnings and connect the dots to build financial thinking.",
 
 
   /** The About paragraph. Markdown is not parsed here, so keep it plain prose. */
