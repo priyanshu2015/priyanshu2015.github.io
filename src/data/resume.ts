@@ -128,7 +128,6 @@ export const DATA = {
       label: "YouTube subscribers",
       href: "https://www.youtube.com/@priyanshuguptaofficial",
     },
-    { value: "10K+", label: "People mentored" },
     { value: "5/5", label: "GFG instructor rating" },
     {
       value: "Top 1%",
