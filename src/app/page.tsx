@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Instagram } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { DATA } from "@/data/resume";
 import { getFeaturedPosts } from "@/lib/posts";
 import { Section } from "@/components/section";
@@ -17,7 +17,6 @@ import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/json-ld";
 const LEARN = [
   { label: "Resource hub", note: "Books, talks and courses I recommend. I keep adding to it.", href: "/resources", internal: true },
   { label: "YouTube", note: "Longer videos on engineering, and my courses.", href: "https://www.youtube.com/@priyanshuguptaofficial", internal: false },
-  { label: "@transparent.detailed", note: "Short videos on how I build with AI.", href: "https://www.instagram.com/transparent.detailed/", internal: false },
 ];
 
 /**
@@ -64,25 +63,6 @@ export default function Home() {
         <div className="mt-1">
           <SocialLinks />
         </div>
-        <a
-          href="https://www.instagram.com/transparent.detailed/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group mt-2 flex items-start gap-3 rounded-lg border bg-muted/50 p-4 transition-colors hover:bg-muted"
-        >
-          <Instagram className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <span className="text-sm leading-relaxed">
-            <span className="mr-2 rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              New
-            </span>
-            I started a new page,{" "}
-            <span className="font-medium underline decoration-border underline-offset-4 group-hover:decoration-foreground">
-              @transparent.detailed
-            </span>
-            , on using AI better and building your own financial opinion. Check it out, maybe
-            you&apos;ll find something useful. Thanks!
-          </span>
-        </a>
       </section>
 
       <Section id="now" title="Now">
@@ -137,7 +117,7 @@ export default function Home() {
       </Section>
 
       <Section id="learn" title="Learn with me">
-        <ul className="grid gap-3 sm:grid-cols-3">
+        <ul className="grid gap-3 sm:grid-cols-2">
           {LEARN.map((l) => (
             <li key={l.label}>
               <a

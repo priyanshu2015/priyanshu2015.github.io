@@ -52,12 +52,7 @@ export function ProjectList() {
             // object-top: the dashboard is a tall screenshot, and everything worth
             // seeing (the look-through charts) is at the top. Cropping in CSS beats
             // shipping a second cropped copy of the file.
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 block overflow-hidden rounded-md border"
-            >
+            <ImageFrame href={href}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={image.src}
@@ -66,7 +61,7 @@ export function ProjectList() {
                 decoding="async"
                 className="aspect-[16/9] w-full object-cover object-top transition-opacity hover:opacity-90"
               />
-            </a>
+            </ImageFrame>
           ) : null}
 
           {project.technologies.length > 0 ? (
@@ -85,5 +80,16 @@ export function ProjectList() {
         );
       })}
     </ol>
+  );
+}
+
+function ImageFrame({ href, children }: { href?: string; children: React.ReactNode }) {
+  const cls = "mt-4 block overflow-hidden rounded-md border";
+  return href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {children}
+    </a>
+  ) : (
+    <div className={cls}>{children}</div>
   );
 }

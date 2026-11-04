@@ -154,11 +154,6 @@ export const DATA = {
         url: "https://www.youtube.com/@priyanshuguptaofficial",
         icon: "youtube",
       },
-      {
-        name: "Instagram",
-        url: "https://www.instagram.com/transparent.detailed/",
-        icon: "instagram",
-      },
     ] satisfies Social[],
   },
 
@@ -267,12 +262,11 @@ export const DATA = {
     },
     {
       title: "LetsProgressify",
-      href: "https://www.letsprogressify.com",
       dates: "2024",
       description:
         "A learning platform for a 10,000+ subscriber community, built around Roadmaps: an interactive, drag-and-drop canvas where every topic carries its own resources, deadline, and rules for what can be done in parallel, what's optional, and what's recommended. Expert-verified roadmaps to start from, or build your own with AI. Also shipped an ETL pipeline that pulled hackathons, competitions, and conferences from several platforms into one tracked dashboard.",
       technologies: ["Python", "Django", "Next.js", "PostgreSQL", "Docker"],
-      links: [{ type: "Website", href: "https://www.letsprogressify.com" }],
+      links: [],
       image: {
         src: "/images/projects/letsprogressify-roadmap.jpg",
         alt: "The LetsProgressify Roadmaps editor showing a System Design roadmap as a node graph, with a legend for ordering rules and a side panel for resources, deadline, and timeframe",
