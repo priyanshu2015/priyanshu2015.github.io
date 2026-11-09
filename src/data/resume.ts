@@ -84,12 +84,6 @@ export const DATA = {
   summary:
     "For the last few years I've been building products where real money and data are involved. I was a founding engineer at trading exchanges, and since 2024 I'm building Prysm, an AI research platform for investors. Working on these taught me that in finance, code that runs is not enough. The numbers have to be exactly right, every time. One small mistake meant someone lost real money, so I learned to be extra careful: double-check everything, plan for what can go wrong, and build systems people can rely on. I'm still learning every day, and I write here about what worked, what broke, and what I would do differently.",
 
-  /** Short principles shown under About. Keep each to one line. */
-  principles: [
-    { k: "Get it right first", v: "If it touches someone's money, it has to be correct." },
-    { k: "Measure it", v: "Numbers over gut feeling." },
-    { k: "Build, then share", v: "Ship to real users, then write about it." },
-  ],
 
   avatarUrl: "/images/priyanshu.jpg",
 
@@ -170,8 +164,8 @@ export const DATA = {
         "Founded Prysm and built it from idea to 5,000+ users in the first year.",
     },
     {
-      company: "TanX (prev. Brine Finance)",
-      href: "https://www.tanx.fi",
+      company: "Multipli.fi (prev. TanX.fi)",
+      href: "https://multipli.fi",
       logoUrl: "/images/work/tanx.svg",
       title: "Senior Product Engineer & Founding Team Member",
       start: "Nov 2022",

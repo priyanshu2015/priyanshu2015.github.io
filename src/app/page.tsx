@@ -73,14 +73,10 @@ export default function Home() {
         <p className="text-base leading-relaxed text-muted-foreground">
           {DATA.summary}
         </p>
-        <dl className="mt-6 grid gap-3 sm:grid-cols-3">
-          {DATA.principles.map((p) => (
-            <div key={p.k} className="rounded-md border p-3">
-              <dt className="font-mono text-xs">{p.k}</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{p.v}</dd>
-            </div>
-          ))}
-        </dl>
+      </Section>
+
+      <Section id="work" title="Experience">
+        <Timeline />
       </Section>
 
       <Section id="writing" title="Writing">
@@ -106,10 +102,6 @@ export default function Home() {
         >
           Full playbook →
         </Link>
-      </Section>
-
-      <Section id="work" title="Experience">
-        <Timeline />
       </Section>
 
       <Section id="projects" title="Projects">
