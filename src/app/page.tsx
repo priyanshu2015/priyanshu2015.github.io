@@ -16,7 +16,7 @@ import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/json-ld";
 
 const LEARN = [
   { label: "Resource hub", note: "Books, talks and courses I recommend. I keep adding to it.", href: "/resources", internal: true },
-  { label: "YouTube", note: "Longer videos on engineering, and my courses.", href: "https://www.youtube.com/@priyanshuguptaofficial", internal: false },
+  { label: "YouTube", note: "Longer videos on engineering and fundamentals.", href: "https://www.youtube.com/@priyanshuguptaofficial", internal: false },
 ];
 
 /**
