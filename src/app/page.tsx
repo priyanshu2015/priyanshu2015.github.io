@@ -91,6 +91,7 @@ export default function Home() {
         ) : null}
       </Section>
 
+
       <Section id="playbook" title="AI Playbook">
         <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
           Skills, connectors and tools I actually use with Claude, by use case.
