@@ -49,7 +49,7 @@ export function StatsLine() {
         <span key={s.label}>
           {i > 0 ? " · " : ""}
           {s.href ? (
-            <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+            <a href={s.href} target="_blank" rel="noopener noreferrer" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground">
               {s.value} {s.label}
             </a>
           ) : (
