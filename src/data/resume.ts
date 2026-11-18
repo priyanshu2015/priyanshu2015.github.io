@@ -13,7 +13,7 @@
 export type Social = {
   name: string;
   url: string;
-  icon: "github" | "linkedin" | "youtube" | "instagram" | "discord" | "telegram" | "mail";
+  icon: "github" | "linkedin" | "youtube" | "instagram" | "mail";
 };
 
 export type Stat = {
@@ -147,16 +147,6 @@ export const DATA = {
         name: "YouTube",
         url: "https://www.youtube.com/@priyanshuguptaofficial",
         icon: "youtube",
-      },
-      {
-        name: "Discord",
-        url: "https://discord.gg/aqDGTQ9dFW",
-        icon: "discord",
-      },
-      {
-        name: "Telegram",
-        url: "https://t.me/priyanshuguptaofficial",
-        icon: "telegram",
       },
     ] satisfies Social[],
   },
