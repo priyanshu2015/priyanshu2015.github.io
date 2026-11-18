@@ -37,13 +37,16 @@ export const PLAYBOOK: PlaybookCategory[] = [
     blurb: "How I edit my reels: Claude does the heavy lifting, I make the calls.",
     steps: [
       { title: "Study the reference", what: "Break down a reel I like: pacing, cuts, on-screen text.", options: ["Watch skill"] },
-      { title: "Clean the rough cut", what: "Remove false starts, repeats and silences.", options: ["FFmpeg"] },
+      { title: "Clean the rough cut", what: "Remove false starts, repeats and silences.", options: ["Watch skill", "FFmpeg"] },
       { title: "Edit on a timeline", what: "Cuts, captions, colour and export, from chat.", options: ["Palmier Pro", "Remotion", "FFmpeg"] },
       { title: "Effects & b-roll", what: "Face-tracked effects, motion graphics, overlays.", options: ["claude-video-effects", "Motion Studio MCP", "video-overlay-kit", "HyperFrames", "Remotion", "OpenMontage", "Tabler Icons"] },
       { title: "Sound design", what: "Real sound effects on the right frame, plus a check of how it sounds.", options: ["real-sfx", "Earshot", "Openverse", "soundcn"] },
       { title: "Get ideas", what: "Motion videos with the prompts and skills behind them.", options: ["Prompt Motion"] },
+      { title: "Sharpen the hook and caption", what: "Hook options, a timed beat sheet, and a caption that survives the \"more\" cut.", options: ["Instagram agent skills"] },
+      { title: "Find where people drop off", what: "Paste your insights, see which reels worked, why the others didn't, and what to stop making.", options: ["Instagram agent skills"] },
     ],
     items: [
+      { name: "Instagram agent skills", kind: "plugin", use: "Thirteen skills by Jake Schincariol: reel hooks and beat sheets, captions, an audit of which posts worked and why, and a humanizer.", href: "https://github.com/Jakeschincariol/instagram-agent-skill" },
       { name: "Watch skill", kind: "skill", use: "Turns a video into frames, audio and transcript Claude can read.", href: "https://github.com/oxbshw/watch-skill" },
       { name: "Palmier Pro", kind: "connector", use: "A real editing timeline Claude can drive.", href: "https://www.palmier.io" },
       { name: "FFmpeg", kind: "tool", use: "The command-line tool behind almost every step: cut, convert, mix audio, export.", href: "https://ffmpeg.org" },
@@ -148,11 +151,12 @@ export const PLAYBOOK: PlaybookCategory[] = [
     title: "Content & growth",
     blurb: "Getting the work in front of people without living inside the apps.",
     steps: [
-      { title: "Write it", what: "Hooks, captions, and scripts in my own voice, then strip anything that reads like AI.", options: ["Claude"] },
+      { title: "Write it", what: "Hooks, captions, and scripts in my own voice, then strip anything that reads like AI.", options: ["Claude", "Instagram agent skills"] },
       { title: "Automate replies", what: "Keyword replies and DM flows that deliver what people asked for.", options: ["Manychat"] },
     ],
     items: [
       { name: "Claude", kind: "tool", use: "Drafting in my own voice.", href: "https://claude.ai" },
+      { name: "Instagram agent skills", kind: "plugin", use: "Thirteen skills by Jake Schincariol: reel hooks and beat sheets, captions, an audit of which posts worked and why, and a humanizer.", href: "https://github.com/Jakeschincariol/instagram-agent-skill" },
       { name: "Manychat", kind: "tool", use: "Instagram DM automations: comment-to-DM and keyword flows.", href: "https://manychat.com" },
     ],
   },
