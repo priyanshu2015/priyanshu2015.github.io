@@ -1,4 +1,4 @@
-import { Github, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Github, Instagram, Linkedin, MessageCircle, Send, Youtube } from "lucide-react";
 import { DATA } from "@/data/resume";
 
 const icons = {
@@ -6,6 +6,9 @@ const icons = {
   linkedin: Linkedin,
   youtube: Youtube,
   instagram: Instagram,
+  // lucide has no Discord or Telegram logos, so these are the closest generic marks.
+  discord: MessageCircle,
+  telegram: Send,
 } as const;
 
 export function SocialLinks() {
@@ -23,6 +26,7 @@ export function SocialLinks() {
               rel="noopener noreferrer"
               // The icon carries no text, so the link needs its own accessible name.
               aria-label={social.name}
+              title={social.name}
               className="-m-1 block rounded p-1 text-muted-foreground transition-colors hover:text-foreground"
             >
               <Icon className="size-4" aria-hidden />
