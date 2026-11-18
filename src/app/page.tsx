@@ -17,8 +17,6 @@ import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/json-ld";
 const LEARN = [
   { label: "Resource hub", note: "Books, talks and courses I recommend. I keep adding to it.", href: "/resources", internal: true },
   { label: "YouTube", note: "Longer videos on engineering and fundamentals.", href: "https://www.youtube.com/@priyanshuguptaofficial", internal: false },
-  { label: "Discord", note: "The community server. Come talk to other builders.", href: "https://discord.gg/aqDGTQ9dFW", internal: false },
-  { label: "Telegram", note: "The same community on Telegram, if you prefer that.", href: "https://t.me/priyanshuguptaofficial", internal: false },
 ];
 
 /**
@@ -111,7 +109,7 @@ export default function Home() {
       </Section>
 
       <Section id="learn" title="Learn with me">
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid gap-3 sm:grid-cols-3">
           {LEARN.map((l) => (
             <li key={l.label}>
               <a
@@ -127,6 +125,31 @@ export default function Home() {
               </a>
             </li>
           ))}
+          {/* Two links, so it can't be one big anchor like the others. */}
+          <li className="h-full rounded-md border p-3">
+            <span className="font-mono text-xs">Community</span>
+            <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+              Come talk to other builders on{" "}
+              <a
+                href="https://discord.gg/aqDGTQ9dFW"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground"
+              >
+                Discord
+              </a>{" "}
+              or{" "}
+              <a
+                href="https://t.me/priyanshuguptaofficial"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground"
+              >
+                Telegram
+              </a>
+              .
+            </span>
+          </li>
         </ul>
       </Section>
 
