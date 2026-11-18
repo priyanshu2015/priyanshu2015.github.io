@@ -37,7 +37,7 @@ export const PLAYBOOK: PlaybookCategory[] = [
     blurb: "How I edit my reels: Claude does the heavy lifting, I make the calls.",
     steps: [
       { title: "Study the reference", what: "Break down a reel I like: pacing, cuts, on-screen text.", options: ["Watch skill"] },
-      { title: "Clean the rough cut", what: "Remove false starts, repeats and silences.", options: ["cut-audit & take-geometry", "Palmier Pro", "FFmpeg"] },
+      { title: "Clean the rough cut", what: "Remove false starts, repeats and silences.", options: ["Palmier Pro", "FFmpeg"] },
       { title: "Edit on a timeline", what: "Cuts, captions, colour and export, from chat.", options: ["Palmier Pro", "Remotion", "FFmpeg"] },
       { title: "Effects & b-roll", what: "Face-tracked effects, motion graphics, overlays.", options: ["claude-video-effects", "Motion Studio MCP", "video-overlay-kit", "HyperFrames", "Remotion", "OpenMontage", "Tabler Icons"] },
       { title: "Sound design", what: "Real sound effects on the right frame, plus a check of how it sounds.", options: ["real-sfx", "Earshot", "Openverse", "soundcn"] },
@@ -45,7 +45,6 @@ export const PLAYBOOK: PlaybookCategory[] = [
     ],
     items: [
       { name: "Watch skill", kind: "skill", use: "Turns a video into frames, audio and transcript Claude can read.", href: "https://github.com/oxbshw/watch-skill" },
-      { name: "cut-audit & take-geometry", kind: "skill", use: "By Nishant Chahar. Check a rough cut is clean; find where text can sit around your face. Free starter pack for his Substack subscribers.", href: "https://nishantchahar.substack.com/p/i-edit-every-video-with-claude-here" },
       { name: "Palmier Pro", kind: "connector", use: "A real editing timeline Claude can drive.", href: "https://www.palmier.io" },
       { name: "FFmpeg", kind: "tool", use: "The command-line tool behind almost every step: cut, convert, mix audio, export.", href: "https://ffmpeg.org" },
       { name: "Remotion", kind: "library", use: "Video as React code.", href: "https://www.remotion.dev" },
