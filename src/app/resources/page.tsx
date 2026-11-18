@@ -53,6 +53,15 @@ export default function ResourcesPage() {
           <time dateTime={RESOURCES_UPDATED}>
             {new Date(RESOURCES_UPDATED).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })}
           </time>
+          . For new additions, join the{" "}
+          <a
+            href="https://t.me/priyanshuguptaofficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground"
+          >
+            Telegram community
+          </a>
           .
         </p>
         <nav aria-label="Resource groups" className="mt-5 flex flex-wrap gap-2 font-mono text-xs">
@@ -68,7 +77,7 @@ export default function ResourcesPage() {
         {RESOURCES.map((g) => (
           <section key={g.id} id={g.id} aria-labelledby={`${g.id}-h`} className="scroll-mt-8">
             <h2 id={`${g.id}-h`} className="text-lg font-semibold tracking-tight">{g.title}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">{g.blurb}</p>
+            {g.blurb ? <p className="mt-1 text-sm text-muted-foreground">{g.blurb}</p> : null}
             <ul className="mt-4 divide-y rounded-lg border">
               {g.items.map((r) => {
                 const thumb = thumbnailFor(r);

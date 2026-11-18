@@ -49,6 +49,13 @@ export default function PlaybookPage() {
       <header className="mb-10">
         <h1 className="text-3xl font-semibold tracking-tight">AI Playbook</h1>
         <p className="mt-3 text-base leading-relaxed text-muted-foreground">{description}</p>
+        <p className="mt-3 font-mono text-xs text-muted-foreground">
+          Using something I should add? Tell me on{" "}
+          <a href="https://discord.gg/aqDGTQ9dFW" target="_blank" rel="noopener noreferrer" className="underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground">
+            Discord
+          </a>
+          .
+        </p>
       </header>
       <PlaybookGrid />
     </>

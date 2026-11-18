@@ -22,7 +22,8 @@ export function thumbnailFor(r: Resource): string | undefined {
 export type ResourceGroup = {
   id: string;
   title: string;
-  blurb: string;
+  /** Optional: skip it when the title already says it. */
+  blurb?: string;
   items: Resource[];
 };
 
@@ -33,7 +34,6 @@ export const RESOURCES: ResourceGroup[] = [
   {
     id: "watch",
     title: "Start here: watch",
-    blurb: "Start with these.",
     items: [
       { title: "Large Language Models explained briefly", href: "https://www.youtube.com/watch?v=LPZh9BOjkQs", by: "3Blue1Brown", note: "Best short explanation of how an LLM works." },
       { title: "Deep Dive into LLMs like ChatGPT", href: "https://www.youtube.com/watch?v=7xTGNNLPyMI", by: "Andrej Karpathy", note: "How ChatGPT-like models are trained, end to end. Long, but worth it." },

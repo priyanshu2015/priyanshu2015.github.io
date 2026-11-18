@@ -159,7 +159,15 @@ export default function Home() {
 
       <Section id="contact" title="Contact">
         <p className="mb-6 text-base leading-relaxed text-muted-foreground">
-          Building something with data or AI, or want to discuss something I wrote? Reach out.
+          Building something with data or AI, or want to discuss something I wrote? Reach out here, or find me on{" "}
+          <a href="https://discord.gg/aqDGTQ9dFW" target="_blank" rel="noopener noreferrer" className="underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground">
+            Discord
+          </a>{" "}
+          or{" "}
+          <a href="https://t.me/priyanshuguptaofficial" target="_blank" rel="noopener noreferrer" className="underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground">
+            Telegram
+          </a>
+          .
         </p>
         <ContactForm />
       </Section>
