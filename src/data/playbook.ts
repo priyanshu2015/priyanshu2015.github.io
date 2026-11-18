@@ -37,7 +37,7 @@ export const PLAYBOOK: PlaybookCategory[] = [
     blurb: "How I edit my reels: Claude does the heavy lifting, I make the calls.",
     steps: [
       { title: "Study the reference", what: "Break down a reel I like: pacing, cuts, on-screen text.", options: ["Watch skill"] },
-      { title: "Clean the rough cut", what: "Remove false starts, repeats and silences.", options: ["Palmier Pro", "FFmpeg"] },
+      { title: "Clean the rough cut", what: "Remove false starts, repeats and silences.", options: ["FFmpeg"] },
       { title: "Edit on a timeline", what: "Cuts, captions, colour and export, from chat.", options: ["Palmier Pro", "Remotion", "FFmpeg"] },
       { title: "Effects & b-roll", what: "Face-tracked effects, motion graphics, overlays.", options: ["claude-video-effects", "Motion Studio MCP", "video-overlay-kit", "HyperFrames", "Remotion", "OpenMontage", "Tabler Icons"] },
       { title: "Sound design", what: "Real sound effects on the right frame, plus a check of how it sounds.", options: ["real-sfx", "Earshot", "Openverse", "soundcn"] },
