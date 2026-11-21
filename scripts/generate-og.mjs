@@ -36,8 +36,16 @@ function field(name) {
 const name = field("name");
 const description = field("description");
 
+// The homepage card carries the avatar, so the link preview and the thumbnail search
+// engines pick for the site show a face instead of a block of text. Satori can't read
+// from disk, so it goes in as a data URI.
+const photo = `data:image/jpeg;base64,${fs
+  .readFileSync(path.join(process.cwd(), "public", "images", "priyanshu.jpg"))
+  .toString("base64")}`;
+
 /** One 1200x630 card: a small label, the title, a line of supporting text, and the URL. */
-function card({ label, title, subtitle }) {
+function card({ label, title, subtitle, withPhoto = false }) {
+  const textWidth = withPhoto ? 640 : 1040;
   return new ImageResponse(
     {
       type: "div",
@@ -53,6 +61,11 @@ function card({ label, title, subtitle }) {
           fontFamily: "sans-serif",
         },
         children: [
+          {
+            type: "div",
+            props: {
+              style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start" },
+              children: [
           {
             type: "div",
             props: {
@@ -76,7 +89,7 @@ function card({ label, title, subtitle }) {
                       color: "#0a0a0a",
                       letterSpacing: "-0.03em",
                       lineHeight: 1.1,
-                      maxWidth: 1040,
+                      maxWidth: textWidth,
                     },
                     children: title,
                   },
@@ -84,10 +97,24 @@ function card({ label, title, subtitle }) {
                 {
                   type: "div",
                   props: {
-                    style: { fontSize: 30, color: "#666666", marginTop: 28, maxWidth: 980, lineHeight: 1.4 },
+                    style: { fontSize: 30, color: "#666666", marginTop: 28, maxWidth: textWidth, lineHeight: 1.4 },
                     children: subtitle,
                   },
                 },
+              ].filter(Boolean),
+            },
+          },
+                withPhoto
+                  ? {
+                      type: "img",
+                      props: {
+                        src: photo,
+                        width: 300,
+                        height: 300,
+                        style: { width: 300, height: 300, borderRadius: 150, objectFit: "cover" },
+                      },
+                    }
+                  : null,
               ].filter(Boolean),
             },
           },
@@ -139,7 +166,7 @@ function clip(text, max = 150) {
 }
 
 let count = 0;
-await write("og.png", { title: name, subtitle: description });
+await write("og.png", { title: name, subtitle: description, withPhoto: true });
 count++;
 await write("og/playbook.png", {
   label: "AI Playbook",

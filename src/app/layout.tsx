@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer";
 import { Analytics } from "@/components/analytics";
 import "./globals.css";
 
-const SITE_TITLE = `${DATA.name} | Founder of Prysm, Data & AI Engineer`;
+const SITE_TITLE = `${DATA.name} | Founder Prysm | Product, AI & Finance`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
