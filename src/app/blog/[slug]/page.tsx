@@ -34,13 +34,16 @@ export async function generateMetadata({
   // one get a generated card with their title (scripts/generate-og.mjs).
   const image = postImage(post);
 
+  const title = post.seoTitle ?? post.title;
+  const description = post.seoDescription ?? post.description;
+
   return {
-    title: post.title,
-    description: post.description,
+    title,
+    description,
     alternates: { canonical: url },
     openGraph: {
-      title: post.title,
-      description: post.description,
+      title,
+      description,
       url,
       type: "article",
       publishedTime: post.date,
@@ -50,8 +53,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.description,
+      title,
+      description,
       images: [image],
     },
   };

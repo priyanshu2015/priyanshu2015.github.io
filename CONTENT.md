@@ -154,7 +154,7 @@ exists:
 
 ```ts
 image: {
-  src: "/images/projects/portfolio-xray.jpg",
+  src: "/images/projects/portfolio-xray.webp",
   alt: "The Portfolio X-Ray dashboard showing sector, market-cap and geographic look-through",
 },
 ```

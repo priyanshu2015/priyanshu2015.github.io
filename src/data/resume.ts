@@ -222,7 +222,7 @@ export const DATA = {
         },
       ],
       image: {
-        src: "/images/projects/portfolio-xray.jpg",
+        src: "/images/projects/portfolio-xray.webp",
         alt: "The Portfolio X-Ray dashboard showing sector, market-cap, and geographic look-through for a demo portfolio, with holdings and P&L broken down below",
       },
     },
@@ -262,7 +262,7 @@ export const DATA = {
       technologies: ["Python", "Django", "Next.js", "PostgreSQL", "Docker"],
       links: [],
       image: {
-        src: "/images/projects/letsprogressify-roadmap.jpg",
+        src: "/images/projects/letsprogressify-roadmap.webp",
         alt: "The LetsProgressify Roadmaps editor showing a System Design roadmap as a node graph, with a legend for ordering rules and a side panel for resources, deadline, and timeframe",
       },
     },

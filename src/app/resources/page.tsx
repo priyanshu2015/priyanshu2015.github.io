@@ -6,7 +6,7 @@ import { breadcrumbJsonLd, collectionJsonLd, serializeJsonLd } from "@/lib/json-
 const description =
   "Talks, courses, books, papers, and blogs I recommend for AI engineering, serving models, and building backend systems.";
 
-const seoTitle = "Best resources to learn AI engineering, LLMs and system design";
+const seoTitle = "Resources to learn AI engineering and LLMs";
 const seoDescription =
   "Hand-picked talks, courses, books, papers and blogs for learning LLMs, AI engineering, model serving and backend system design. Kept up to date.";
 

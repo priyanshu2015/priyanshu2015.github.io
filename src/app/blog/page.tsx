@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
-import { blogJsonLd, serializeJsonLd } from "@/lib/json-ld";
+import { blogJsonLd, breadcrumbJsonLd, serializeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -14,7 +14,9 @@ export const metadata: Metadata = {
       "Notes on backend systems, distributed architecture, message brokers, and the things that break in production.",
     url: "/blog",
     type: "website",
+    images: [{ url: "/og/blog.png", width: 1200, height: 630, alt: "Writing" }],
   },
+  twitter: { card: "summary_large_image", images: ["/og/blog.png"] },
 };
 
 export default function BlogPage() {
@@ -25,6 +27,13 @@ export default function BlogPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogJsonLd(posts)) }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(breadcrumbJsonLd([{ name: "Writing", path: "/blog/" }])),
+        }}
       />
 
       <header className="mb-10">

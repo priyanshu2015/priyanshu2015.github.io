@@ -17,6 +17,9 @@ export type PostMeta = {
   slug: string;
   title: string;
   description: string;
+  /** Search-result copy when the on-page title or summary is too long for Google (60 / 160). */
+  seoTitle?: string;
+  seoDescription?: string;
   /** ISO 8601. Sortable and safe for <time datetime>. */
   date: string;
   image?: string;
@@ -46,6 +49,8 @@ function parseFile(filename: string): Post {
     title: String(data.title).trim(),
     // The `description: |` block style in the migrated posts yields a trailing newline.
     description: String(data.description ?? "").trim(),
+    seoTitle: data.seoTitle ? String(data.seoTitle).trim() : undefined,
+    seoDescription: data.seoDescription ? String(data.seoDescription).trim() : undefined,
     date: date.toISOString(),
     image: data.image ? String(data.image) : undefined,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],

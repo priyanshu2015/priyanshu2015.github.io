@@ -11,6 +11,9 @@ export function Footer() {
         <a href="/rss.xml" className="transition-colors hover:text-foreground">
           RSS
         </a>
+        <a href="/privacy/" className="transition-colors hover:text-foreground">
+          Privacy
+        </a>
         <SocialLinks />
       </div>
     </footer>

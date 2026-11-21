@@ -173,12 +173,17 @@ await write("og/playbook.png", {
   title: "Claude skills, MCP connectors and tools I actually use",
   subtitle: "Step-by-step workflows for video editing, coding, frontend, research and markets.",
 });
+await write("og/blog.png", {
+  label: "Writing",
+  title: "Notes on backend systems and AI infrastructure",
+  subtitle: "How message brokers, task queues, WebSockets and RAG pipelines behave in production.",
+});
 await write("og/resources.png", {
   label: "Resources",
   title: "Talks, courses and reading I recommend",
   subtitle: "For AI engineering, serving models and building backend systems. Updated regularly.",
 });
-count += 2;
+count += 3;
 
 const postsDir = path.join(process.cwd(), "content", "posts");
 for (const file of fs.readdirSync(postsDir).filter((f) => f.endsWith(".mdx"))) {

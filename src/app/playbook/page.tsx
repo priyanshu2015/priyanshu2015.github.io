@@ -7,9 +7,9 @@ const description =
   "Skills, connectors and tools I actually use with Claude, step by step. Hover over a tool to see what it does.";
 
 // Search-facing copy: says what the page is in the words people search with.
-const seoTitle = "AI Playbook: Claude Code skills, MCP servers and AI tools I use";
+const seoTitle = "AI Playbook: Claude skills and MCP tools";
 const seoDescription =
-  "Step-by-step workflows with the Claude Code skills, MCP connectors and open-source tools I use for video editing, coding, frontend, research, automation and markets.";
+  "Step-by-step workflows with the Claude Code skills, MCP connectors and open-source tools I use for video, coding, frontend, research and markets.";
 
 export const metadata: Metadata = {
   title: seoTitle,
