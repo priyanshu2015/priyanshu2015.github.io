@@ -77,6 +77,11 @@ export default async function PostPage({
 
   if (!post) notFound();
 
+  const parent =
+    post.section === "research"
+      ? { name: "Financial research", path: "/research/" }
+      : { name: "Writing", path: "/blog/" };
+
   return (
     <article>
       <script
@@ -90,7 +95,7 @@ export default async function PostPage({
         dangerouslySetInnerHTML={{
           __html: serializeJsonLd(
             breadcrumbJsonLd([
-              { name: "Writing", path: "/blog/" },
+              parent,
               { name: post.title, path: `/blog/${post.slug}/` },
             ])
           ),
@@ -98,11 +103,11 @@ export default async function PostPage({
       />
 
       <Link
-        href="/blog"
+        href={parent.path}
         className="mb-10 inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-3" aria-hidden />
-        Writing
+        {parent.name}
       </Link>
 
       <header className="mb-10">

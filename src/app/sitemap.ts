@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { DATA } from "@/data/resume";
 import { getAllPosts } from "@/lib/posts";
+import { getAllSkills } from "@/lib/skills";
 
 // Required for output: "export" — emits a static sitemap.xml at build time.
 export const dynamic = "force-static";
@@ -31,6 +32,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${DATA.url}/research/`,
+      lastModified: latest,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...getAllSkills().map((skill) => ({
+      url: `${DATA.url}/research/skills/${skill.slug}/`,
+      lastModified: latest,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     {
       url: `${DATA.url}/blog/`,
       lastModified: latest,

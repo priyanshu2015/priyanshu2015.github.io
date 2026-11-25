@@ -38,3 +38,6 @@ services.html
 /docs/
 .superpowers/
 .seo-snapshots/
+
+# Built from content/skills by scripts/pack-skills.mjs
+/public/skills/

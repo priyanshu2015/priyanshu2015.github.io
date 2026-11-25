@@ -76,6 +76,16 @@ flip it to `false`.
 
 ---
 
+## Financial research
+
+**Article:** add a post as above, with `section: research` in the frontmatter. It's listed
+on `/research/` instead of `/blog/` (the URL stays `/blog/<slug>/`).
+
+**Skill:** drop the unzipped skill folder into `content/skills/`, so that
+`content/skills/<slug>/SKILL.md` exists. Each `## ` heading becomes a step on its page, and
+the zip download is built for you. Everything in that folder is published, so check it for
+anything private first.
+
 ## Update the homepage
 
 All in `src/data/resume.ts`. It's typed, so if you get a field wrong, `npm run verify`

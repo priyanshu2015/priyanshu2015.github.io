@@ -137,9 +137,10 @@ export const PLAYBOOK: PlaybookCategory[] = [
     steps: [
       { title: "Check my portfolio", what: "Read holdings and positions straight from Zerodha.", options: ["Kite MCP"] },
       { title: "Scan the market", what: "Screeners, technical indicators, sector tables and watchlists.", options: ["TradingView MCP"] },
-      { title: "Go deeper", what: "Valuation, competitive analysis and research reports on a company before I decide.", options: ["Financial services skills", "Deep research"] },
+      { title: "Go deeper", what: "Valuation, competitive analysis and research reports on a company before I decide.", options: ["Data-backed stock analysis", "Financial services skills", "Deep research"] },
     ],
     items: [
+      { name: "Data-backed stock analysis", kind: "skill", use: "My own skill: researches a stock from industry economics to valuation, with every number sourced. Free to download.", href: "https://priyanshu2015.github.io/research/skills/data-backed-stock-analysis/" },
       { name: "Kite MCP", kind: "connector", use: "Zerodha's official MCP: holdings, positions and market data in Claude.", href: "https://github.com/zerodha/kite-mcp-server" },
       { name: "TradingView MCP", kind: "connector", use: "Community MCP for TradingView screeners and technical analysis. Unofficial.", href: "https://pypi.org/project/tradingview-mcp-server/" },
       { name: "Financial services skills", kind: "skill", use: "Anthropic's six skills for valuation models, competitive analysis, research reports and due diligence.", href: "https://academy.claude.com/tutorials/claude-for-financial-services-skills" },

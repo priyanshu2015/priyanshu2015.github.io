@@ -24,6 +24,8 @@ export type PostMeta = {
   date: string;
   image?: string;
   tags: string[];
+  /** `section: research` lists the post under Financial research instead of Writing. */
+  section?: "research";
   draft: boolean;
 };
 
@@ -54,6 +56,7 @@ function parseFile(filename: string): Post {
     date: date.toISOString(),
     image: data.image ? String(data.image) : undefined,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+    section: data.section === "research" ? "research" : undefined,
     draft: data.draft === true,
     content,
   };
@@ -88,6 +91,15 @@ export function getAllPosts(): Post[] {
   return posts;
 }
 
+/** What /blog lists: everything except financial research, which has its own page. */
+export function getWritingPosts(): Post[] {
+  return getAllPosts().filter((p) => !p.section);
+}
+
+export function getResearchPosts(): Post[] {
+  return getAllPosts().filter((p) => p.section === "research");
+}
+
 export function getPostBySlug(slug: string): Post | undefined {
   return getAllPosts().find((p) => p.slug === slug);
 }
@@ -112,7 +124,7 @@ const FEATURED_SLUGS = [
 ];
 
 export function getFeaturedPosts(count = 4): Post[] {
-  const all = getAllPosts();
+  const all = getWritingPosts();
   const featured = FEATURED_SLUGS.map((slug) =>
     all.find((p) => p.slug === slug)
   ).filter((p): p is Post => p !== undefined);

@@ -178,12 +178,17 @@ await write("og/blog.png", {
   title: "Notes on backend systems and AI infrastructure",
   subtitle: "How message brokers, task queues, WebSockets and RAG pipelines behave in production.",
 });
+await write("og/research.png", {
+  label: "Financial research",
+  title: "How I research stocks",
+  subtitle: "Articles on investing, and Claude skills you can download and use.",
+});
 await write("og/resources.png", {
   label: "Resources",
   title: "Talks, courses and reading I recommend",
   subtitle: "For AI engineering, serving models and building backend systems. Updated regularly.",
 });
-count += 3;
+count += 4;
 
 const postsDir = path.join(process.cwd(), "content", "posts");
 for (const file of fs.readdirSync(postsDir).filter((f) => f.endsWith(".mdx"))) {

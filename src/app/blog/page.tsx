@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getAllPosts } from "@/lib/posts";
+import { getWritingPosts } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
 import { blogJsonLd, breadcrumbJsonLd, serializeJsonLd } from "@/lib/json-ld";
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  const posts = getAllPosts();
+  const posts = getWritingPosts();
 
   return (
     <>

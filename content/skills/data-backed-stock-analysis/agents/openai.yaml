@@ -1,0 +1,14 @@
+interface:
+  display_name: Data-backed stock analysis
+  short_description: Research stock theses, industry economics, and valuation
+  default_prompt: Use $data-backed-stock-analysis to assess this company's competitive
+    edge, earnings runway, and what the current price requires.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

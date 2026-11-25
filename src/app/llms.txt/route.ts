@@ -1,5 +1,6 @@
 import { DATA } from "@/data/resume";
 import { getAllPosts, formatDate } from "@/lib/posts";
+import { getAllSkills } from "@/lib/skills";
 import { PLAYBOOK } from "@/data/playbook";
 import { RESOURCES } from "@/data/resources";
 
@@ -89,6 +90,17 @@ ${PLAYBOOK.map(
       .map((item) => `- ${item.name}${item.href ? ` (${item.href})` : ""}: ${item.use}`)
       .join("\n")}`
 ).join("\n\n")}
+
+## Financial research
+
+Stock research articles and downloadable skills. Full page: ${DATA.url}/research/
+
+${getAllSkills()
+  .map(
+    (s) =>
+      `- [${s.title}](${DATA.url}/research/skills/${s.slug}/) (download: ${DATA.url}/skills/${s.slug}.zip): ${s.description}`
+  )
+  .join("\n")}
 
 ## Resources
 
