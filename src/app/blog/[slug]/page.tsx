@@ -125,7 +125,8 @@ export default async function PostPage({
             </>
           ) : null}
         </div>
-        {post.description ? (
+        {/* Research pieces open straight into the text; the description still feeds search and RSS. */}
+        {post.description && !post.section ? (
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
             {post.description}
           </p>

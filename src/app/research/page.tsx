@@ -7,7 +7,7 @@ import { SkillDownload } from "@/components/skill-download";
 import { breadcrumbJsonLd, collectionJsonLd, serializeJsonLd } from "@/lib/json-ld";
 
 const description =
-  "How I research stocks and think about money: articles, and Claude skills you can download and use.";
+  "How I research stocks and think about money: articles, and AI skills you can download and use.";
 
 const seoTitle = "Financial research and stock analysis";
 const image = { url: "/og/research.png", width: 1200, height: 630, alt: "Financial research" };

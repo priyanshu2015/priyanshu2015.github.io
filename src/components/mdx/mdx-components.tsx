@@ -11,6 +11,13 @@ import { CodeBlock } from "@/components/mdx/code-block";
 export const mdxComponents: MDXComponents = {
   pre: (props) => <CodeBlock {...props} />,
 
+  // Wide tables scroll inside their own box instead of stretching the page on phones.
+  table: (props) => (
+    <div className="overflow-x-auto" tabIndex={0}>
+      <table {...props} />
+    </div>
+  ),
+
   a: ({ href, children, ...props }) => {
     const url = String(href ?? "");
     const isInternal = url.startsWith("/") || url.startsWith("#");

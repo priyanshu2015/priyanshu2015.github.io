@@ -181,7 +181,7 @@ await write("og/blog.png", {
 await write("og/research.png", {
   label: "Financial research",
   title: "How I research stocks",
-  subtitle: "Articles on investing, and Claude skills you can download and use.",
+  subtitle: "Articles on investing, and AI skills you can download and use.",
 });
 await write("og/resources.png", {
   label: "Resources",
