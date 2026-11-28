@@ -43,6 +43,23 @@ Two companies in the same industry can trade at very different P/Es, depending o
 | Asset light cash machines (mature, near monopoly) | 45 to 65 | Moderate 8% to 12% growth, but high ROCE, brand pricing power and most profit paid as dividends. People treat it almost like a safe bond | Nestlé India, HUL |
 | High ROCE capacity builders (early, fast expansion) | 65 to 95 | Small market share with many years of runway, ROCE around 20% to 30%+, sticky contracts, and spending upfront to double capacity | Indian CDMOs like Anthem and Divi's, niche software firms |
 
+### How to tell the stage from the numbers
+
+The idea comes from Aswath Damodaran, the NYU professor known for valuation. In [his corporate life cycle work](https://aswathdamodaran.substack.com/p/the-corporate-life-cycle-managing), a company moves from start-up to high growth to mature to decline. He reads the stage from operating numbers: young firms show high revenue growth with large reinvestment, mature ones show large profits and free cash flow, and declining ones show pressure on growth and margins.
+
+What I check, from five to ten years of numbers on any screener:
+
+| What to look at | Early, still expanding | Mature | Declining |
+|---|---|---|---|
+| Sales growth | High, often 15%+ | Steady, around the economy | Flat or falling |
+| Margins | Rising | Stable | Under pressure |
+| Capex against depreciation | Much higher. It's building | Close. It's maintaining | Lower. It's shrinking |
+| Free cash flow | Low or negative | Strong | Falling |
+| Dividends and buybacks | Little | A big share of profit | Rising as growth fades |
+| Market share | Small, lots of room | Large, little room | Losing share |
+
+He also says no single multiple fits every stage. Young companies get priced on revenue or users, mature ones on earnings, and declining ones closer to book value. That's why comparing P/Es across stages misleads.
+
 ## 3. Why "PEG = 1" fails for quality companies
 
 PEG is P/E divided by growth. The textbook rule says PEG should be 1. So when a mature company slows to 12% growth, its P/E should fall to 12x.
@@ -54,6 +71,8 @@ A company with 30% ROCE needs to put back only 12 ÷ 30 = **40% of its profit** 
 The Gordon Growth Model puts this in one line:
 
 **P/E = (1 − growth ÷ ROCE) ÷ (return you want − growth)**
+
+This is a P/E version of the [value driver formula in McKinsey's *Valuation*](https://www.fm-magazine.com/news/2022/aug/value-meaning-measurement/), the standard book used by corporate finance teams. The "growth ÷ ROCE" part is the share of profit that has to go back in. McKinsey's own condition applies too: growth adds value only when the return on capital is higher than the return investors want.
 
 With 30% ROCE and 12% growth, it gives (1 − 0.4) ÷ (0.14 − 0.12) = **30x** if you want 14% a year, and 25x if you want about 14.4%. Not 12x.
 
@@ -110,7 +129,7 @@ Not for a whole sector. Only for a small set of high ROCE capacity builders, and
 
 ## 6. Work backwards: the reverse DCF
 
-Big funds don't guess whether 85x or 150x is too high. They work backwards from year 10:
+Big funds don't guess whether 85x or 150x is too high. They work backwards. Michael Mauboussin and Alfred Rappaport made this popular in [*Expectations Investing*](https://www.fool.com/investing/2022/01/19/expectations-investing-qanda-mauboussin-rappaport): start from the price you know, and work out what it expects from the business. A simple version works backwards from year 10:
 
 1. Assume the stock cools to a mature **30x** in year 10
 2. Assume they want **11% to 12%** a year
@@ -134,12 +153,32 @@ The model assumes ten smooth years before the P/E cools to 30x. From 85x, three 
 | **Base case** | Smooth execution, around 23% growth at 30% ROCE, then 30x in year 10 | You get your 11% to 12% a year |
 | **Delayed cool-off** | New waves of demand keep growth at 25% or more, so the market still pays 50x to 55x in year 10 | About 18% to 22% a year. This is how the great compounders beat every 10 year model |
 
+### What return can I expect?
+
+John Bogle, who founded Vanguard, split stock returns into [three parts](https://awealthofcommonsense.com/2016/09/the-john-bogle-expected-return-formula/): dividend yield, earnings growth, and the change in P/E. He called the first two the investment return and the last one the speculative return, because it depends on what people will pay later.
+
+For one stock over a few years, I use the compounded version:
+
+**Yearly return ≈ (1 + earnings growth) × (P/E at the end ÷ P/E today)^(1 ÷ years) − 1**, plus the dividend yield.
+
+Say a stock is at 40x and grows earnings 20% a year for 5 years:
+
+| P/E after 5 years | Return a year |
+|---|---|
+| Still 40x | About 20% |
+| 30x | About 13% |
+| 20x | About 4.5% |
+
+The growth is the same in all three rows. Only the speculative part changes. Bogle said this part is the hardest to predict, so I don't guess it from today's mood. I pick the P/E at the end from the stage the company will probably be in by then. A company that will be mature in five years should be valued at a mature company's P/E, not at today's.
+
 ## 7. The second S-curve: when a mature stock re-rates
 
 A company grows slowly, then fast, then flattens, like the letter S. Even after it matures and cools to 25x or 30x, it isn't stuck forever. If it finds a big new market or technology, earnings and the P/E rise together.
 
 - **Eli Lilly** was a regular pharma giant, with a P/E [mostly between about 15x and 35x](https://www.macrotrends.net/stocks/charts/LLY/LLY/pe-ratio) in the late 2010s. GLP-1 drugs for diabetes and obesity speeded up its growth, and its [three year average P/E reached about 67x](https://www.trefis.com/articles/601404/lly-stock-where-compounding-could-take-the-price/2026-06-04).
 - **Microsoft** traded at [about 11.5x in 2012](https://www.aol.com/2012/04/28/how-cheap-is-microsofts-stock-by-the-numbers/). Azure cloud brought growth back, and its P/E later went above 30x.
+
+Damodaran lists Microsoft in 2013, Apple in 2000 and IBM in 1992 as companies that [found a second life](https://aswathdamodaran.substack.com/p/the-corporate-life-cycle-managing). But he calls them the exception rather than the rule, and says luck played a part too. So I don't pay for a second curve upfront. I wait until it shows in sales and orders.
 
 ## What I take from this
 
